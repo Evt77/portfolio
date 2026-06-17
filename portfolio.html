@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evan Tang — Product Designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    :root {
+      --star-count: 180;
+      --drift-distance: 30px;
+      --drift-duration-min: 12s;
+      --drift-duration-max: 24s;
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-organic: cubic-bezier(0.33, 0, 0.2, 1);
+    }
+
+    html, body {
+      height: 100%;
+      background: #212121;
+      color: #f5f5f5;
+      cursor: none;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    *, a, button, [role="button"] {
+      cursor: none !important;
+    }
+
+    /* ── Star field ── */
+    #stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      contain: strict;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.65);
+      transform: translate(-50%, -50%);
+      box-shadow:
+        0 0 2px rgba(255, 255, 255, 0.2),
+        0 0 5px rgba(255, 255, 255, 0.06);
+      animation: drift var(--drift-duration, 40s) ease-in-out infinite;
+      animation-delay: var(--drift-delay, 0s);
+    }
+
+    .star.twinkle {
+      animation:
+        drift var(--drift-duration, 40s) ease-in-out infinite,
+        twinkle var(--twinkle-duration, 6s) ease-in-out infinite;
+      animation-delay: var(--drift-delay, 0s), var(--twinkle-delay, 0s);
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(-50%, -50%) translate(0, 0); }
+      25%       { transform: translate(-50%, -50%) translate(var(--dx1), var(--dy1)); }
+      50%       { transform: translate(-50%, -50%) translate(var(--dx2), var(--dy2)); }
+      75%       { transform: translate(-50%, -50%) translate(var(--dx3), var(--dy3)); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--base-opacity, 0.35); }
+      50%      { opacity: calc(var(--base-opacity, 0.35) * 0.55); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .star { animation: none; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 640px;
+    }
+
+    .hero-available {
+      letter-spacing: 0.12em;
+      color: rgba(245, 245, 245, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-available::before {
+      content: '';
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .hero-name {
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .hero-bio {
+      color: var(--text-muted-dark);
+      max-width: 52ch;
+      margin: 0;
+    }
+
+    /* ── Scroll indicator ── */
+    .scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-top: 8px;
+    }
+
+    .scroll-chevron {
+      width: 15px;
+      height: 15px;
+      border-right: 2px solid rgba(245, 245, 245, 0.7);
+      border-bottom: 2px solid rgba(245, 245, 245, 0.7);
+      opacity: 0;
+      animation: chevron-wave 1.8s ease-in-out infinite;
+    }
+
+    .scroll-chevron:nth-child(1) { animation-delay: 0s; }
+    .scroll-chevron:nth-child(2) { animation-delay: 0.2s; }
+    .scroll-chevron:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes chevron-wave {
+      0%   { opacity: 0;   transform: translateY(-4px) rotate(45deg); }
+      40%  { opacity: 0.7; transform: translateY(0)    rotate(45deg); }
+      80%  { opacity: 0;   transform: translateY(4px)  rotate(45deg); }
+      100% { opacity: 0;   transform: translateY(-4px) rotate(45deg); }
+    }
+
+    /* ── Floating pill nav ── */
+    .nav-pill {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: rgba(42, 42, 42, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      gap: 0;
+    }
+
+    .nav-pill-indicator {
+      position: absolute;
+      top: 4px;
+      height: calc(100% - 8px);
+      border-radius: 100px;
+      background: linear-gradient(135deg, rgba(30, 80, 180, 0.55), rgba(15, 50, 130, 0.5));
+      box-shadow: 0 0 12px rgba(50, 120, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: left 0.3s var(--ease-out-quart), width 0.3s var(--ease-out-quart);
+      pointer-events: none;
+    }
+
+    .nav-pill-indicator::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 100px;
+      padding: 1px;
+      background: linear-gradient(
+        var(--border-angle, 45deg),
+        rgba(100, 160, 255, 0.55) 0%,
+        rgba(100, 160, 255, 0)    35%,
+        rgba(100, 160, 255, 0)    65%,
+        rgba(100, 160, 255, 0.55) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .nav-tab {
+      color: rgba(245, 245, 245, 0.55);
+      padding: 8px 24px;
+      border-radius: 100px;
+      position: relative;
+      z-index: 1;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-tab.active,
+    .nav-tab:hover {
+      color: #f5f5f5;
+    }
+
+    .nav-pill-avatar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      overflow: hidden;
+      background: none;
+      flex-shrink: 0;
+      margin: 0 0 0 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-pill-avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* ── Project Showcase ── */
+    .projects {
+      position: relative;
+      z-index: 1;
+      padding: 0 5rem 10rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .project-row {
+      padding: 3rem 0;
+    }
+
+    .project-divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0;
+    }
+
+    .project-inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+      padding-top: 2.5rem;
+    }
+
+    .project-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: #f5f5f5;
+      position: sticky;
+      top: 2rem;
+      margin: 0;
+    }
+
+    .project-desc {
+      color: rgba(245, 245, 245, 0.65);
+      margin-bottom: 1.25rem;
+    }
+
+    .project-disciplines {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(245, 245, 245, 0.35);
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    .project-year {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(245, 245, 245, 0.35);
+      margin-bottom: 0;
+    }
+
+    .project-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 8px;
+      margin-top: 2rem;
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      background: rgba(255, 255, 255, 0.04);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-thumb:hover {
+      opacity: 0.8;
+      transform: scale(1.02);
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .lightbox-img {
+      position: relative;
+      z-index: 1;
+      max-width: 88vw;
+      max-height: 84vh;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      z-index: 2;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 26px;
+      line-height: 1;
+      padding: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .lightbox-close:hover { color: #fff; }
+
+    .lightbox-prev,
+    .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-prev:hover,
+    .lightbox-next:hover { background: rgba(255, 255, 255, 0.18); }
+
+    /* ── Page sections ── */
+    .page-section {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .page-section.hidden {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    /* ── Work / About placeholder ── */
+    .page-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .page-placeholder-label {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba(245, 245, 245, 0.3);
+      text-transform: uppercase;
+    }
+
+    .page-placeholder h2 {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 400;
+      color: rgba(245, 245, 245, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <div id="transition-flash" style="position: fixed; inset: 0; background: #212121; opacity: 1; pointer-events: none; z-index: 99999; transition: opacity 0.5s ease-out;"></div>
+  <div id="stars" aria-hidden="true"></div>
+
+  <!-- ── Floating pill nav ── -->
+  <div class="nav-pill" id="nav-pill" role="navigation" aria-label="Main navigation">
+    <div class="nav-pill-indicator" id="pill-indicator"></div>
+    <a href="#" class="nav-tab p2 active" data-tab="home">Home</a>
+    <a href="#" class="nav-tab p2" data-tab="work">Work</a>
+    <a href="#" class="nav-tab p2" data-tab="about">About</a>
+    <button class="nav-pill-avatar-btn" id="pill-avatar-btn" aria-label="Profile">
+      <img src="images/home/profile-picture.avif" alt="Evan Tang">
+    </button>
+  </div>
+
+  <!-- ══ PAGE: HOME ══ -->
+  <div id="page-home" class="page-section">
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-available p2">AVAILABLE FOR WORK</p>
+      <h1 class="hero-name">Evan Tang</h1>
+      <p class="hero-bio">I design interactive products that align user needs with business goals and expectations. My process turns user insights into clear, buildable solutions that improve engagement and efficiency.</p>
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-chevron"></div>
+        <div class="scroll-chevron"></div>
+        <div class="scroll-chevron"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Project Showcase ── -->
+  <section class="projects" id="work">
+
+    <!-- Rivian -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Rivian</h2>
+        <div class="project-info">
+          <p class="project-desc">Rivian is rethinking what vehicle dashboards should do when drivers need focus most. I worked on a self-directed project with design team members to redesign the navigation and infotainment experience. I sought out to reduce distraction, prioritizing safety, and helping drivers respond faster in critical moments.</p>
+          <p class="project-disciplines">Infotainment / UX / Interaction Design / Motion Design / Prototyping / Research / Micro Animation</p>
+          <p class="project-year">2024 – 2025</p>
+          <div class="project-images" data-project="rivian">
+            <img src="images/home/rivian/brand(1).png" class="project-thumb" alt="Rivian brand 1" loading="lazy">
+            <img src="images/home/rivian/brand(2).png" class="project-thumb" alt="Rivian brand 2" loading="lazy">
+            <img src="images/home/rivian/competitive-analysis.png" class="project-thumb" alt="Competitive analysis" loading="lazy">
+            <img src="images/home/rivian/driving-prototypes.png" class="project-thumb" alt="Driving prototypes" loading="lazy">
+            <img src="images/home/rivian/map-view-animation-prototypes.png" class="project-thumb" alt="Map view animation prototypes" loading="lazy">
+            <img src="images/home/rivian/style-guide.png" class="project-thumb" alt="Style guide" loading="lazy">
+            <img src="images/home/rivian/ux-writing-comparison.png" class="project-thumb" alt="UX writing comparison" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sleeper -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Sleeper</h2>
+        <div class="project-info">
+          <p class="project-desc">Sleeper is a fantasy sports platform where Dynasty players make high-stakes decisions every week. I explored how the iOS app could better support trades and roster management by surfacing critical contract and player data without disrupting the fast, familiar workflows users are accustomed to.</p>
+          <p class="project-disciplines">UX / Product / iOS / Research / Prototyping / Task Flows</p>
+          <p class="project-year">2024 – 2025</p>
+          <div class="project-images" data-project="sleeper">
+            <img src="images/home/sleeper/brand-logo.png" class="project-thumb" alt="Brand logo" loading="lazy">
+            <img src="images/home/sleeper/past-opponent-lineups.png" class="project-thumb" alt="Past opponent lineups" loading="lazy">
+            <img src="images/home/sleeper/remaining-years-under-contract.png" class="project-thumb" alt="Remaining years under contract" loading="lazy">
+            <img src="images/home/sleeper/strength-of-schedule.png" class="project-thumb" alt="Strength of schedule" loading="lazy">
+            <img src="images/home/sleeper/style-guide(color).png" class="project-thumb" alt="Style guide — color" loading="lazy">
+            <img src="images/home/sleeper/style-guide(typography,components).png" class="project-thumb" alt="Style guide — typography and components" loading="lazy">
+            <img src="images/home/sleeper/task-flow(1).png" class="project-thumb" alt="Task flow 1" loading="lazy">
+            <img src="images/home/sleeper/task-flow(2).png" class="project-thumb" alt="Task flow 2" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mochi Health -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Mochi Health</h2>
+        <div class="project-info">
+          <p class="project-desc">Mochi Health is a wellness platform focused on long-term behavior change. As part of a take-home design challenge, I explored how a weight tracker could help users stay motivated through clear progress visualization, lightweight logging, and engagement mechanics like streaks and milestones. This sprint was conducted within a three-day timeframe.</p>
+          <p class="project-disciplines">UX / Product / Web / Healthcare Design / Dashboard Design</p>
+          <p class="project-year">2025</p>
+          <div class="project-images" data-project="mochi-health">
+            <img src="images/home/mochi-health/brand-logo.png" class="project-thumb" alt="Brand logo" loading="lazy">
+            <img src="images/home/mochi-health/first-time-user-experience-setup.png" class="project-thumb" alt="First time user experience setup" loading="lazy">
+            <img src="images/home/mochi-health/landing-page.png" class="project-thumb" alt="Landing page" loading="lazy">
+            <img src="images/home/mochi-health/remaining-years-under-contract.png" class="project-thumb" alt="Remaining years under contract" loading="lazy">
+            <img src="images/home/mochi-health/weekly-report.png" class="project-thumb" alt="Weekly report" loading="lazy">
+            <img src="images/home/mochi-health/weight-chart.png" class="project-thumb" alt="Weight chart" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SnowLabs -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">SnowLabs</h2>
+        <div class="project-info">
+          <p class="project-desc">SnowLabs is an experimental desktop experience that helps new snowboarders plan trips with confidence. Instead of static maps and forecasts, it lets riders play a resort experience of previewing trails, conditions, and difficulty before ever stepping on the mountain.</p>
+          <p class="project-disciplines">Video Game Design / UX / Product / Web / Prototyping / Unity / C#</p>
+          <p class="project-year">2022 – 2023</p>
+          <div class="project-images" data-project="snowlabs">
+            <img src="images/home/snowlabs/final-designs-ingame.jpg" class="project-thumb" alt="Final designs in-game" loading="lazy">
+            <img src="images/home/snowlabs/home-page(1).png" class="project-thumb" alt="Home page 1" loading="lazy">
+            <img src="images/home/snowlabs/home-page(2).png" class="project-thumb" alt="Home page 2" loading="lazy">
+            <img src="images/home/snowlabs/journey-mapping(JTBD).png" class="project-thumb" alt="Journey mapping JTBD" loading="lazy">
+            <img src="images/home/snowlabs/presentation-slide.png" class="project-thumb" alt="Presentation slide" loading="lazy">
+            <img src="images/home/snowlabs/research.png" class="project-thumb" alt="Research" loading="lazy">
+            <img src="images/home/snowlabs/select-ski-resorts-and-filtering.png" class="project-thumb" alt="Select ski resorts and filtering" loading="lazy">
+            <img src="images/home/snowlabs/selecting-ski-trails.png" class="project-thumb" alt="Selecting ski trails" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  </div><!-- /#page-home -->
+
+  <!-- ══ PAGE: WORK ══ -->
+  <div id="page-work" class="page-section hidden">
+    <div class="page-placeholder">
+      <p class="page-placeholder-label">Coming soon</p>
+      <h2>Work</h2>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: ABOUT ══ -->
+  <div id="page-about" class="page-section hidden">
+    <div class="page-placeholder">
+      <p class="page-placeholder-label">Coming soon</p>
+      <h2>About</h2>
+    </div>
+  </div>
+
+  <!-- ── Lightbox ── -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-overlay" id="lightbox-overlay"></div>
+    <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <button class="lightbox-next" id="lightbox-next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+  </div>
+
+  <script>
+    window.addEventListener('pageshow', function() { var f = document.getElementById('transition-flash'); f.style.transition = 'none'; f.style.opacity = '1'; setTimeout(function() { f.style.transition = 'opacity 0.5s ease-out'; f.style.opacity = '0'; }, 50); });
+  </script>
+
+  <!-- ── Pill nav indicator ── -->
+  <script>
+    (function () {
+      const pill = document.getElementById('nav-pill');
+      const indicator = document.getElementById('pill-indicator');
+      const tabs = pill.querySelectorAll('.nav-tab');
+
+      function moveIndicator(tab) {
+        const pillRect = pill.getBoundingClientRect();
+        const tabRect = tab.getBoundingClientRect();
+        indicator.style.left = (tabRect.left - pillRect.left) + 'px';
+        indicator.style.width = tabRect.width + 'px';
+      }
+
+      const activeTab = pill.querySelector('.nav-tab.active');
+      if (activeTab) {
+        indicator.style.transition = 'none';
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            moveIndicator(activeTab);
+            indicator.style.transition = 'left 0.3s cubic-bezier(0.25,1,0.5,1), width 0.3s cubic-bezier(0.25,1,0.5,1)';
+          });
+        });
+      }
+
+      const pages = {
+        home:  document.getElementById('page-home'),
+        work:  document.getElementById('page-work'),
+        about: document.getElementById('page-about')
+      };
+
+      function navigateTo(tabName, pushState) {
+        // Update active tab
+        tabs.forEach(function (t) { t.classList.remove('active'); });
+        var target = pill.querySelector('[data-tab="' + tabName + '"]');
+        if (target) {
+          target.classList.add('active');
+          moveIndicator(target);
+        }
+
+        // Swap page sections
+        Object.keys(pages).forEach(function (key) {
+          if (key === tabName) {
+            pages[key].classList.remove('hidden');
+          } else {
+            pages[key].classList.add('hidden');
+          }
+        });
+
+        // Update URL
+        if (pushState !== false) {
+          var url = tabName === 'home' ? '/home' : '/' + tabName;
+          history.pushState({ tab: tabName }, '', url);
+        }
+      }
+
+      // Init from URL on load
+      var path = window.location.pathname.replace('/', '') || 'home';
+      var validTabs = ['home', 'work', 'about'];
+      var initTab = validTabs.indexOf(path) !== -1 ? path : 'home';
+      navigateTo(initTab, false);
+
+      // Tab clicks
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function (e) {
+          e.preventDefault();
+          navigateTo(tab.dataset.tab);
+        });
+      });
+
+      // Browser back/forward
+      window.addEventListener('popstate', function (e) {
+        if (e.state && e.state.tab) {
+          navigateTo(e.state.tab, false);
+        }
+      });
+    })();
+  </script>
+
+  <!-- ── Border orbit animation on pill hover ── -->
+  <script>
+    (function () {
+      const pill = document.getElementById('nav-pill');
+      const indicator = document.getElementById('pill-indicator');
+      let angle = 45;
+      let rafId = null;
+      let hovering = false;
+
+      function step() {
+        angle = (angle + 2) % 360;
+        indicator.style.setProperty('--border-angle', angle + 'deg');
+        if (hovering) {
+          rafId = requestAnimationFrame(step);
+        } else {
+          rafId = null;
+        }
+      }
+
+      var tabs = pill.querySelectorAll('.nav-tab');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('mouseenter', function () {
+          if (tab.classList.contains('active')) {
+            hovering = true;
+            if (!rafId) rafId = requestAnimationFrame(step);
+          }
+        });
+        tab.addEventListener('mouseleave', function () {
+          hovering = false;
+        });
+      });
+    })();
+  </script>
+
+  <!-- ── Star field ── -->
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const styles = getComputedStyle(root);
+      const container = document.getElementById('stars');
+      const count = parseInt(styles.getPropertyValue('--star-count'), 10) || 180;
+      const driftMax = parseFloat(styles.getPropertyValue('--drift-distance')) || 30;
+      const durMin = parseFloat(styles.getPropertyValue('--drift-duration-min')) || 12;
+      const durMax = parseFloat(styles.getPropertyValue('--drift-duration-max')) || 24;
+
+      const rnd = (min, max) => min + Math.random() * (max - min);
+      const fragment = document.createDocumentFragment();
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('span');
+        star.className = 'star';
+
+        const size = Math.random() * 3 + 1.2;
+        const opacity = Math.random() * 0.35 + 0.15;
+
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--base-opacity', opacity);
+        star.style.opacity = opacity;
+
+        for (let k = 1; k <= 3; k++) {
+          star.style.setProperty(`--dx${k}`, `${rnd(-driftMax, driftMax).toFixed(2)}px`);
+          star.style.setProperty(`--dy${k}`, `${rnd(-driftMax, driftMax).toFixed(2)}px`);
+        }
+
+        star.style.setProperty('--drift-duration', `${rnd(durMin, durMax).toFixed(1)}s`);
+        star.style.setProperty('--drift-delay', `${rnd(0, durMax).toFixed(1)}s`);
+
+        if (Math.random() < 0.2) {
+          star.classList.add('twinkle');
+          star.style.setProperty('--twinkle-duration', `${rnd(5, 9).toFixed(1)}s`);
+          star.style.setProperty('--twinkle-delay', `${rnd(0, 6).toFixed(1)}s`);
+        }
+
+        fragment.appendChild(star);
+      }
+
+      container.appendChild(fragment);
+    })();
+  </script>
+
+  <!-- ── Comets ── -->
+  <script>
+    (function () {
+      const MOVE_MS = 1800;
+      const FADE_IN_MS = 120;
+      const FADE_OUT_MS = 300;
+      const FADE_OUT_DELAY = MOVE_MS - FADE_OUT_MS;
+      const DELAY_MIN = 3000;
+      const DELAY_MAX = 5000;
+
+      let cometActive = false;
+
+      const style = document.createElement('style');
+      style.textContent = `
+        .comet-streak {
+          position: fixed;
+          width: 140px;
+          height: 2px;
+          background: linear-gradient(to left, transparent, #fff);
+          transform: rotate(35deg);
+          transform-origin: center center;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0;
+          top: -5%;
+          left: 115%;
+        }
+        .comet-streak.is-active {
+          animation:
+            comet-fade-in ${FADE_IN_MS}ms ease-out forwards,
+            comet-move ${MOVE_MS}ms ease-out forwards,
+            comet-fade-out ${FADE_OUT_MS}ms ease-out ${FADE_OUT_DELAY}ms forwards;
+        }
+        @keyframes comet-move {
+          from { transform: rotate(-35deg) translate(0, 0); }
+          to   { transform: rotate(-35deg) translate(-160vw, 0); }
+        }
+        @keyframes comet-fade-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes comet-fade-out {
+          from { opacity: 1; }
+          to   { opacity: 0; }
+        }
+      `;
+      document.head.appendChild(style);
+
+      const rnd = (min, max) => min + Math.random() * (max - min);
+
+      function scheduleNext() {
+        setTimeout(spawnComet, Math.round(rnd(DELAY_MIN, DELAY_MAX)));
+      }
+
+      function spawnComet() {
+        if (cometActive) return;
+        cometActive = true;
+
+        const comet = document.createElement('div');
+        comet.className = 'comet-streak';
+        comet.setAttribute('aria-hidden', 'true');
+        if (Math.random() < 0.5) {
+          comet.style.top = `${-3 - Math.random() * 5}%`;
+          comet.style.left = `${20 + Math.random() * 70}%`;
+        } else {
+          comet.style.left = `${102 + Math.random() * 6}%`;
+          comet.style.top = `${Math.random() * 40}%`;
+        }
+        document.body.appendChild(comet);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => comet.classList.add('is-active'));
+        });
+
+        setTimeout(() => {
+          comet.remove();
+          cometActive = false;
+          scheduleNext();
+        }, MOVE_MS);
+      }
+
+      scheduleNext();
+    })();
+  </script>
+
+  <!-- ── Clock ── -->
+  <script>
+    (function () {
+      const clock = document.createElement('div');
+      clock.className = 'p2';
+      Object.assign(clock.style, {
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        zIndex: '10',
+        color: 'rgba(255, 255, 255, 0.5)',
+        letterSpacing: '0.06em',
+        pointerEvents: 'none',
+      });
+      document.body.appendChild(clock);
+
+      function update() {
+        clock.textContent = new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        });
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+
+  <!-- ── Session timer ── -->
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('siteStartTime')) {
+        sessionStorage.setItem('siteStartTime', String(Date.now()));
+      }
+
+      const startTime = Number(sessionStorage.getItem('siteStartTime'));
+      const timer = document.createElement('div');
+      timer.className = 'p2';
+      Object.assign(timer.style, {
+        position: 'fixed',
+        bottom: '24px',
+        left: '24px',
+        zIndex: '10',
+        color: 'rgba(255, 255, 255, 0.5)',
+        letterSpacing: '0.06em',
+        pointerEvents: 'none',
+      });
+
+      const label = document.createElement('span');
+      label.textContent = 'SESSION TIME';
+      Object.assign(label.style, {
+        letterSpacing: 'normal',
+        marginRight: '8px',
+      });
+
+      const time = document.createElement('span');
+      Object.assign(time.style, {
+        letterSpacing: '0.06em',
+      });
+
+      timer.appendChild(label);
+      timer.appendChild(time);
+      document.body.appendChild(timer);
+
+      function update() {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const hours = Math.floor(elapsed / 3600);
+        const minutes = Math.floor((elapsed % 3600) / 60);
+        const seconds = elapsed % 60;
+        time.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const SIZE_DEFAULT = '15px';
+      const SIZE_HOVER = '28px';
+      const SHADOW_DEFAULT = '0 0 6px 2px rgba(255, 255, 255, 0.6), 0 0 20px 6px rgba(255, 255, 255, 0.2), 0 0 40px 12px rgba(255, 255, 255, 0.07)';
+      const SHADOW_HOVER = '0 0 6px 2px rgba(255, 140, 50, 0.6), 0 0 20px 6px rgba(255, 140, 50, 0.2), 0 0 40px 12px rgba(255, 140, 50, 0.07)';
+      const BG_DEFAULT = 'rgba(255, 255, 255, 0.9)';
+      const BG_HOVER = 'rgba(255, 140, 50, 0.9)';
+
+      const cursor = document.createElement('div');
+      Object.assign(cursor.style, {
+        position: 'fixed',
+        width: SIZE_DEFAULT,
+        height: SIZE_DEFAULT,
+        borderRadius: '50%',
+        background: BG_DEFAULT,
+        pointerEvents: 'none',
+        zIndex: '99999',
+        boxShadow: SHADOW_DEFAULT,
+        left: '0',
+        top: '0',
+        transform: 'translate(-50%, -50%)',
+        transition: 'background 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1)',
+      });
+      document.body.appendChild(cursor);
+
+      function hasPointerCursor(el) {
+        while (el && el !== document.body) {
+          if (getComputedStyle(el).cursor === 'pointer') return true;
+          el = el.parentElement;
+        }
+        return false;
+      }
+
+      function setCursorHover(active) {
+        cursor.style.width = active ? SIZE_HOVER : SIZE_DEFAULT;
+        cursor.style.height = active ? SIZE_HOVER : SIZE_DEFAULT;
+        cursor.style.background = active ? BG_HOVER : BG_DEFAULT;
+        cursor.style.boxShadow = active ? SHADOW_HOVER : SHADOW_DEFAULT;
+      }
+
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+        cursor.style.transform = 'translate(-50%, -50%)';
+      });
+
+      document.addEventListener('mouseover', (e) => {
+        const interactive = e.target.closest('button, a, [role="button"]') || hasPointerCursor(e.target);
+        setCursorHover(!!interactive);
+      });
+    })();
+  </script>
+
+  <!-- ── Lightbox JS ── -->
+  <script>
+    (function () {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const overlay = document.getElementById('lightbox-overlay');
+      const closeBtn = document.getElementById('lightbox-close');
+      const prevBtn = document.getElementById('lightbox-prev');
+      const nextBtn = document.getElementById('lightbox-next');
+
+      let images = [];
+      let index = 0;
+
+      function open(srcs, i) {
+        images = srcs;
+        index = i;
+        lightboxImg.src = images[index];
+        lightbox.classList.add('active');
+      }
+
+      function close() {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+      }
+
+      function showPrev() {
+        index = (index - 1 + images.length) % images.length;
+        lightboxImg.src = images[index];
+      }
+
+      function showNext() {
+        index = (index + 1) % images.length;
+        lightboxImg.src = images[index];
+      }
+
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', close);
+      prevBtn.addEventListener('click', showPrev);
+      nextBtn.addEventListener('click', showNext);
+
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+      });
+
+      document.querySelectorAll('.project-images').forEach(function (grid) {
+        const thumbs = Array.from(grid.querySelectorAll('.project-thumb'));
+        const srcs = thumbs.map(function (t) { return t.src; });
+        thumbs.forEach(function (thumb, i) {
+          thumb.addEventListener('click', function () { open(srcs, i); });
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

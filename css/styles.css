@@ -1,0 +1,148 @@
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS
+   Shared color, font, and easing variables.
+   Reference these with var(--name) in any file.
+───────────────────────────────────────────── */
+
+:root {
+  /* Colors — dark theme */
+  --bg-dark: #212121;
+  --text-dark: #f5f5f5;
+  --text-muted-dark: rgba(245, 245, 245, 0.65);
+
+  /* Colors — light theme */
+  --bg-light: #f5f0eb;
+  --text-light: #212121;
+  --text-muted-light: rgba(33, 33, 33, 0.5);
+
+  /* Fonts */
+  --font-main: 'Karla', sans-serif;
+  --font-display: 'Source Serif 4', serif;
+
+  /* Easing */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: var(--font-main);
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* ─────────────────────────────────────────────
+   TYPOGRAPHY
+───────────────────────────────────────────── */
+
+/* H1 — Page and section titles (e.g. hero name, section headers) */
+h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* P1 — Primary body copy (e.g. hero description, project summaries) */
+p {
+  font-family: var(--font-main);
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 21px;
+}
+
+/* .p1-label — Apply P1 styles to non-paragraph elements (e.g. labels, spans) */
+.p1-label {
+  font-family: var(--font-main);
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 21px;
+}
+
+/* P2 — Secondary body copy (e.g. captions, labels, supporting text) */
+.p2 {
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 20px;
+}
+
+
+/* ─────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────── */
+
+/* Base shared button styles */
+.btn-primary,
+.btn-primary-colored,
+.btn-secondary {
+  font-family: var(--font-main);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 10px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-out-quart);
+}
+
+/* Primary button — main CTA, filled (e.g. PROCEED, ENTER) */
+.btn-primary {
+  background: #ffffff;
+  color: var(--text-light);
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: scale(1.1);
+}
+
+/* Primary colored button — main CTA, filled teal (e.g. ENTER on portfolio) */
+.btn-primary-colored {
+  background: #027E81;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-primary-colored:hover {
+  background: #025f62;
+  transform: scale(1.1);
+}
+
+/* Secondary button — supporting action, outlined (e.g. SKIP TO PORTFOLIO) */
+.btn-secondary {
+  background: transparent;
+  color: #9c9c9c;
+  border: 1px solid #9c9c9c;
+}
+
+.btn-secondary:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.05);
+}

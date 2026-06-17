@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: #f5f0eb;
+      color: #212121;
+      font-family: 'Karla', sans-serif;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, a, [role="button"] {
+      cursor: none !important;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    #btn-refresh .refresh-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      line-height: 1;
+    }
+
+    #btn-refresh .refresh-icon.spinning {
+      animation: refresh-spin 300ms cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    }
+
+    @keyframes refresh-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .back-link {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Karla', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      color: rgba(0, 0, 0, 0.5);
+      text-decoration: none;
+    }
+
+    .enter-btn-icon {
+      font-size: 15px;
+      line-height: 1;
+      margin-right: -2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .enter-btn-icon::before {
+      vertical-align: 0;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="transition-flash" style="position: fixed; inset: 0; background: #f5f0eb; opacity: 1; pointer-events: none; z-index: 99999; transition: opacity 0.5s ease-out;"></div>
+  <a href="index.html" class="back-link"><i class="bi bi-arrow-left"></i> BACK</a>
+  <main>
+    <p style="letter-spacing: 0.08em; color: rgba(0, 0, 0, 0.5); text-align: center; max-width: 40ch; margin-bottom: 32px;">WELCOME! PLEASE DESIGN A PASSPORT DURING YOUR TIME HERE.</p>
+
+    <div style="display: inline-flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+      <label for="visitor-name" class="p1-label" style="letter-spacing: 0.08em; color: rgba(0, 0, 0, 0.5);">NAME:</label>
+      <input type="text" id="visitor-name" autocomplete="off" style="border: none; border-radius: 999px; background: #ffffff; font-family: 'Karla', sans-serif; font-size: 15px; color: #212121; outline: none; padding: 6px 16px; width: 200px;">
+      <button id="btn-refresh" type="button" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #EEE8D8; color: rgba(33, 33, 33, 0.55); font-size: 14px; line-height: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; flex-shrink: 0; appearance: none; -webkit-appearance: none;" aria-label="Randomize name"><i class="bi bi-arrow-clockwise refresh-icon"></i></button>
+    </div>
+
+    <div style="position: relative; width: 1000px; margin: 0 auto 32px;">
+      <div id="passport-3d" style="width: 1000px; height: 400px; display: block;"></div>
+      <div id="passport-tools" style="position: absolute; left: calc(100% + 24px); top: 50%; transform: translateY(-50%); display: flex; flex-direction: row; align-items: flex-end; gap: 12px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+          <button id="btn-pen" type="button" title="Pen" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #EEE8D8; color: rgba(33, 33, 33, 0.55); font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; flex-shrink: 0; transition: background 0.2s, color 0.2s;">
+            <i class="bi bi-vector-pen"></i>
+          </button>
+          <button type="button" data-cover-theme="green" title="Green cover" aria-label="Green cover" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #1A4144; cursor: pointer; padding: 0; outline: none; flex-shrink: 0;"></button>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+          <button id="btn-eraser" type="button" title="Eraser" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #EEE8D8; color: rgba(33, 33, 33, 0.55); font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; flex-shrink: 0; transition: background 0.2s, color 0.2s;">
+            <i class="bi bi-eraser-fill"></i>
+          </button>
+          <button type="button" data-cover-theme="blue" title="Blue cover" aria-label="Blue cover" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #1A2744; cursor: pointer; padding: 0; outline: none; flex-shrink: 0;"></button>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+          <button id="btn-clear" type="button" title="Clear signature" aria-label="Clear signature" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #EEE8D8; color: rgba(33, 33, 33, 0.55); font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; flex-shrink: 0; transition: background 0.2s, color 0.2s;">
+            <i class="bi bi-trash3"></i>
+          </button>
+          <button type="button" data-cover-theme="red" title="Red cover" aria-label="Red cover" style="width: 32px; height: 32px; border-radius: 50%; border: none; background: #441A1A; cursor: pointer; padding: 0; outline: none; flex-shrink: 0;"></button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-primary-colored" onclick="window.location.href='portfolio.html';">ENTER <i class="bi bi-arrow-right-short enter-btn-icon"></i></button>
+
+    <p class="p2" style="color: rgba(0, 0, 0, 0.35); text-align: center; max-width: 38ch; margin-top: 32px;">Created passports are added to a onsite gallery. No personal data is collected or stored externally.</p>
+  </main>
+
+  <script>
+    (function () {
+      const SIZE_DEFAULT = '15px';
+      const SIZE_HOVER = '28px';
+      const SHADOW_DEFAULT = '0 0 6px 2px rgba(75, 72, 68, 0.35), 0 0 20px 6px rgba(75, 72, 68, 0.12), 0 0 40px 12px rgba(75, 72, 68, 0.04)';
+      const SHADOW_HOVER = '0 0 6px 2px rgba(255, 140, 50, 0.6), 0 0 20px 6px rgba(255, 140, 50, 0.2), 0 0 40px 12px rgba(255, 140, 50, 0.07)';
+      const BG_DEFAULT = 'rgba(75, 72, 68, 0.9)';
+      const BG_HOVER = 'rgba(255, 140, 50, 0.9)';
+
+      const cursor = document.createElement('div');
+      Object.assign(cursor.style, {
+        position: 'fixed',
+        width: SIZE_DEFAULT,
+        height: SIZE_DEFAULT,
+        borderRadius: '50%',
+        background: BG_DEFAULT,
+        pointerEvents: 'none',
+        zIndex: '9999',
+        boxShadow: SHADOW_DEFAULT,
+        left: '0',
+        top: '0',
+        transform: 'translate(-50%, -50%)',
+        transition: 'background 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1)',
+      });
+      document.body.appendChild(cursor);
+
+      function hasPointerCursor(el) {
+        while (el && el !== document.body) {
+          if (getComputedStyle(el).cursor === 'pointer') return true;
+          el = el.parentElement;
+        }
+        return false;
+      }
+
+      function setCursorHover(active) {
+        cursor.style.width = active ? SIZE_HOVER : SIZE_DEFAULT;
+        cursor.style.height = active ? SIZE_HOVER : SIZE_DEFAULT;
+        cursor.style.background = active ? BG_HOVER : BG_DEFAULT;
+        cursor.style.boxShadow = active ? SHADOW_HOVER : SHADOW_DEFAULT;
+      }
+
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+        cursor.style.transform = 'translate(-50%, -50%)';
+      });
+
+      document.addEventListener('mouseover', (e) => {
+        const interactive = e.target.closest('button, a, [role="button"]') || hasPointerCursor(e.target);
+        setCursorHover(!!interactive);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const firstNames = [
+        'Nova', 'Orion', 'Lyra', 'Zephyr', 'Cosmo', 'Vega', 'Atlas', 'Luna', 'Rigel', 'Solaris',
+        'Cygnus', 'Astra', 'Draco', 'Celeste', 'Quasar', 'Nebula', 'Pulsar', 'Zenith', 'Halcyon', 'Andromeda',
+      ];
+      const lastNames = [
+        'Voss', 'Renn', 'Kael', 'Dray', 'Solenn', 'Vex', 'Orin', 'Thal', 'Nyx', 'Strider',
+        'Wren', 'Crest', 'Vale', 'Frost', 'Dusk', 'Flare', 'Drift', 'Hale', 'Storm', 'Blaze',
+      ];
+      const names = [];
+      for (let i = 0; i < firstNames.length; i++) {
+        for (let j = 0; j < 3; j++) {
+          names.push(`${firstNames[i]} ${lastNames[(i * 3 + j) % lastNames.length]}`);
+        }
+      }
+
+      const input = document.getElementById('visitor-name');
+      const refreshBtn = document.getElementById('btn-refresh');
+      const refreshIcon = refreshBtn?.querySelector('.refresh-icon');
+      if (!input || !refreshBtn || !refreshIcon) return;
+
+      refreshBtn.addEventListener('click', () => {
+        refreshIcon.classList.remove('spinning');
+        void refreshIcon.offsetWidth;
+        refreshIcon.classList.add('spinning');
+        refreshIcon.addEventListener('animationend', () => refreshIcon.classList.remove('spinning'), { once: true });
+
+        const name = names[Math.floor(Math.random() * names.length)];
+        input.value = name;
+        if (typeof window.updatePassportName === 'function') window.updatePassportName();
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const stored = localStorage.getItem('visitorCount');
+      const visitorCount = stored !== null ? parseInt(stored, 10) + 1 : 1;
+      localStorage.setItem('visitorCount', String(visitorCount));
+      window.visitorCount = visitorCount;
+    })();
+  </script>
+
+  <script>
+    window.addEventListener('pageshow', function() { var f = document.getElementById('transition-flash'); f.style.transition = 'none'; f.style.opacity = '1'; setTimeout(function() { f.style.transition = 'opacity 0.5s ease-out'; f.style.opacity = '0'; }, 50); });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    (async function () {
+      await document.fonts.ready;
+      const coverSerif = '"Source Serif 4", serif';
+      await document.fonts.load(`normal 400 60px ${coverSerif}`);
+      await document.fonts.load(`italic 400 60px ${coverSerif}`);
+
+      const container = document.getElementById('passport-3d');
+      if (!container) return;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(1000, 400);
+      container.appendChild(renderer.domElement);
+
+      const camera = new THREE.PerspectiveCamera(20, 1000 / 400, 0.1, 100);
+      camera.position.z = 8.0;
+
+      const scene = new THREE.Scene();
+      scene.add(new THREE.AmbientLight(0xffffff, 1.0));
+
+      const geometry = new THREE.BoxGeometry(2.0, 2.8, 0.04);
+
+      const coverCanvas = document.createElement('canvas');
+      coverCanvas.width = 1024;
+      coverCanvas.height = 1432;
+      const ctx = coverCanvas.getContext('2d');
+
+      const COVER_THEMES = {
+        green: { front: '#1A4144', spine: 0x1A4144, back: '#143538' },
+        blue: { front: '#1A2744', spine: 0x1A2744, back: '#151f38' },
+        red: { front: '#441A1A', spine: 0x441A1A, back: '#361515' },
+      };
+      let currentTheme = 'green';
+
+      function coverRoundedRectPath(c) {
+        c.beginPath();
+        c.moveTo(40, 0);
+        c.lineTo(984, 0);
+        c.quadraticCurveTo(1024, 0, 1024, 40);
+        c.lineTo(1024, 1392);
+        c.quadraticCurveTo(1024, 1432, 984, 1432);
+        c.lineTo(40, 1432);
+        c.quadraticCurveTo(0, 1432, 0, 1392);
+        c.lineTo(0, 40);
+        c.quadraticCurveTo(0, 0, 40, 0);
+        c.closePath();
+      }
+
+      function drawCover(frontColor) {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, 1024, 1432);
+        coverRoundedRectPath(ctx);
+        ctx.fillStyle = frontColor;
+        ctx.fill();
+        ctx.clip();
+
+        ctx.save();
+        ctx.translate(512, 716);
+        ctx.rotate(-45 * Math.PI / 180);
+        const extent = 1800;
+        for (let y = -extent; y < extent; y += 12) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+          ctx.fillRect(-extent, y, extent * 2, 1);
+        }
+        ctx.restore();
+
+        ctx.strokeStyle = 'rgba(201, 168, 76, 0.8)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(120, 1180);
+        ctx.lineTo(904, 1180);
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(201, 168, 76, 0.8)';
+        ctx.font = '32px Karla, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✕', 120, 1160);
+
+        ctx.fillStyle = '#c9a84c';
+        ctx.font = '300 350px Karla, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('𓅆', 512, 716);
+
+        ctx.fillStyle = 'rgba(201, 168, 76, 0.85)';
+        ctx.font = `normal 400 60px ${coverSerif}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText("Evan's Design", 512, 258);
+        ctx.fillText('Portfolio Passport', 512, 335);
+      }
+
+      const frontTexture = new THREE.CanvasTexture(coverCanvas);
+      frontTexture.minFilter = THREE.LinearFilter;
+      frontTexture.magFilter = THREE.LinearFilter;
+
+      const signatureCanvas = document.createElement('canvas');
+      signatureCanvas.width = 1024;
+      signatureCanvas.height = 1432;
+      const sctx = signatureCanvas.getContext('2d');
+      const signatureTexture = new THREE.CanvasTexture(signatureCanvas);
+      signatureTexture.minFilter = THREE.LinearFilter;
+      signatureTexture.magFilter = THREE.LinearFilter;
+
+      const backCanvas = document.createElement('canvas');
+      backCanvas.width = 1024;
+      backCanvas.height = 1432;
+      const bctx = backCanvas.getContext('2d');
+
+      function drawBack(backColor) {
+        bctx.setTransform(1, 0, 0, 1, 0, 0);
+        bctx.clearRect(0, 0, 1024, 1432);
+        coverRoundedRectPath(bctx);
+        bctx.fillStyle = backColor;
+        bctx.fill();
+        bctx.clip();
+
+        bctx.fillStyle = 'rgba(201, 168, 76, 0.08)';
+        bctx.font = 'bold 320px Karla, sans-serif';
+        bctx.textAlign = 'center';
+        bctx.textBaseline = 'middle';
+        bctx.fillText('❋', 512, 716);
+
+        bctx.fillStyle = 'rgba(201, 168, 76, 0.75)';
+        bctx.font = '36px Karla, sans-serif';
+        bctx.textAlign = 'center';
+        bctx.textBaseline = 'alphabetic';
+        bctx.fillText("ISSUED BY: EVAN TANG :)", 512, 1340);
+      }
+
+      drawCover(COVER_THEMES.green.front);
+      drawBack(COVER_THEMES.green.back);
+      frontTexture.needsUpdate = true;
+
+      const backTexture = new THREE.CanvasTexture(backCanvas);
+      backTexture.minFilter = THREE.LinearFilter;
+      backTexture.magFilter = THREE.LinearFilter;
+      backTexture.needsUpdate = true;
+
+      const materials = [
+        new THREE.MeshBasicMaterial({ color: COVER_THEMES.green.spine }),
+        new THREE.MeshBasicMaterial({ color: COVER_THEMES.green.spine }),
+        new THREE.MeshBasicMaterial({ color: COVER_THEMES.green.spine }),
+        new THREE.MeshBasicMaterial({ color: COVER_THEMES.green.spine }),
+        new THREE.MeshBasicMaterial({ map: frontTexture }),
+        new THREE.MeshBasicMaterial({ map: backTexture }),
+      ];
+      const box = new THREE.Mesh(geometry, materials);
+      box.position.x = 1.0;
+
+      const hingeGroup = new THREE.Group();
+      hingeGroup.position.set(-1.0, 0, 0);
+      hingeGroup.add(box);
+
+      const signatureMesh = new THREE.Mesh(
+        geometry,
+        new THREE.MeshBasicMaterial({
+          map: signatureTexture,
+          transparent: true,
+          opacity: 1,
+        })
+      );
+      signatureMesh.position.x = 1.0;
+      signatureMesh.position.z = 0.021;
+      hingeGroup.add(signatureMesh);
+
+      scene.add(hingeGroup);
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      let lastUV = null;
+
+      function getUVFromMouse(e) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const hits = raycaster.intersectObject(signatureMesh);
+        if (hits.length > 0 && hits[0].uv) {
+          return { x: hits[0].uv.x * 1024, y: (1 - hits[0].uv.y) * 1432 };
+        }
+        return null;
+      }
+
+      let isDrawing = false;
+
+      renderer.domElement.addEventListener('mousedown', (e) => {
+        if (drawMode === null) return;
+        const uv = getUVFromMouse(e);
+        if (!uv) return;
+        isDrawing = true;
+        lastUV = uv;
+      });
+
+      renderer.domElement.addEventListener('mouseup', () => {
+        isDrawing = false;
+        lastUV = null;
+      });
+
+      renderer.domElement.addEventListener('mouseleave', () => {
+        isDrawing = false;
+        lastUV = null;
+      });
+
+      renderer.domElement.addEventListener('mousemove', (e) => {
+        if (!isDrawing || !lastUV) return;
+        const uv = getUVFromMouse(e);
+        if (!uv) return;
+        if (drawMode === 'pen') {
+          sctx.globalCompositeOperation = 'source-over';
+          sctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
+          sctx.lineWidth = 8;
+        } else if (drawMode === 'eraser') {
+          sctx.globalCompositeOperation = 'destination-out';
+          sctx.strokeStyle = 'rgba(0,0,0,1)';
+          sctx.lineWidth = 100;
+        }
+        sctx.lineCap = 'round';
+        sctx.lineJoin = 'round';
+        sctx.beginPath();
+        sctx.moveTo(lastUV.x, lastUV.y);
+        sctx.lineTo(uv.x, uv.y);
+        sctx.stroke();
+        lastUV = uv;
+        signatureTexture.needsUpdate = true;
+      });
+
+      const interiorCanvas = document.createElement('canvas');
+      interiorCanvas.width = 2048;
+      interiorCanvas.height = 2864;
+      const ictx = interiorCanvas.getContext('2d');
+
+      ictx.beginPath();
+      ictx.moveTo(80, 0);
+      ictx.lineTo(1968, 0);
+      ictx.quadraticCurveTo(2048, 0, 2048, 80);
+      ictx.lineTo(2048, 2784);
+      ictx.quadraticCurveTo(2048, 2864, 1968, 2864);
+      ictx.lineTo(80, 2864);
+      ictx.quadraticCurveTo(0, 2864, 0, 2784);
+      ictx.lineTo(0, 80);
+      ictx.quadraticCurveTo(0, 0, 80, 0);
+      ictx.closePath();
+      ictx.fillStyle = '#ffffff';
+      ictx.fill();
+      ictx.clip();
+
+      const today = new Date();
+      const dateStr = String(today.getMonth() + 1).padStart(2, '0') + '/' + String(today.getDate()).padStart(2, '0') + '/' + today.getFullYear();
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let passportNo = '';
+      for (let i = 0; i < 8; i++) passportNo += chars[Math.floor(Math.random() * chars.length)];
+      function drawField(label, value, y) {
+        ictx.fillStyle = 'rgba(33, 33, 33, 0.45)';
+        ictx.font = '90px Karla, sans-serif';
+        ictx.textAlign = 'left';
+        ictx.fillText(label.toUpperCase(), 160, y);
+        ictx.fillStyle = '#212121';
+        ictx.font = '130px Karla, sans-serif';
+        ictx.fillText(value, 160, y + 160);
+      }
+
+      drawField('Full Name', '', 320);
+      drawField('Type', 'VISITOR', 700);
+      drawField('Date of Issue', dateStr, 1060);
+      drawField('Passport No', passportNo, 1420);
+
+      const interiorTexture = new THREE.CanvasTexture(interiorCanvas);
+      interiorTexture.minFilter = THREE.LinearFilter;
+      interiorTexture.magFilter = THREE.LinearFilter;
+      interiorTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      interiorTexture.needsUpdate = true;
+
+      const interiorGeometry = new THREE.BoxGeometry(2.0, 2.8, 0.04);
+      const interiorMaterials = [
+        new THREE.MeshBasicMaterial({ color: COVER_THEMES.green.spine }),
+        new THREE.MeshBasicMaterial({ color: COVER_THEMES.green.spine }),
+        new THREE.MeshBasicMaterial({ color: 0xf5f0eb }),
+        new THREE.MeshBasicMaterial({ color: 0xf5f0eb }),
+        new THREE.MeshBasicMaterial({ map: interiorTexture }),
+        new THREE.MeshBasicMaterial({ color: 0xf5f0eb }),
+      ];
+
+      const interiorBox = new THREE.Mesh(interiorGeometry, interiorMaterials);
+      interiorBox.position.set(0, 0, -0.001);
+      scene.add(interiorBox);
+      interiorBox.renderOrder = -1;
+      interiorBox.visible = false;
+
+      let isOpen = false;
+      let targetRotation = 0;
+      let currentRotation = 0;
+
+      renderer.domElement.addEventListener('click', () => {
+        if (drawMode !== null) return;
+        isOpen = !isOpen;
+        targetRotation = isOpen ? -Math.PI : 0;
+        if (isOpen) {
+          interiorBox.visible = true;
+        } else {
+          interiorBox.visible = false;
+        }
+      });
+
+      window.updatePassportName = function() {
+        const name = document.getElementById('visitor-name').value.trim() || '';
+
+        ctx.fillStyle = COVER_THEMES[currentTheme].front;
+        ctx.fillRect(0, 1220, 1024, 160);
+        ctx.fillStyle = 'rgba(201, 168, 76, 0.85)';
+        ctx.font = `italic 400 60px ${coverSerif}`;
+        ctx.textAlign = 'center';
+        ctx.fillText(name, 512, 1320);
+        frontTexture.needsUpdate = true;
+
+        ictx.fillStyle = '#ffffff';
+        ictx.fillRect(0, 200, 2048, 400);
+        ictx.fillStyle = 'rgba(33, 33, 33, 0.45)';
+        ictx.font = '90px Karla, sans-serif';
+        ictx.textAlign = 'left';
+        ictx.fillText('FULL NAME', 160, 320);
+        ictx.fillStyle = '#212121';
+        ictx.font = '130px Karla, sans-serif';
+        ictx.fillText(name, 160, 480);
+        interiorTexture.needsUpdate = true;
+      }
+
+      let drawMode = null; // null = flip mode, 'pen' = draw, 'eraser' = erase
+
+      const btnPen = document.getElementById('btn-pen');
+      const btnEraser = document.getElementById('btn-eraser');
+      const btnClear = document.getElementById('btn-clear');
+
+      function setMode(mode) {
+        drawMode = drawMode === mode ? null : mode;
+        btnPen.style.background = drawMode === 'pen' ? '#212121' : '#EEE8D8';
+        btnPen.style.color = drawMode === 'pen' ? '#ffffff' : 'rgba(33, 33, 33, 0.55)';
+        btnEraser.style.background = drawMode === 'eraser' ? '#212121' : '#EEE8D8';
+        btnEraser.style.color = drawMode === 'eraser' ? '#ffffff' : 'rgba(33, 33, 33, 0.55)';
+      }
+
+      btnPen.addEventListener('click', () => setMode('pen'));
+      btnEraser.addEventListener('click', () => setMode('eraser'));
+      btnClear.addEventListener('click', () => {
+        sctx.setTransform(1, 0, 0, 1, 0, 0);
+        sctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+        sctx.globalCompositeOperation = 'source-over';
+        signatureTexture.needsUpdate = true;
+      });
+
+      function updateColorSwatches() {
+        document.querySelectorAll('[data-cover-theme]').forEach((btn) => {
+          const active = btn.dataset.coverTheme === currentTheme;
+          btn.style.outline = 'none';
+          btn.style.outlineOffset = '';
+          btn.style.boxShadow = active ? '0 0 0 2px #f5f0eb, 0 0 0 4px #212121' : 'none';
+        });
+      }
+
+      function applyCoverTheme(themeKey) {
+        if (!COVER_THEMES[themeKey]) return;
+        currentTheme = themeKey;
+        const theme = COVER_THEMES[themeKey];
+        drawCover(theme.front);
+        drawBack(theme.back);
+        for (let i = 0; i < 4; i++) materials[i].color.setHex(theme.spine);
+        interiorMaterials[0].color.setHex(theme.spine);
+        interiorMaterials[1].color.setHex(theme.spine);
+        frontTexture.needsUpdate = true;
+        backTexture.needsUpdate = true;
+        updatePassportName();
+        updateColorSwatches();
+      }
+
+      document.querySelectorAll('[data-cover-theme]').forEach((btn) => {
+        btn.addEventListener('click', () => applyCoverTheme(btn.dataset.coverTheme));
+      });
+      updateColorSwatches();
+
+      function render() {
+        requestAnimationFrame(render);
+        const rotDiff = targetRotation - currentRotation;
+        currentRotation += rotDiff * Math.min(0.12, Math.abs(rotDiff) * 0.18);
+        hingeGroup.rotation.y = currentRotation;
+        renderer.render(scene, camera);
+      }
+
+      render();
+      updatePassportName();
+      document.getElementById('visitor-name').addEventListener('input', updatePassportName);
+    })();
+  </script>
+</body>
+</html>

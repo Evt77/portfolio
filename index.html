@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ── Edit these tokens for quick experiments ── */
+    :root {
+      --bg: #212121;
+      --text: #f5f5f5;
+      --text-muted: rgba(245, 245, 245, 0.65);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-organic: cubic-bezier(0.33, 0, 0.2, 1);
+      --star-count: 180;
+      /* Drift tuning */
+      --drift-distance: 30px;
+      --drift-duration-min: 12s;
+      --drift-duration-max: 24s;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Karla', sans-serif;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Star field layer */
+    #stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      contain: strict;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.65);
+      transform: translate(-50%, -50%);
+      box-shadow:
+        0 0 2px rgba(255, 255, 255, 0.2),
+        0 0 5px rgba(255, 255, 255, 0.06);
+      animation: drift var(--drift-duration, 40s) ease-in-out infinite;
+      animation-delay: var(--drift-delay, 0s);
+    }
+
+    .star.twinkle {
+      animation:
+        drift var(--drift-duration, 40s) ease-in-out infinite,
+        twinkle var(--twinkle-duration, 6s) ease-in-out infinite;
+      animation-delay: var(--drift-delay, 0s), var(--twinkle-delay, 0s);
+    }
+
+    @keyframes drift {
+      0%, 100% {
+        transform: translate(-50%, -50%) translate(0, 0);
+      }
+      25% {
+        transform: translate(-50%, -50%) translate(var(--dx1), var(--dy1));
+      }
+      50% {
+        transform: translate(-50%, -50%) translate(var(--dx2), var(--dy2));
+      }
+      75% {
+        transform: translate(-50%, -50%) translate(var(--dx3), var(--dy3));
+      }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--base-opacity, 0.35); }
+      50%      { opacity: calc(var(--base-opacity, 0.35) * 0.55); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .star { animation: none; }
+    }
+
+    /* Cosmic firework — synced motion, per-particle fade */
+    #bursts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .burst {
+      position: fixed;
+      left: var(--x);
+      top: var(--y);
+      width: 0;
+      height: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    .burst-shockwave {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 12px;
+      height: 12px;
+      margin: -6px 0 0 -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(130, 160, 200, 0.14);
+      background: transparent;
+      animation: burst-wave var(--burst-duration, 1.3s) var(--ease-out-quart) forwards;
+    }
+
+    .burst-particle {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--size, 4px);
+      height: var(--size, 4px);
+      border-radius: 50%;
+      background: var(--color);
+      box-shadow: var(--glow);
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation:
+        burst-move var(--move-duration, 1.3s) var(--ease-organic) var(--fade-delay, 0ms) forwards,
+        burst-fade var(--fade-duration, 1.3s) var(--ease-organic) var(--fade-delay, 0ms) forwards;
+    }
+
+    @keyframes burst-wave {
+      0%   { transform: scale(0.35); opacity: 0.32; }
+      100% { transform: scale(9); opacity: 0; border-color: rgba(120, 130, 160, 0.03); }
+    }
+
+    /* Motion: launch then continuous drift/overshoot (no hold) */
+    @keyframes burst-move {
+      0% {
+        transform: translate(-50%, -50%) translate(0, 0) scale(1.3);
+        animation-timing-function: var(--ease-out-quart);
+      }
+      24% {
+        transform: translate(-50%, -50%) translate(
+          calc(var(--tx) * 0.76),
+          calc(var(--ty) * 0.76)
+        ) scale(var(--scale-end, 0.3));
+        animation-timing-function: cubic-bezier(0.1, 0.35, 0.15, 1);
+      }
+      100% {
+        transform: translate(-50%, -50%) translate(
+          calc(var(--tx) * var(--overshoot, 1.12)),
+          calc(var(--ty) * var(--overshoot, 1.12))
+        ) scale(0.18);
+      }
+    }
+
+    /* Fade: per-particle duration + delay (embers) */
+    @keyframes burst-fade {
+      0%   { opacity: 0; }
+      7%   { opacity: var(--peak-opacity, 1); }
+      30%  { opacity: calc(var(--peak-opacity, 1) * 0.9); }
+      100% { opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .burst-shockwave,
+      .burst-particle {
+        animation-duration: 0.01ms !important;
+      }
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .hero h1 {
+      color: #ffffff;
+    }
+
+    .hero p {
+      margin-top: 1rem;
+      max-width: 28ch;
+      color: var(--text-muted);
+    }
+
+    button, a, [role="button"] {
+      cursor: none !important;
+    }
+
+    .transition-flash.is-active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="transition-flash" class="transition-flash" style="position: fixed; inset: 0; background: #f5f0eb; opacity: 0; pointer-events: none; z-index: 99999; transition: opacity 0.4s ease-in;"></div>
+  <div id="stars" aria-hidden="true"></div>
+  <div id="bursts" aria-hidden="true"></div>
+
+  <main class="hero">
+    <p style="color: rgba(202, 202, 202, 0.7);">WELCOME TO</p>
+    <h1>Evan's Design Portfolio</h1>
+    <div style="display: inline-flex; align-items: center; gap: 12px; margin-top: 25px;">
+      <button class="btn-primary" onclick="var f=document.getElementById('transition-flash'); f.style.transition='opacity 0.4s ease-in'; f.style.opacity='1'; setTimeout(function(){ window.location.href='passport.html'; }, 600);">PROCEED <i class="bi bi-rocket-takeoff-fill" style="font-size: 12px;"></i></button>
+      <button class="btn-secondary" onclick="window.location.href='portfolio.html';">SKIP TO PORTFOLIO</button>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const styles = getComputedStyle(root);
+      const container = document.getElementById('stars');
+      const count = parseInt(styles.getPropertyValue('--star-count'), 10) || 180;
+      const driftMax = parseFloat(styles.getPropertyValue('--drift-distance')) || 7;
+      const durMin = parseFloat(styles.getPropertyValue('--drift-duration-min')) || 28;
+      const durMax = parseFloat(styles.getPropertyValue('--drift-duration-max')) || 56;
+
+      const rnd = (min, max) => min + Math.random() * (max - min);
+
+      const fragment = document.createDocumentFragment();
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('span');
+        star.className = 'star';
+
+        const size = Math.random() * 3 + 1.2
+        const opacity = Math.random() * 0.35 + 0.15;
+
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--base-opacity', opacity);
+        star.style.opacity = opacity;
+
+        for (let k = 1; k <= 3; k++) {
+          star.style.setProperty(`--dx${k}`, `${rnd(-driftMax, driftMax).toFixed(2)}px`);
+          star.style.setProperty(`--dy${k}`, `${rnd(-driftMax, driftMax).toFixed(2)}px`);
+        }
+
+        star.style.setProperty('--drift-duration', `${rnd(durMin, durMax).toFixed(1)}s`);
+        star.style.setProperty('--drift-delay', `${rnd(0, durMax).toFixed(1)}s`);
+
+        if (Math.random() < 0.2) {
+          star.classList.add('twinkle');
+          star.style.setProperty('--twinkle-duration', `${rnd(5, 9).toFixed(1)}s`);
+          star.style.setProperty('--twinkle-delay', `${rnd(0, 6).toFixed(1)}s`);
+        }
+
+        fragment.appendChild(star);
+      }
+
+      container.appendChild(fragment);
+    })();
+
+    (function () {
+      const bursts = document.getElementById('bursts');
+      const SPREAD_SCALE = 2;
+      const PARTICLE_COUNT = 36;
+
+      /* Tune burst feel here */
+      const TIMING = {
+        BURST_MS: 1300,
+        MOVE_MS: 1300,
+        FADE_DELAY_MAX: 200,
+        FADE_DURATION_MIN: 850,
+        FADE_DURATION_MAX: 1350,
+      };
+      const CLEANUP_MS = Math.max(
+        TIMING.BURST_MS,
+        TIMING.FADE_DELAY_MAX + TIMING.FADE_DURATION_MAX
+      );
+
+      const PALETTE = [
+        { color: 'rgba(255,255,255,0.95)', glow: '0 0 6px rgba(255,255,255,0.9), 0 0 18px rgba(255,255,255,0.35)' },
+        { color: 'rgba(80,170,255,0.95)', glow: '0 0 6px rgba(80,170,255,0.8), 0 0 20px rgba(80,170,255,0.35)' },
+        { color: 'rgba(170,90,255,0.9)', glow: '0 0 6px rgba(170,90,255,0.75), 0 0 20px rgba(170,90,255,0.35)' },
+        { color: 'rgba(90,255,180,0.9)', glow: '0 0 6px rgba(90,255,180,0.75), 0 0 18px rgba(90,255,180,0.3)' },
+      ];
+
+      const rnd = (min, max) => min + Math.random() * (max - min);
+      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+      function emitFirework(burst) {
+        const distMin = 10 * SPREAD_SCALE;
+        const distMax = 40 * SPREAD_SCALE;
+        const travelRange = distMax - distMin;
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const travel = rnd(distMin, distMax);
+          const reach = (travel - distMin) / travelRange;
+          const tone = pick(PALETTE);
+
+          const p = document.createElement('span');
+          p.className = 'burst-particle';
+          p.style.setProperty('--size', `${rnd(6, 12)}px`);
+          p.style.setProperty('--color', tone.color);
+          p.style.setProperty('--glow', tone.glow);
+          p.style.setProperty('--tx', `${Math.cos(angle) * travel}px`);
+          p.style.setProperty('--ty', `${Math.sin(angle) * travel}px`);
+          const fadeDelay = Math.round(rnd(0, TIMING.FADE_DELAY_MAX));
+          const fadeDuration = Math.round(rnd(TIMING.FADE_DURATION_MIN, TIMING.FADE_DURATION_MAX));
+
+          p.style.setProperty('--move-duration', `${fadeDuration}ms`);
+          p.style.setProperty('--fade-duration', `${fadeDuration}ms`);
+          p.style.setProperty('--fade-delay', `${fadeDelay}ms`);
+          p.style.setProperty('--overshoot', rnd(1.1, 1.18).toFixed(3));
+          p.style.setProperty('--peak-opacity', 1 - reach * 0.22);
+          p.style.setProperty('--scale-end', 0.28 + reach * 0.08);
+          burst.appendChild(p);
+        }
+      }
+
+      document.addEventListener('click', (e) => {
+        const burst = document.createElement('div');
+        burst.className = 'burst';
+        burst.style.setProperty('--x', `${e.clientX}px`);
+        burst.style.setProperty('--y', `${e.clientY}px`);
+        burst.style.setProperty('--burst-duration', `${TIMING.BURST_MS}ms`);
+
+        const wave = document.createElement('div');
+        wave.className = 'burst-shockwave';
+        burst.appendChild(wave);
+
+        bursts.appendChild(burst);
+        emitFirework(burst);
+
+        setTimeout(() => burst.remove(), CLEANUP_MS);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const MOVE_MS = 1800;
+      const FADE_IN_MS = 120;
+      const FADE_OUT_MS = 300;
+      const FADE_OUT_DELAY = MOVE_MS - FADE_OUT_MS;
+      const DELAY_MIN = 3000;
+      const DELAY_MAX = 5000;
+
+      let cometActive = false;
+
+      const style = document.createElement('style');
+      style.textContent = `
+        .comet-streak {
+          position: fixed;
+          width: 140px;
+          height: 2px;
+          background: linear-gradient(to left, transparent, #fff);
+          transform: rotate(35deg);
+          transform-origin: center center;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0;
+          top: -5%;
+          left: 115%;
+        }
+        .comet-streak.is-active {
+          animation:
+            comet-fade-in ${FADE_IN_MS}ms ease-out forwards,
+            comet-move ${MOVE_MS}ms ease-out forwards,
+            comet-fade-out ${FADE_OUT_MS}ms ease-out ${FADE_OUT_DELAY}ms forwards;
+        }
+        @keyframes comet-move {
+          from { transform: rotate(-35deg) translate(0, 0); }
+          to { transform: rotate(-35deg) translate(-160vw, 0); }
+        }
+        @keyframes comet-fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes comet-fade-out {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+      `;
+      document.head.appendChild(style);
+
+      const rnd = (min, max) => min + Math.random() * (max - min);
+
+      function scheduleNext() {
+        setTimeout(spawnComet, Math.round(rnd(DELAY_MIN, DELAY_MAX)));
+      }
+
+      function spawnComet() {
+        if (cometActive) return;
+        cometActive = true;
+
+        const comet = document.createElement('div');
+        comet.className = 'comet-streak';
+        comet.setAttribute('aria-hidden', 'true');
+        if (Math.random() < 0.5) {
+          comet.style.top = `${-3 - Math.random() * 5}%`;
+          comet.style.left = `${20 + Math.random() * 70}%`;
+        } else {
+          comet.style.left = `${102 + Math.random() * 6}%`;
+          comet.style.top = `${Math.random() * 40}%`;
+        }
+        document.body.appendChild(comet);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => comet.classList.add('is-active'));
+        });
+
+        setTimeout(() => {
+          comet.remove();
+          cometActive = false;
+          scheduleNext();
+        }, MOVE_MS);
+      }
+
+      scheduleNext();
+    })();
+  </script>
+  <script>
+    (function () {
+      const SIZE_DEFAULT = '15px';
+      const SIZE_HOVER = '28px';
+      const SHADOW_DEFAULT = '0 0 6px 2px rgba(255, 255, 255, 0.6), 0 0 20px 6px rgba(255, 255, 255, 0.2), 0 0 40px 12px rgba(255, 255, 255, 0.07)';
+      const SHADOW_HOVER = '0 0 6px 2px rgba(255, 140, 50, 0.6), 0 0 20px 6px rgba(255, 140, 50, 0.2), 0 0 40px 12px rgba(255, 140, 50, 0.07)';
+      const BG_DEFAULT = 'rgba(255, 255, 255, 0.9)';
+      const BG_HOVER = 'rgba(255, 140, 50, 0.9)';
+
+      const cursor = document.createElement('div');
+      Object.assign(cursor.style, {
+        position: 'fixed',
+        width: SIZE_DEFAULT,
+        height: SIZE_DEFAULT,
+        borderRadius: '50%',
+        background: 'rgba(255, 255, 255, 0.9)',
+        pointerEvents: 'none',
+        zIndex: '9999',
+        boxShadow: SHADOW_DEFAULT,
+        left: '0',
+        top: '0',
+        transform: 'translate(-50%, -50%)',
+        transition: 'background 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1)',
+      });
+      document.body.appendChild(cursor);
+
+      function hasPointerCursor(el) {
+        while (el && el !== document.body) {
+          if (getComputedStyle(el).cursor === 'pointer') return true;
+          el = el.parentElement;
+        }
+        return false;
+      }
+
+      function setCursorHover(active) {
+        cursor.style.width = active ? SIZE_HOVER : SIZE_DEFAULT;
+        cursor.style.height = active ? SIZE_HOVER : SIZE_DEFAULT;
+        cursor.style.background = active ? BG_HOVER : BG_DEFAULT;
+        cursor.style.boxShadow = active ? SHADOW_HOVER : SHADOW_DEFAULT;
+      }
+
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+        cursor.style.transform = 'translate(-50%, -50%)';
+      });
+
+      document.addEventListener('mouseover', (e) => {
+        const interactive = e.target.closest('button, a, [role="button"]') || hasPointerCursor(e.target);
+        setCursorHover(!!interactive);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const clock = document.createElement('div');
+      clock.className = 'p2';
+      Object.assign(clock.style, {
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        zIndex: '10',
+        color: 'rgba(255, 255, 255, 0.5)',
+        letterSpacing: '0.06em',
+        pointerEvents: 'none',
+      });
+      document.body.appendChild(clock);
+
+      function update() {
+        clock.textContent = new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        });
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('siteStartTime')) {
+        sessionStorage.setItem('siteStartTime', String(Date.now()));
+      }
+
+      const startTime = Number(sessionStorage.getItem('siteStartTime'));
+      const timer = document.createElement('div');
+      timer.className = 'p2';
+      Object.assign(timer.style, {
+        position: 'fixed',
+        bottom: '52px',
+        left: '24px',
+        zIndex: '10',
+        color: 'rgba(255, 255, 255, 0.5)',
+        letterSpacing: '0.06em',
+        pointerEvents: 'none',
+      });
+      const label = document.createElement('span');
+      label.textContent = 'SESSION TIME';
+      Object.assign(label.style, {
+        letterSpacing: 'normal',
+        marginRight: '8px',
+      });
+
+      const time = document.createElement('span');
+      Object.assign(time.style, {
+        letterSpacing: '0.06em',
+      });
+
+      timer.appendChild(label);
+      timer.appendChild(time);
+      document.body.appendChild(timer);
+
+      function update() {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const hours = Math.floor(elapsed / 3600);
+        const minutes = Math.floor((elapsed % 3600) / 60);
+        const seconds = elapsed % 60;
+        time.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+  <script>
+    (function () {
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; }
+          50%      { opacity: 0.3; }
+        }
+      `;
+      document.head.appendChild(style);
+
+      const status = document.createElement('div');
+      status.className = 'p2';
+      Object.assign(status.style, {
+        position: 'fixed',
+        bottom: '24px',
+        left: '24px',
+        zIndex: '10',
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        pointerEvents: 'none',
+        color: 'rgba(255, 255, 255, 0.5)',
+        letterSpacing: 'normal',
+      });
+
+      const dot = document.createElement('span');
+      Object.assign(dot.style, {
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        background: '#4ade80',
+        display: 'inline-block',
+        flexShrink: '0',
+        animation: 'pulse-dot 1.5s ease-in-out infinite',
+      });
+
+      const text = document.createElement('span');
+      text.textContent = 'Currently building interactive experiences in Cursor.';
+
+      status.appendChild(dot);
+      status.appendChild(text);
+      document.body.appendChild(status);
+    })();
+  </script>
+
+  <script>
+    window.addEventListener('pageshow', function() { var f = document.getElementById('transition-flash'); f.style.transition = 'none'; f.style.opacity = '0'; });
+  </script>
+</body>
+</html>
