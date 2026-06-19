@@ -6,7 +6,7 @@
     (function () {
       var path = location.pathname;
       var base = '/';
-      if (/^\/(home|work|about)\/?$/i.test(path)) {
+      if (/^\/(home|case-studies|about)\/?$/i.test(path)) {
         base = '/';
       } else if (/\.html$/i.test(path)) {
         base = path.substring(0, path.lastIndexOf('/') + 1) || '/';
@@ -188,7 +188,7 @@
       border-radius: 100px;
       display: flex;
       align-items: center;
-      padding: 4px;
+      padding: 4px 5px;
       gap: 0;
     }
 
@@ -228,7 +228,7 @@
 
     .nav-tab {
       color: rgba(245, 245, 245, 0.55);
-      padding: 8px 24px;
+      padding: 10px 22px;
       border-radius: 100px;
       position: relative;
       z-index: 1;
@@ -244,8 +244,8 @@
     .nav-pill-avatar-wrap {
       position: relative;
       flex-shrink: 0;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       margin: 0 0 0 4px;
     }
 
@@ -292,8 +292,8 @@
     }
 
     .nav-pill-avatar-btn {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       border: none;
       padding: 0;
@@ -305,18 +305,26 @@
       z-index: 2;
     }
 
-    .nav-pill-avatar-btn img {
+    .avatar-stack {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .avatar-stack-img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 50%;
-      display: block;
+      opacity: 0;
       transition: opacity 0.12s ease;
     }
 
-    .nav-pill-avatar-btn img.is-fading,
-    .profile-card-avatar.is-fading {
-      opacity: 0;
+    .avatar-stack-img.is-top {
+      opacity: 1;
     }
 
     /* ── Project Showcase ── */
@@ -484,7 +492,7 @@
       display: none;
     }
 
-    /* ── Work / About placeholder ── */
+    /* ── Case Studies / About placeholder ── */
     .page-placeholder {
       display: flex;
       flex-direction: column;
@@ -543,12 +551,11 @@
     }
 
     .profile-card-avatar {
-      width: 64px;
-      height: 64px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       object-fit: cover;
       display: block;
-      transition: opacity 0.12s ease;
     }
 
     .profile-card-name {
@@ -557,7 +564,7 @@
       font-weight: 400;
       color: #f5f5f5;
       text-align: center;
-      margin: 0;
+      margin: 0 0 -12px;
     }
 
     .profile-card-title {
@@ -858,7 +865,7 @@
 
   <!-- ── Profile card ── -->
   <div class="profile-card" id="profile-card" role="dialog" aria-label="Profile">
-    <img src="images/home/profile-pics/evan-pfp.avif" class="profile-card-avatar" id="profile-card-avatar-img" alt="Evan Tang">
+    <img src="images/home/profile-pics/evan-pfp.avif" class="profile-card-avatar" alt="Evan Tang">
     <p class="profile-card-name">Evan Tang</p>
     <p class="profile-card-title">Product Designer &amp; Creator</p>
     <p class="profile-card-bio">Focused on thoughtful problem solving and end to end decision making.</p>
@@ -891,12 +898,15 @@
   <div class="nav-pill" id="nav-pill" role="navigation" aria-label="Main navigation">
     <div class="nav-pill-indicator" id="pill-indicator"></div>
     <a href="#" class="nav-tab p2 active" data-tab="home">Home</a>
-    <a href="#" class="nav-tab p2" data-tab="work">Work</a>
+    <a href="#" class="nav-tab p2" data-tab="case-studies">Case Studies</a>
     <a href="#" class="nav-tab p2" data-tab="about">About</a>
     <div class="nav-pill-avatar-wrap">
       <div id="nav-confetti-layer" aria-hidden="true"></div>
       <button class="nav-pill-avatar-btn" id="pill-avatar-btn" aria-label="Profile">
-        <img src="images/home/profile-pics/evan-pfp.avif" id="pill-avatar-img" alt="Evan Tang">
+        <span class="avatar-stack" id="pill-avatar-stack">
+          <img src="images/home/profile-pics/evan-pfp.avif" class="avatar-stack-img is-top" alt="Evan Tang">
+          <img src="images/home/profile-pics/evan-pfp.avif" class="avatar-stack-img" alt="">
+        </span>
       </button>
     </div>
   </div>
@@ -1050,11 +1060,11 @@
 
   </div><!-- /#page-home -->
 
-  <!-- ══ PAGE: WORK ══ -->
-  <div id="page-work" class="page-section hidden">
+  <!-- ══ PAGE: CASE STUDIES ══ -->
+  <div id="page-case-studies" class="page-section hidden">
     <div class="page-placeholder">
       <p class="page-placeholder-label">Coming soon</p>
-      <h2>Work</h2>
+      <h2>Case Studies</h2>
     </div>
   </div>
 
@@ -1078,7 +1088,7 @@
         <div class="site-footer-col">
           <p class="site-footer-col-title p2">PAGES</p>
           <a href="#" class="site-footer-link p2" data-tab="home">Home</a>
-          <a href="#" class="site-footer-link p2" data-tab="work">Work</a>
+          <a href="#" class="site-footer-link p2" data-tab="case-studies">Case Studies</a>
           <a href="#" class="site-footer-link p2" data-tab="about">About</a>
         </div>
         <div class="site-footer-col">
@@ -1185,9 +1195,13 @@
 
       const pages = {
         home:  document.getElementById('page-home'),
-        work:  document.getElementById('page-work'),
+        'case-studies': document.getElementById('page-case-studies'),
         about: document.getElementById('page-about')
       };
+
+      function normalizeTab(tab) {
+        return tab === 'work' ? 'case-studies' : tab;
+      }
 
       var PAGE_FADE_MS = 300;
       var isTransitioning = false;
@@ -1209,6 +1223,7 @@
       }
 
       function navigateTo(tabName, pushState, animate) {
+        tabName = normalizeTab(tabName);
         if (pushState === undefined) pushState = true;
         if (animate === undefined) animate = true;
 
@@ -1262,8 +1277,9 @@
       }
 
       // Init from URL on load
-      var path = window.location.pathname.replace('/', '') || 'home';
-      var validTabs = ['home', 'work', 'about'];
+      var path = window.location.pathname.replace(/^\//, '') || 'home';
+      path = normalizeTab(path);
+      var validTabs = ['home', 'case-studies', 'about'];
       var initTab = validTabs.indexOf(path) !== -1 ? path : 'home';
       navigateTo(initTab, false, false);
 
@@ -1278,7 +1294,7 @@
       // Browser back/forward
       window.addEventListener('popstate', function (e) {
         if (e.state && e.state.tab) {
-          navigateTo(e.state.tab, false, true);
+          navigateTo(normalizeTab(e.state.tab), false, true);
         }
       });
     })();
@@ -1322,8 +1338,7 @@
   <script>
     (function () {
       const btn = document.getElementById('pill-avatar-btn');
-      const navbarImg = document.getElementById('pill-avatar-img');
-      const cardImg = document.getElementById('profile-card-avatar-img');
+      const avatarStack = document.getElementById('pill-avatar-stack');
       const card = document.getElementById('profile-card');
       const confettiLayer = document.getElementById('nav-confetti-layer');
       const colors = ['#f5a623', '#4ade80', '#60a5fa', '#f472b6', '#facc15', '#a78bfa', '#fb7185', '#34d399'];
@@ -1331,10 +1346,10 @@
       const PFP_PATH = 'images/home/profile-pics/';
       const PFP_IMAGES = [
         'evan-pfp.avif',
+        'robin-manga-pfp.png',
+        'chopper-pfp.jpg',
         'piplup-pfp.jpg',
-        'jeff-shark-pfp.jpg',
-        'zoro-pfp.jpg',
-        'starfy-pfp.jpg'
+        'jeff-dolphin-pfp.jpg'
       ];
       const PFP_FADE_MS = 120;
 
@@ -1363,18 +1378,26 @@
         }
       }
 
+      function crossfadeStack(stack, nextSrc) {
+        const layers = stack.querySelectorAll('.avatar-stack-img');
+        const top = stack.querySelector('.avatar-stack-img.is-top');
+        const bottom = top === layers[0] ? layers[1] : layers[0];
+        bottom.src = nextSrc;
+        bottom.alt = top.alt;
+        void bottom.offsetWidth;
+        top.classList.remove('is-top');
+        bottom.classList.add('is-top');
+      }
+
       function cycleProfilePic() {
         if (pfpTransitioning) return;
         pfpTransitioning = true;
 
-        const imgs = [navbarImg, cardImg].filter(Boolean);
-        imgs.forEach(function (img) { img.classList.add('is-fading'); });
+        pfpIndex = (pfpIndex + 1) % PFP_IMAGES.length;
+        const nextSrc = PFP_PATH + PFP_IMAGES[pfpIndex];
+        if (avatarStack) crossfadeStack(avatarStack, nextSrc);
 
         setTimeout(function () {
-          pfpIndex = (pfpIndex + 1) % PFP_IMAGES.length;
-          const nextSrc = PFP_PATH + PFP_IMAGES[pfpIndex];
-          imgs.forEach(function (img) { img.src = nextSrc; });
-          imgs.forEach(function (img) { img.classList.remove('is-fading'); });
           pfpTransitioning = false;
         }, PFP_FADE_MS);
       }
