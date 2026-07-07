@@ -1,0 +1,912 @@
+/* ─────────────────────────────────────────────
+   case-studies.css
+
+   CASE STUDY PAGES ONLY — walkthrough & full breakdown pages
+   (e.g. rivian.html, sleeper.html, snowlabs.html)
+
+   DO NOT link this file on index.html, passport.html,
+   visitor-gallery.html, or any non–case-study page.
+
+   Usage on a case study page:
+     1. <body class="case-study-page">
+     2. <link rel="stylesheet" href="css/case-studies.css">
+     3. Wrap all walkthrough content in <article class="cs-walkthrough">
+
+   Typography classes (use inside .cs-walkthrough only):
+     .cs-h1  — Karla 600 48px / 58px
+     .cs-p1  — Karla 400 22px / 28px
+     .cs-p2  — Karla 400 18px / 21px
+     .cs-h3  — Karla 700 16px / 14px
+     .cs-h4  — Karla 600 22px / 28px (subsection titles)
+     .cs-section-label — same as .cs-h3 + uppercase (section eyebrows)
+     .cs-block — spacing wrapper for a section
+     .cs-quote — blockquote for pull quotes
+     .cs-figure-row — side-by-side images, bleeds past text width
+     .cs-figure-row--3 — three-up image row
+     .cs-figure-row--hover-reveal — dimmed images, full quality on hover
+     .cs-wireframe-item — wireframe image wrapper for hover states
+     .cs-figma-comment — Figma-style annotation on wireframes
+     .cs-media — full-width video or image embed
+     .cs-split-row — text left, media right within content width
+     .cs-final-design-row — three-up final design screenshots with captions
+     .cs-feature-badge — small label for new features
+     .cs-carousel — image carousel for split media
+     .cs-intro-row — text + meta card side by side
+     .cs-meta-card — white project details card
+     .cs-card-row — side-by-side insight cards (3-up)
+     .cs-insight-card — bordered card for breakdown callouts
+     .cs-insight-card-title — insight card headline
+     .cs-card-row--critical — stern critical-feedback insight cards
+     .cs-ownership-card — checklist card for role ownership
+     .cs-bullet-list — styled bullet list for reflection / next steps
+     .cs-hmw-stack — interactive how-might-we flashcard stack
+     .cs-role-row — header + text left, ownership card top-aligned right
+     .cs-project-switcher — circular links to other case studies
+───────────────────────────────────────────── */
+
+/* ── Case study page nav ── */
+
+.case-study-page .cs-project-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.case-study-page .cs-project-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+}
+
+.case-study-page a.cs-project-dot {
+  text-decoration: none;
+}
+
+.case-study-page a.cs-project-dot:hover {
+  opacity: 1;
+}
+
+.case-study-page .cs-project-dot.is-active {
+  opacity: 1;
+}
+
+.case-study-page .cs-project-dot-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Typography (scoped — never applies outside .case-study-page .cs-walkthrough) ── */
+
+.case-study-page .cs-page {
+  padding-top: 8rem;
+}
+
+@media (max-width: 768px) {
+  .case-study-page .cs-page {
+    padding-top: 5rem;
+  }
+}
+
+.case-study-page .cs-walkthrough {
+  margin-top: 2.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-h1 {
+  font-family: var(--font-main);
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 58px;
+  color: #1a1d21;
+  margin: 0 0 3rem;
+}
+
+.case-study-page .cs-walkthrough .cs-p1 {
+  font-family: var(--font-main);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: #1a1d21;
+  margin: 0 0 1.25rem;
+}
+
+.case-study-page .cs-walkthrough .cs-p1:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-highlight {
+  font-style: italic;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 232, 102, 0) 8%,
+    rgba(230, 186, 255, 0.92) 8%,
+    rgba(230, 186, 255, 0.92) 88%,
+    rgba(255, 232, 102, 0) 88%
+  );
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.case-study-page .cs-walkthrough .cs-p2 {
+  font-family: var(--font-main);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  color: #545454;
+  margin: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-h3 {
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 14px;
+  color: #1f997f;
+  margin: 0 0 1rem;
+}
+
+.case-study-page .cs-walkthrough .cs-section-label {
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #545454;
+  margin: 0 0 1rem;
+}
+
+.case-study-page .cs-walkthrough .cs-h4 {
+  font-family: var(--font-main);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+  color: #1a1d21;
+  margin: 2.5rem 0 1rem;
+}
+
+.case-study-page .cs-walkthrough .cs-h3 + .cs-h4 {
+  margin-top: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-quote {
+  margin: 0 0 1.25rem 3rem;
+  padding-left: 1.5rem;
+  border-left: 4px solid #1f997f;
+  max-width: calc(100% - 3rem);
+  box-sizing: border-box;
+}
+
+.case-study-page .cs-walkthrough .cs-quote .cs-p1 {
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: calc(100% + 6rem);
+  margin: 2.5rem -3rem 0;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 15px;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item img {
+  opacity: 0.7;
+  filter: grayscale(85%);
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item:hover {
+  z-index: 2;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item:hover img {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.case-study-page .cs-walkthrough .cs-figma-comments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.case-study-page .cs-walkthrough .cs-figma-comment {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: max-content;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--annotated:hover .cs-figma-comment--1 {
+  opacity: 1;
+  transition-delay: 0.08s;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--annotated:hover .cs-figma-comment--2 {
+  opacity: 1;
+  transition-delay: 0.16s;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--annotated:hover .cs-figma-comment--3 {
+  opacity: 1;
+  transition-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item img {
+    transform: none;
+    transition: filter 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item:hover img {
+    transform: none;
+  }
+
+  .case-study-page .cs-walkthrough .cs-wireframe-item--annotated:hover .cs-figma-comment--1,
+  .case-study-page .cs-walkthrough .cs-wireframe-item--annotated:hover .cs-figma-comment--2,
+  .case-study-page .cs-walkthrough .cs-wireframe-item--annotated:hover .cs-figma-comment--3 {
+    transition-delay: 0s;
+  }
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--old .cs-figma-comment--1 {
+  top: 41%;
+  left: 93%;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--old .cs-figma-comment--2 {
+  top: 64%;
+  left: 88%;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--text .cs-figma-comment--1 {
+  top: 52%;
+  left: 88%;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--text .cs-figma-comment--2 {
+  top: 85%;
+  left: 85%;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--grid .cs-figma-comment--1 {
+  top: 8%;
+  left: 88%;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--grid .cs-figma-comment--2 {
+  top: 32%;
+  left: 96%;
+}
+
+.case-study-page .cs-walkthrough .cs-wireframe-item--grid .cs-figma-comment--3 {
+  top: 72%;
+  left: 80%;
+}
+
+.case-study-page .cs-walkthrough .cs-figma-pin {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #9747ff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(26, 29, 33, 0.22);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  padding-bottom: 1px;
+}
+
+.case-study-page .cs-walkthrough .cs-figma-bubble {
+  flex: 0 0 240px;
+  width: 240px;
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(26, 29, 33, 0.14);
+  box-sizing: border-box;
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #1a1d21;
+}
+
+.case-study-page .cs-walkthrough .cs-media {
+  width: calc(100% + 6rem);
+  margin: 0 -3rem 1.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-media + .cs-h4,
+.case-study-page .cs-walkthrough .cs-media + .cs-p1 {
+  margin-top: 5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-figure-row + .cs-p1,
+.case-study-page .cs-walkthrough .cs-figure-row + .cs-h4 {
+  margin-top: 5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-quote + .cs-h4,
+.case-study-page .cs-walkthrough .cs-quote + .cs-p1 {
+  margin-top: 5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 15px;
+}
+
+.case-study-page .cs-walkthrough .cs-media > img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 15px;
+  border: 6px solid #E6E6E6;
+  box-sizing: border-box;
+}
+
+.case-study-page .cs-walkthrough .cs-media .cs-carousel-slide {
+  width: 100%;
+  height: auto;
+  display: none;
+  border-radius: 15px;
+  border: 6px solid #E6E6E6;
+  box-sizing: border-box;
+}
+
+.case-study-page .cs-walkthrough .cs-media .cs-carousel-slide.is-active {
+  display: block;
+}
+
+.case-study-page .cs-walkthrough .cs-split-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.case-study-page .cs-walkthrough .cs-split-row--media-left {
+  grid-template-columns: 2fr 3fr;
+}
+
+.case-study-page .cs-walkthrough .cs-final-design-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: calc(100% + 6rem);
+  margin: 2.5rem -3rem 0;
+}
+
+.case-study-page .cs-walkthrough .cs-h3 + .cs-final-design-row {
+  margin-top: 2.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-final-design-item {
+  margin: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-final-design-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 28px;
+  border: 6px solid #E6E6E6;
+  box-sizing: border-box;
+}
+
+.case-study-page .cs-walkthrough .cs-final-design-caption {
+  text-align: center;
+}
+
+.case-study-page .cs-walkthrough .cs-final-design-caption .cs-h4 {
+  margin: 1.25rem 0 0.75rem;
+}
+
+.case-study-page .cs-walkthrough .cs-final-design-caption .cs-p1 {
+  margin-bottom: 0;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.case-study-page .cs-walkthrough .cs-split-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 15px;
+  border: 6px solid #E6E6E6;
+  box-sizing: border-box;
+}
+
+.case-study-page .cs-walkthrough .cs-feature-badge {
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  padding: 0.3rem 0.625rem;
+  border-radius: 999px;
+  background: rgba(31, 153, 127, 0.12);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1f997f;
+}
+
+.case-study-page .cs-walkthrough .cs-split-row--card {
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 4rem;
+}
+
+.case-study-page .cs-walkthrough .cs-role-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  column-gap: 4rem;
+  align-items: start;
+}
+
+.case-study-page .cs-walkthrough .cs-split-media {
+  margin: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel {
+  width: 100%;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-slide {
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-slide.is-active {
+  display: block;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.875rem;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(26, 29, 33, 0.06);
+  color: #545454;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-btn:hover {
+  background: rgba(26, 29, 33, 0.1);
+  color: #1a1d21;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-btn i {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(26, 29, 33, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.case-study-page .cs-walkthrough .cs-carousel-dot.is-active {
+  background: #1a1d21;
+  transform: scale(1.15);
+}
+
+.case-study-page .cs-walkthrough .cs-block {
+  margin-bottom: 15rem;
+}
+
+.case-study-page .cs-walkthrough .cs-block:first-of-type {
+  margin-top: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-block:last-child {
+  margin-bottom: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-intro-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4rem;
+  align-items: start;
+}
+
+.case-study-page .cs-walkthrough .cs-intro-row .cs-block {
+  margin-bottom: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-intro-row + .cs-block {
+  margin-top: 15rem;
+}
+
+.case-study-page .cs-walkthrough .cs-meta-card {
+  background: #ffffff;
+  padding: 1.5rem 1.75rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(26, 29, 33, 0.08), 0 1px 4px rgba(26, 29, 33, 0.04);
+  flex-shrink: 0;
+  width: 350px;
+}
+
+.case-study-page .cs-walkthrough .cs-meta-card .cs-h3 {
+  margin: 0 0 0.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-meta-card .cs-meta-item + .cs-meta-item {
+  margin-top: 1.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-meta-card .cs-p2 {
+  margin: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-card-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 0 0 1.25rem;
+}
+
+.case-study-page .cs-walkthrough .cs-insight-card {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(26, 29, 33, 0.12);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.case-study-page .cs-walkthrough .cs-card-row--thick .cs-insight-card {
+  border-width: 6px;
+  border-color: #E6E6E6;
+}
+
+.case-study-page .cs-walkthrough .cs-card-row--critical .cs-insight-card {
+  background: #ffece1;
+  border-color: rgba(26, 29, 33, 0.18);
+}
+
+.case-study-page .cs-walkthrough .cs-insight-card-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-main);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1a1d21;
+}
+
+.case-study-page .cs-walkthrough .cs-insight-card .cs-p1 {
+  margin-bottom: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-insight-card .cs-p1 strong {
+  font-weight: 600;
+}
+
+.case-study-page .cs-walkthrough .cs-ownership-card {
+  background: #ffffff;
+  padding: 1.5rem 1.75rem;
+  border-radius: 12px;
+  border: 5px solid rgba(155, 155, 155, 0.3);
+  width: 100%;
+}
+
+.case-study-page .cs-walkthrough .cs-ownership-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.case-study-page .cs-walkthrough .cs-ownership-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-main);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  color: #1a1d21;
+}
+
+.case-study-page .cs-walkthrough .cs-ownership-item + .cs-ownership-item {
+  margin-top: 0.875rem;
+}
+
+.case-study-page .cs-walkthrough .cs-ownership-item::before {
+  content: '✓';
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  color: #4996d4;
+}
+
+.case-study-page .cs-walkthrough .cs-bullet-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid rgba(26, 29, 33, 0.1);
+  border-radius: 10px;
+}
+
+.case-study-page .cs-walkthrough .cs-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-family: var(--font-main);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: #1a1d21;
+}
+
+.case-study-page .cs-walkthrough .cs-bullet-item::before {
+  content: '';
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.5625rem;
+  border-radius: 50%;
+  background: #4996d4;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-stack {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  margin: 2rem 0 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-card {
+  position: absolute;
+  left: 50%;
+  top: 1.5rem;
+  display: block;
+  width: min(100%, 680px);
+  margin: 0;
+  padding: 2rem 2.25rem;
+  border: 1px solid rgba(26, 29, 33, 0.1);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 32px rgba(26, 29, 33, 0.08), 0 2px 8px rgba(26, 29, 33, 0.04);
+  text-align: left;
+  cursor: pointer;
+  transform: translateX(-50%);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+  will-change: transform;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-number {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: #1f997f;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-card:focus-visible {
+  outline: 2px solid #4996d4;
+  outline-offset: 4px;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-card.is-front {
+  z-index: 30;
+  transform: translateX(-50%) rotate(0deg) scale(1);
+  opacity: 1;
+  cursor: default;
+  box-shadow: 0 12px 40px rgba(26, 29, 33, 0.1), 0 4px 12px rgba(26, 29, 33, 0.06);
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-card.is-left {
+  z-index: 10;
+  transform: translateX(calc(-50% - 56px)) rotate(-7deg) scale(0.94);
+  opacity: 0.88;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-card.is-right {
+  z-index: 20;
+  transform: translateX(calc(-50% + 56px)) rotate(7deg) scale(0.94);
+  opacity: 0.88;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-card.is-left:hover,
+.case-study-page .cs-walkthrough .cs-hmw-card.is-right:hover {
+  opacity: 1;
+  box-shadow: 0 10px 36px rgba(26, 29, 33, 0.12), 0 3px 10px rgba(26, 29, 33, 0.06);
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-eyebrow {
+  display: block;
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1f997f;
+  margin-bottom: 0.875rem;
+  padding-left: 1.25rem;
+}
+
+.case-study-page .cs-walkthrough .cs-hmw-text {
+  font-family: var(--font-main);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 30px;
+  color: #1a1d21;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .case-study-page .cs-walkthrough .cs-intro-row {
+    grid-template-columns: 1fr;
+  }
+
+  .case-study-page .cs-walkthrough .cs-meta-card {
+    width: 100%;
+  }
+
+  .case-study-page .cs-walkthrough .cs-figure-row {
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin-inline: 0;
+    gap: 1.25rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-figma-bubble {
+    flex: 0 0 min(240px, calc(100vw - 3rem));
+    width: min(240px, calc(100vw - 3rem));
+    font-size: 12px;
+  }
+
+  .case-study-page .cs-walkthrough .cs-media {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  .case-study-page .cs-walkthrough .cs-quote {
+    margin-left: 1.5rem;
+    max-width: calc(100% - 1.5rem);
+  }
+
+  .case-study-page .cs-walkthrough .cs-hmw-stack {
+    min-height: 320px;
+    padding-top: 1rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-hmw-card {
+    top: 1rem;
+    width: calc(100% - 2rem);
+    padding: 1.5rem 1.25rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-hmw-card.is-left {
+    transform: translateX(calc(-50% - 28px)) rotate(-5deg) scale(0.95);
+  }
+
+  .case-study-page .cs-walkthrough .cs-hmw-card.is-right {
+    transform: translateX(calc(-50% + 28px)) rotate(5deg) scale(0.95);
+  }
+
+  .case-study-page .cs-walkthrough .cs-hmw-text {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .case-study-page .cs-walkthrough .cs-split-row,
+  .case-study-page .cs-walkthrough .cs-split-row--card,
+  .case-study-page .cs-walkthrough .cs-split-row--media-left {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-final-design-row {
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin-inline: 0;
+    gap: 2.5rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-role-row {
+    grid-template-columns: 1fr;
+    row-gap: 2rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-card-row {
+    grid-template-columns: 1fr;
+  }
+
+  .case-study-page .cs-walkthrough .cs-ownership-card {
+    width: 100%;
+  }
+}

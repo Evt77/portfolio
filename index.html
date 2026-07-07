@@ -2,46 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function () {
+      var path = location.pathname;
+      var base = '/';
+      if (path === '/' || /^\/(home|case-studies|about)\/?$/i.test(path)) {
+        base = '/';
+      } else if (/\.html$/i.test(path)) {
+        base = path.substring(0, path.lastIndexOf('/') + 1) || '/';
+      }
+      var el = document.createElement('base');
+      el.href = base;
+      document.head.appendChild(el);
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
+  <title>Evan Tang — Product Designer</title>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/component-explore.css">
+  <link rel="stylesheet" href="css/component-footer.css">
+  <link rel="stylesheet" href="css/component-tagline.css">
   <style>
-    /* ── Edit these tokens for quick experiments ── */
     :root {
-      --bg: #212121;
-      --text: #f5f5f5;
-      --text-muted: rgba(245, 245, 245, 0.65);
-      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-      --ease-organic: cubic-bezier(0.33, 0, 0.2, 1);
       --star-count: 180;
-      /* Drift tuning */
       --drift-distance: 30px;
       --drift-duration-min: 12s;
       --drift-duration-max: 24s;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-organic: cubic-bezier(0.33, 0, 0.2, 1);
     }
 
     html, body {
       height: 100%;
-      overflow: hidden;
+      background: #212121;
+      color: #f5f5f5;
+      cursor: none;
     }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Karla', sans-serif;
-      cursor: none;
-      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* Star field layer */
+    *, a, button, [role="button"] {
+      cursor: none !important;
+    }
+
+    /* ── Star field ── */
     #stars {
       position: fixed;
       inset: 0;
@@ -70,18 +78,10 @@
     }
 
     @keyframes drift {
-      0%, 100% {
-        transform: translate(-50%, -50%) translate(0, 0);
-      }
-      25% {
-        transform: translate(-50%, -50%) translate(var(--dx1), var(--dy1));
-      }
-      50% {
-        transform: translate(-50%, -50%) translate(var(--dx2), var(--dy2));
-      }
-      75% {
-        transform: translate(-50%, -50%) translate(var(--dx3), var(--dy3));
-      }
+      0%, 100% { transform: translate(-50%, -50%) translate(0, 0); }
+      25%       { transform: translate(-50%, -50%) translate(var(--dx1), var(--dy1)); }
+      50%       { transform: translate(-50%, -50%) translate(var(--dx2), var(--dy2)); }
+      75%       { transform: translate(-50%, -50%) translate(var(--dx3), var(--dy3)); }
     }
 
     @keyframes twinkle {
@@ -93,163 +93,1900 @@
       .star { animation: none; }
     }
 
-    /* Cosmic firework — synced motion, per-particle fade */
-    #bursts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      overflow: hidden;
-    }
-
-    .burst {
-      position: fixed;
-      left: var(--x);
-      top: var(--y);
-      width: 0;
-      height: 0;
-      transform: translate(-50%, -50%);
-    }
-
-    .burst-shockwave {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 12px;
-      height: 12px;
-      margin: -6px 0 0 -6px;
-      border-radius: 50%;
-      border: 1px solid rgba(130, 160, 200, 0.14);
-      background: transparent;
-      animation: burst-wave var(--burst-duration, 1.3s) var(--ease-out-quart) forwards;
-    }
-
-    .burst-particle {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: var(--size, 4px);
-      height: var(--size, 4px);
-      border-radius: 50%;
-      background: var(--color);
-      box-shadow: var(--glow);
-      opacity: 0;
-      transform: translate(-50%, -50%);
-      animation:
-        burst-move var(--move-duration, 1.3s) var(--ease-organic) var(--fade-delay, 0ms) forwards,
-        burst-fade var(--fade-duration, 1.3s) var(--ease-organic) var(--fade-delay, 0ms) forwards;
-    }
-
-    @keyframes burst-wave {
-      0%   { transform: scale(0.35); opacity: 0.32; }
-      100% { transform: scale(9); opacity: 0; border-color: rgba(120, 130, 160, 0.03); }
-    }
-
-    /* Motion: launch then continuous drift/overshoot (no hold) */
-    @keyframes burst-move {
-      0% {
-        transform: translate(-50%, -50%) translate(0, 0) scale(1.3);
-        animation-timing-function: var(--ease-out-quart);
-      }
-      24% {
-        transform: translate(-50%, -50%) translate(
-          calc(var(--tx) * 0.76),
-          calc(var(--ty) * 0.76)
-        ) scale(var(--scale-end, 0.3));
-        animation-timing-function: cubic-bezier(0.1, 0.35, 0.15, 1);
-      }
-      100% {
-        transform: translate(-50%, -50%) translate(
-          calc(var(--tx) * var(--overshoot, 1.12)),
-          calc(var(--ty) * var(--overshoot, 1.12))
-        ) scale(0.18);
-      }
-    }
-
-    /* Fade: per-particle duration + delay (embers) */
-    @keyframes burst-fade {
-      0%   { opacity: 0; }
-      7%   { opacity: var(--peak-opacity, 1); }
-      30%  { opacity: calc(var(--peak-opacity, 1) * 0.9); }
-      100% { opacity: 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .burst-shockwave,
-      .burst-particle {
-        animation-duration: 0.01ms !important;
-      }
-    }
-
-    /* Hero */
+    /* ── Hero ── */
     .hero {
       position: relative;
       z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 640px;
+    }
+
+    .hero-available {
+      letter-spacing: 0.12em;
+      color: var(--text-darkmode-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-available::before {
+      content: '';
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .hero-name {
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .hero-bio {
+      color: var(--text-darkmode-readable);
+      max-width: 52ch;
+      margin: 0;
+    }
+
+    /* ── Scroll indicator ── */
+    .scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-top: 8px;
+    }
+
+    .scroll-chevron {
+      width: 15px;
+      height: 15px;
+      border-right: 2px solid rgba(245, 245, 245, 0.7);
+      border-bottom: 2px solid rgba(245, 245, 245, 0.7);
+      opacity: 0;
+      animation: chevron-wave 1.8s ease-in-out infinite;
+    }
+
+    .scroll-chevron:nth-child(1) { animation-delay: 0s; }
+    .scroll-chevron:nth-child(2) { animation-delay: 0.2s; }
+    .scroll-chevron:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes chevron-wave {
+      0%   { opacity: 0;   transform: translateY(-4px) rotate(45deg); }
+      40%  { opacity: 0.7; transform: translateY(0)    rotate(45deg); }
+      80%  { opacity: 0;   transform: translateY(4px)  rotate(45deg); }
+      100% { opacity: 0;   transform: translateY(-4px) rotate(45deg); }
+    }
+
+    /* ── Floating pill nav ── */
+    .nav-pill {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 400;
+      background: rgba(42, 42, 42, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      padding: 4px 5px;
+      gap: 0;
+    }
+
+    .nav-pill-indicator {
+      position: absolute;
+      top: 4px;
+      height: calc(100% - 8px);
+      border-radius: 100px;
+      background: linear-gradient(135deg, rgba(30, 80, 180, 0.55), rgba(15, 50, 130, 0.5));
+      box-shadow: 0 0 12px rgba(50, 120, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: left 0.3s var(--ease-out-quart), width 0.3s var(--ease-out-quart);
+      pointer-events: none;
+    }
+
+    .nav-pill-indicator::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 100px;
+      padding: 1px;
+      background: linear-gradient(
+        var(--border-angle, 45deg),
+        rgba(100, 160, 255, 0.55) 0%,
+        rgba(100, 160, 255, 0)    35%,
+        rgba(100, 160, 255, 0)    65%,
+        rgba(100, 160, 255, 0.55) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .nav-tab {
+      color: rgba(245, 245, 245, 0.55);
+      padding: 10px 22px;
+      border-radius: 100px;
+      position: relative;
+      z-index: 1;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-tab.active,
+    .nav-tab:hover {
+      color: #ffffff;
+    }
+
+    .nav-pill-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      margin: 0 0 0 4px;
+    }
+
+    .nav-pill-avatar-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      border: 2px solid rgba(100, 160, 255, 0.5);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transform: scale(1);
+      transition: opacity 0.25s ease;
+    }
+
+    .nav-pill-avatar-wrap:hover::after {
+      opacity: 1;
+      animation: avatar-stroke-breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes avatar-stroke-breathe {
+      0%, 100% {
+        transform: scale(1);
+        border-color: rgba(100, 160, 255, 0.35);
+        box-shadow: 0 0 4px rgba(100, 160, 255, 0.1);
+      }
+      50% {
+        transform: scale(1.07);
+        border-color: rgba(167, 139, 250, 0.95);
+        box-shadow: 0 0 14px rgba(100, 160, 255, 0.45);
+      }
+    }
+
+    #nav-confetti-layer {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 0;
+      overflow: visible;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .nav-pill-avatar-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      overflow: hidden;
+      background: none;
+      flex-shrink: 0;
+      margin: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-stack {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .avatar-stack-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+    }
+
+    .avatar-stack-img.is-top {
+      opacity: 1;
+    }
+
+    /* ── Project Showcase ── */
+    .projects {
+      position: relative;
+      z-index: 1;
+      width: 60vw;
+      margin: 0 auto;
+      padding: 0 0 10rem;
+    }
+
+    .project-row {
+      padding: 3rem 0;
+    }
+
+    .project-divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0;
+    }
+
+    .project-inner {
+      display: grid;
+      grid-template-columns: 1fr 2.4fr;
+      gap: 4rem;
+      align-items: start;
+      padding-top: 2.5rem;
+    }
+
+    .project-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: #f5f5f5;
+      position: sticky;
+      top: 2rem;
+      margin: 0;
+    }
+
+    .project-meta p {
+      color: var(--text-darkmode-readable);
+      margin: 0;
+    }
+
+    .project-meta {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1.5fr) auto;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .project-year {
+      white-space: nowrap;
+    }
+
+    .project-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      background: rgba(255, 255, 255, 0.04);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-thumb:hover {
+      opacity: 0.8;
+      transform: scale(1.02);
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .lightbox-img {
+      position: relative;
+      z-index: 1;
+      max-width: 88vw;
+      max-height: 84vh;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      z-index: 2;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 26px;
+      line-height: 1;
+      padding: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .lightbox-close:hover { color: #fff; }
+
+    .lightbox-prev,
+    .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-prev:hover,
+    .lightbox-next:hover { background: rgba(255, 255, 255, 0.18); }
+
+    /* ── Page sections ── */
+    #pages {
+      position: relative;
+    }
+
+    .page-section {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .page-section.hidden {
+      display: none;
+    }
+
+    /* ── Case Studies / About placeholder ── */
+    .page-placeholder {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      min-height: 100dvh;
-      padding: 2rem 1.5rem;
+      gap: 16px;
       text-align: center;
-      gap: 8px;
     }
 
-    .hero h1 {
-      color: #ffffff;
+    .page-placeholder-label {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba(245, 245, 245, 0.3);
+      text-transform: uppercase;
     }
 
-    .hero p {
-      margin-top: 1rem;
-      max-width: 28ch;
-      color: var(--text-muted);
+    .page-placeholder h2 {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 400;
+      color: rgba(245, 245, 245, 0.15);
     }
 
-    button, a, [role="button"] {
-      cursor: none !important;
+    /* ── About page ── */
+    .about-page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 8rem 0 2rem;
+      box-sizing: border-box;
     }
 
-    .transition-flash.is-active {
+    .about-inner {
+      width: 60vw;
+      margin: 0 auto;
+    }
+
+    .about-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 8rem;
+    }
+
+    .about-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.5vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: #f5f5f5;
+      margin: 0;
+    }
+
+    .about-header-icon {
+      font-size: 30px;
+      line-height: 1;
+      color: #f5f5f5;
+      margin-bottom: 0.35rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-visual {
+      display: flex;
+      justify-content: center;
+      align-self: start;
+    }
+
+    .about-photo-wrap {
+      width: 60%;
+      margin: 0 auto;
+      transform: rotate(-3deg);
+      background: #242424;
+      border: 1px solid #424242;
+      border-radius: 20px;
+      padding: 0.6rem;
+    }
+
+    .about-photo-inner {
+      background: #1f1f1f;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .about-photo {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .about-content {
+      padding-top: 0.25rem;
+      align-self: start;
+    }
+
+    .about-toggle-switch {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 45px;
+      margin-bottom: 25px;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .about-toggle-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      height: 45px;
+      border-radius: 10px 10px 0 0;
+      background: #fff;
+      transition: left 0.3s var(--ease-out-quart), width 0.3s var(--ease-out-quart);
+      pointer-events: none;
+    }
+
+    .about-toggle-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 44px;
+      border-top: 1px solid #f5f5f5;
+      pointer-events: none;
+    }
+
+    .about-tab {
+      position: relative;
+      z-index: 2;
+      border: none;
+      background: none;
+      padding: 0 20px;
+      height: 45px;
+      color: rgba(245, 245, 245, 0.45);
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+
+    .about-tab.is-active {
+      color: #212121;
+    }
+
+    .about-bio {
+      margin: 0 0 1.25rem;
+      color: var(--text-darkmode-readable);
+    }
+
+    .about-bio:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-panel {
+      display: none;
+    }
+
+    .about-panel.is-active {
+      display: block;
+    }
+
+    .about-highlight {
+      color: #8cb8f5;
+      background: #3a4a5c;
+      border-radius: 5px;
+      padding: 0 3px;
+      font-weight: 600;
+    }
+
+    .about-signature {
+      max-width: 150px;
+      margin-top: 20px;
+      padding: 20px 0;
+    }
+
+    .about-scroll {
+      display: flex;
+      justify-content: center;
+      margin-top: 8rem;
+    }
+
+    @media (max-width: 991px) {
+      .about-inner {
+        width: 85vw;
+      }
+
+      .about-visual {
+        margin-bottom: 3rem;
+      }
+
+      .about-scroll {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .about-photo-wrap {
+        width: 85%;
+      }
+
+      .about-toggle-switch {
+        width: 100%;
+        flex-wrap: wrap;
+        height: auto;
+        gap: 0;
+        padding-bottom: 12px;
+      }
+
+      .about-toggle-indicator,
+      .about-toggle-line {
+        display: none;
+      }
+
+      .about-tab {
+        height: auto;
+        padding: 10px 14px;
+        border-radius: 100px;
+        color: rgba(245, 245, 245, 0.45);
+      }
+
+      .about-tab.is-active {
+        color: #212121;
+        background: #fff;
+      }
+    }
+
+    /* ── Case Studies grid ── */
+    .case-studies-page.about-page {
+      min-height: auto;
+    }
+
+    .cs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .75rem;
+      align-items: start;
+    }
+
+    .cs-column {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .cs-item {
+      display: block;
+      color: inherit;
+    }
+
+    a.cs-item .cs-media img,
+    a.cs-item .cs-media video {
+      pointer-events: none;
+    }
+
+    .cs-card-media-inner {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.45s ease, filter 0.45s ease;
+      will-change: transform, filter;
+    }
+
+    .cs-card-media-inner--sleeper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .cs-item:hover .cs-card-media-inner,
+    .cs-item:focus-visible .cs-card-media-inner {
+      transform: scale(1.06);
+      filter: blur(5px);
+    }
+
+    .cs-card-hover {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      padding: clamp(0.75rem, 3.5cqi, 1.125rem) clamp(0.875rem, 4cqi, 1.25rem);
+      pointer-events: none;
+    }
+
+    .cs-media--rivian .cs-card-hover {
+      background: #F1EEEA;
+    }
+
+    .cs-media--sleeper .cs-card-hover {
+      background: #1A1A2E;
+    }
+
+    .cs-media--snowlabs .cs-card-hover {
+      background: #151519;
+    }
+
+    .cs-media--sleeper .cs-card-hover-eyebrow,
+    .cs-media--snowlabs .cs-card-hover-eyebrow {
+      color: rgba(245, 240, 235, 0.72);
+    }
+
+    .cs-media--sleeper .cs-card-hover-headline,
+    .cs-media--sleeper .cs-card-hover-arrow,
+    .cs-media--snowlabs .cs-card-hover-headline,
+    .cs-media--snowlabs .cs-card-hover-arrow {
+      color: #F5F0EB;
+    }
+
+    .cs-media--sleeper .cs-card-hover-category,
+    .cs-media--snowlabs .cs-card-hover-category {
+      color: rgba(245, 240, 235, 0.62);
+    }
+
+    .cs-card-hover-main {
+      position: absolute;
+      left: clamp(0.75rem, 3.5cqi, 1.125rem);
+      right: clamp(0.875rem, 4cqi, 1.25rem);
+      top: 40%;
+      transform: translateY(-50%);
+    }
+
+    .cs-item:hover .cs-card-hover,
+    .cs-item:focus-visible .cs-card-hover {
+      opacity: 1;
+    }
+
+    .cs-card-hover-eyebrow {
+      font-family: 'Karla', sans-serif;
+      font-size: clamp(11px, 3.4cqi, 16px);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #545454;
+      margin: 0 0 clamp(0.35rem, 1.6cqi, 0.625rem);
+    }
+
+    .cs-card-hover-headline-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(0.25rem, 1.4cqi, 0.5rem);
+    }
+
+    .cs-card-hover-headline {
+      font-family: 'Karla', sans-serif;
+      font-size: clamp(14px, 5.2cqi, 22px);
+      font-weight: 700;
+      line-height: 1.25;
+      color: #1a1d21;
+      margin: 0;
+    }
+
+    .cs-card-hover-arrow {
+      flex-shrink: 0;
+      font-size: clamp(14px, 5.2cqi, 22px);
+      line-height: 1;
+      color: #1a1d21;
+      transform: rotate(-45deg);
+    }
+
+    .cs-card-hover-category {
+      position: absolute;
+      left: clamp(0.875rem, 4cqi, 1.25rem);
+      right: clamp(0.875rem, 4cqi, 1.25rem);
+      bottom: clamp(0.75rem, 3.5cqi, 1.125rem);
+      font-family: 'Karla', sans-serif;
+      font-size: clamp(11px, 3cqi, 14px);
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: 0.04em;
+      color: #545454;
+      margin: 0;
+    }
+
+    .cs-placeholder {
+      width: 100%;
+      border-radius: 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .cs-placeholder--landscape {
+      aspect-ratio: 4 / 3;
+    }
+
+    .cs-placeholder--square {
+      aspect-ratio: 1 / 1;
+    }
+
+    .cs-media {
+      position: relative;
+      overflow: hidden;
+      container-type: inline-size;
+    }
+
+    .cs-media img,
+    .cs-media video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .cs-media--rivian {
+      background: #000;
+      --rivian-crop-y: 11%;
+      --rivian-padding-x: 0.75rem;
+    }
+
+    .cs-media--rivian .cs-media__frame {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--rivian-padding-x);
+      right: var(--rivian-padding-x);
+    }
+
+    .cs-media--rivian video {
+      object-fit: contain;
+      object-position: center;
+      clip-path: inset(var(--rivian-crop-y) 0 var(--rivian-crop-y) 0);
+    }
+
+    .cs-media--sleeper {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      background: #ffffff;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .cs-media--sleeper .cs-sleeper-frame {
+      height: 100%;
+      max-width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .cs-media--sleeper .cs-sleeper-frame img {
+      position: static;
+      inset: auto;
+      display: block;
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: unset;
+    }
+
+    .cs-title {
+      color: var(--text-dark);
+      margin: 1rem 0 0.15rem;
+    }
+
+    .cs-subtitle {
+      color: var(--text-darkmode-dim);
+      margin: 0;
+    }
+
+    @media (max-width: 991px) {
+      .cs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cs-column {
+        gap: 2.5rem;
+      }
+    }
+
+    /* ── Profile card ── */
+    .profile-card {
+      position: fixed;
+      bottom: calc(50px + 70px + 16px);
+      left: 50%;
+      transform: translateX(-50%) translateY(90px) scale(0.9);
+      transform-origin: bottom center;
+      z-index: 300;
+      background: rgba(32, 32, 32, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 32px 24px;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-card.visible {
       opacity: 1;
       pointer-events: all;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    .profile-card-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-card-name {
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #f5f5f5;
+      text-align: center;
+      margin: 0 0 -12px;
+    }
+
+    .profile-card-title {
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: rgba(245, 245, 245, 0.55);
+      text-align: center;
+      margin: 0;
+    }
+
+    .profile-card-bio {
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(245, 245, 245, 0.4);
+      text-align: center;
+      line-height: 15px;
+      margin: 0;
+    }
+
+    .profile-card-location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      font-weight: 300;
+      line-height: 15px;
+      color: rgba(245, 245, 245, 0.4);
+    }
+
+    .profile-card-location i {
+      font-size: 0.8rem;
+    }
+
+    .profile-card-divider {
+      width: 100%;
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin: 4px 0;
+    }
+
+    .profile-card-contacts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 10px;
+      row-gap: 18px;
+      align-items: flex-start;
+      justify-items: center;
+      width: 100%;
+    }
+
+    .profile-card-contact {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .profile-card-contact-btn {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(245, 245, 245, 0.55);
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .profile-card-contact-btn i {
+      position: relative;
+      z-index: 1;
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .profile-card-contact-btn::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 10px;
+      padding: 1px;
+      background: linear-gradient(
+        45deg,
+        rgba(100, 160, 255, 0.55) 0%,
+        rgba(100, 160, 255, 0)    35%,
+        rgba(100, 160, 255, 0)    65%,
+        rgba(100, 160, 255, 0.55) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .profile-card-contact-btn:hover {
+      background: linear-gradient(135deg, rgba(30, 80, 180, 0.55), rgba(15, 50, 130, 0.5));
+      box-shadow: 0 0 12px rgba(50, 120, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #f5f5f5;
+    }
+
+    .profile-card-contact-btn:hover::before {
+      opacity: 1;
+    }
+
+    .profile-card-contact-label {
+      font-family: var(--font-main);
+      font-size: 0.7rem;
+      font-weight: 300;
+      line-height: 1.2;
+      color: rgba(245, 245, 245, 0.45);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .projects {
+        width: 85vw;
+      }
+
+      .project-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding-top: 2rem;
+      }
+
+      .project-name {
+        position: static;
+      }
+
+      .project-meta {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .project-year {
+        white-space: normal;
+      }
+
+      .project-images {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* ── Profile confetti ── */
+    .confetti-particle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      animation: confetti-burst 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes confetti-burst {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--cx), var(--cy)) rotate(var(--cr)) scale(0.35);
+      }
+    }
+
+    /* ── Fixed bottom chrome (from legacy landing) ── */
+    .site-chrome {
+      position: fixed;
+      z-index: 350;
+      pointer-events: none;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.06em;
+    }
+
+    .site-chrome-clock {
+      bottom: 24px;
+      right: 24px;
+    }
+
+    .site-chrome-session {
+      bottom: 52px;
+      left: 24px;
+    }
+
+    .site-chrome-session-label {
+      letter-spacing: normal;
+      margin-right: 8px;
+    }
+
+    .site-chrome-status {
+      bottom: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: normal;
+    }
+
+    .site-chrome-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: site-chrome-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes site-chrome-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    /* Webflow mobile landscape + mobile portrait (≤767px) — hide clock, session, status */
+    @media (max-width: 767px) {
+      .site-chrome {
+        display: none;
+      }
     }
 
   </style>
 </head>
 <body>
-  <div id="transition-flash" class="transition-flash" style="position: fixed; inset: 0; background: #f5f0eb; opacity: 0; pointer-events: none; z-index: 99999; transition: opacity 0.4s ease-in;"></div>
+  <div id="transition-flash" style="position: fixed; inset: 0; background: #212121; opacity: 1; pointer-events: none; z-index: 99999; transition: opacity 0.5s ease-out;"></div>
   <div id="stars" aria-hidden="true"></div>
-  <div id="bursts" aria-hidden="true"></div>
 
-  <main class="hero">
-    <p style="color: rgba(202, 202, 202, 0.7);">WELCOME TO</p>
-    <h1>Evan's Design Portfolio</h1>
-    <div style="display: inline-flex; align-items: center; gap: 12px; margin-top: 25px;">
-      <button class="btn-primary" onclick="var f=document.getElementById('transition-flash'); f.style.transition='opacity 0.4s ease-in'; f.style.opacity='1'; setTimeout(function(){ window.location.href='passport.html'; }, 600);">PROCEED <i class="bi bi-rocket-takeoff-fill" style="font-size: 12px;"></i></button>
-      <button class="btn-secondary" onclick="window.location.href='portfolio.html';">SKIP TO PORTFOLIO</button>
+  <!-- ── Profile card ── -->
+  <div class="profile-card" id="profile-card" role="dialog" aria-label="Profile">
+    <img src="images/home/profile-pics/evan-pfp.avif" class="profile-card-avatar" alt="Evan Tang">
+    <p class="profile-card-name">Evan Tang</p>
+    <p class="profile-card-title">Product Designer &amp; Creator</p>
+    <p class="profile-card-bio">Focused on thoughtful problem solving and end to end decision making.</p>
+    <div class="profile-card-location">
+      <i class="bi bi-geo-alt"></i>
+      <span>San Francisco, CA</span>
     </div>
-  </main>
+    <hr class="profile-card-divider">
+    <div class="profile-card-contacts">
+      <div class="profile-card-contact">
+        <a href="mailto:evantang77@gmail.com" class="profile-card-contact-btn" title="Email"><i class="bi bi-envelope"></i></a>
+        <span class="profile-card-contact-label">Email</span>
+      </div>
+      <div class="profile-card-contact">
+        <a href="https://x.com/EvanMTang" target="_blank" rel="noopener noreferrer" class="profile-card-contact-btn" title="Twitter / X"><i class="bi bi-twitter-x"></i></a>
+        <span class="profile-card-contact-label">Twitter / X</span>
+      </div>
+      <div class="profile-card-contact">
+        <a href="https://www.linkedin.com/in/evanmtang" target="_blank" rel="noopener noreferrer" class="profile-card-contact-btn" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <span class="profile-card-contact-label">LinkedIn</span>
+      </div>
+      <div class="profile-card-contact">
+        <a href="https://github.com/Evt77" target="_blank" rel="noopener noreferrer" class="profile-card-contact-btn" title="GitHub"><i class="bi bi-github"></i></a>
+        <span class="profile-card-contact-label">GitHub</span>
+      </div>
+      <div class="profile-card-contact">
+        <a href="https://calendly.com/evantang77/30-minute-meeting" target="_blank" rel="noopener noreferrer" class="profile-card-contact-btn" title="Book a call"><i class="bi bi-calendar-date"></i></a>
+        <span class="profile-card-contact-label">Book a call</span>
+      </div>
+      <div class="profile-card-contact">
+        <a href="https://docs.google.com/document/d/10ZRJDIs50526a4oPNNFs8G1AKVXwuWZDboDrTNUvr7M/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" class="profile-card-contact-btn" title="Resume"><i class="bi bi-file-earmark-arrow-down"></i></a>
+        <span class="profile-card-contact-label">Resume</span>
+      </div>
+    </div>
+  </div>
 
+  <!-- ── Floating pill nav ── -->
+  <div class="nav-pill" id="nav-pill" role="navigation" aria-label="Main navigation">
+    <div class="nav-pill-indicator" id="pill-indicator"></div>
+    <a href="#" class="nav-tab p2 active" data-tab="home">Home</a>
+    <a href="#" class="nav-tab p2" data-tab="case-studies">Case Studies</a>
+    <a href="#" class="nav-tab p2" data-tab="about">About</a>
+    <div class="nav-pill-avatar-wrap">
+      <div id="nav-confetti-layer" aria-hidden="true"></div>
+      <button class="nav-pill-avatar-btn" id="pill-avatar-btn" aria-label="Profile">
+        <span class="avatar-stack" id="pill-avatar-stack">
+          <img src="images/home/profile-pics/evan-pfp.avif" class="avatar-stack-img is-top" alt="Evan Tang">
+          <img src="images/home/profile-pics/evan-pfp.avif" class="avatar-stack-img" alt="">
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ PAGES ══ -->
+  <div id="pages">
+
+  <!-- ══ PAGE: HOME ══ -->
+  <div id="page-home" class="page-section">
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-available p2">AVAILABLE FOR WORK</p>
+      <h1 class="hero-name">Evan Tang</h1>
+      <p class="hero-bio">I design interactive products that align user needs with business goals and expectations. My process turns user insights into clear, buildable solutions that improve engagement and efficiency.</p>
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-chevron"></div>
+        <div class="scroll-chevron"></div>
+        <div class="scroll-chevron"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Project Showcase ── -->
+  <section class="projects" id="work">
+
+    <!-- Kope House -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Kope House</h2>
+        <div class="project-info">
+          <div class="project-meta">
+            <p class="project-desc">Kope House is a San Francisco based coffee company. I designed and built a robust, scalable design system in Figma, focusing on components, typography, color, and interaction patterns. I then applied the system to app prototypes to explore a cohesive product experience across key user flows.</p>
+            <p class="project-disciplines">Design Systems / Product Design / UI Design / UX Design / Figma</p>
+            <p class="project-year">2026</p>
+          </div>
+          <div class="project-images" data-project="kope-house">
+            <img src="images/home/kope-house/brand.jpg" class="project-thumb" alt="Brand" loading="lazy">
+            <img src="images/home/kope-house/home-page.jpg" class="project-thumb" alt="Home page" loading="lazy">
+            <img src="images/home/kope-house/checkout-page.jpg" class="project-thumb" alt="Checkout page" loading="lazy">
+            <img src="images/home/kope-house/order-page.jpg" class="project-thumb" alt="Order page" loading="lazy">
+            <img src="images/home/kope-house/components-and-icons.jpg" class="project-thumb" alt="Components and icons" loading="lazy">
+            <img src="images/home/kope-house/components-and-buttons.jpg" class="project-thumb" alt="Components and buttons" loading="lazy">
+            <img src="images/home/kope-house/color-palatte.jpg" class="project-thumb" alt="Color palette" loading="lazy">
+            <img src="images/home/kope-house/figma-variables.jpg" class="project-thumb" alt="Figma variables" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rivian -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Rivian</h2>
+        <div class="project-info">
+          <div class="project-meta">
+            <p class="project-desc">Rivian is rethinking what vehicle dashboards should do when drivers need focus most. I worked on a self-directed project with design team members to redesign the navigation and infotainment experience. I sought out to reduce distraction, prioritizing safety, and helping drivers respond faster in critical moments.</p>
+            <p class="project-disciplines">Infotainment / UX / Interaction Design / Motion Design / Prototyping / Research / Micro Animation</p>
+            <p class="project-year">2024 – 2025</p>
+          </div>
+          <div class="project-images" data-project="rivian">
+            <img src="images/home/rivian/brand(1).png" class="project-thumb" alt="Rivian brand 1" loading="lazy">
+            <img src="images/home/rivian/brand(2).png" class="project-thumb" alt="Rivian brand 2" loading="lazy">
+            <img src="images/home/rivian/style-guide.png" class="project-thumb" alt="Style guide" loading="lazy">
+            <img src="images/home/rivian/competitive-analysis.png" class="project-thumb" alt="Competitive analysis" loading="lazy">
+            <img src="images/home/rivian/driving-prototypes.png" class="project-thumb" alt="Driving prototypes" loading="lazy">
+            <img src="images/home/rivian/map-view-animation-prototypes.png" class="project-thumb" alt="Map view animation prototypes" loading="lazy">
+            <img src="images/home/rivian/ux-writing-comparison.png" class="project-thumb" alt="UX writing comparison" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sleeper -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Sleeper</h2>
+        <div class="project-info">
+          <div class="project-meta">
+            <p class="project-desc">Sleeper is a fantasy sports platform where Dynasty players make high-stakes decisions every week. I explored how the iOS app could better support trades and roster management by surfacing critical contract and player data without disrupting the fast, familiar workflows users are accustomed to.</p>
+            <p class="project-disciplines">UX / Product / iOS / Research / Prototyping / Task Flows</p>
+            <p class="project-year">2024 – 2025</p>
+          </div>
+          <div class="project-images" data-project="sleeper">
+            <img src="images/home/sleeper/brand-logo.png" class="project-thumb" alt="Brand logo" loading="lazy">
+            <img src="images/home/sleeper/style-guide(color).png" class="project-thumb" alt="Style guide — color" loading="lazy">
+            <img src="images/home/sleeper/style-guide(typography,components).png" class="project-thumb" alt="Style guide — typography and components" loading="lazy">
+            <img src="images/home/sleeper/remaining-years-under-contract.png" class="project-thumb" alt="Remaining years under contract" loading="lazy">
+            <img src="images/home/sleeper/past-opponent-lineups.png" class="project-thumb" alt="Past opponent lineups" loading="lazy">
+            <img src="images/home/sleeper/strength-of-schedule.png" class="project-thumb" alt="Strength of schedule" loading="lazy"> 
+            <img src="images/home/sleeper/task-flow(1).png" class="project-thumb" alt="Task flow 1" loading="lazy">
+            <img src="images/home/sleeper/task-flow(2).png" class="project-thumb" alt="Task flow 2" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mochi Health -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">Mochi Health</h2>
+        <div class="project-info">
+          <div class="project-meta">
+            <p class="project-desc">Mochi Health is a wellness platform focused on long-term behavior change. As part of a take-home design challenge, I explored how a weight tracker could help users stay motivated through clear progress visualization, lightweight logging, and engagement mechanics like streaks and milestones. This sprint was conducted within a three-day timeframe.</p>
+            <p class="project-disciplines">UX / Product / Web / Healthcare Design / Dashboard Design</p>
+            <p class="project-year">2025</p>
+          </div>
+          <div class="project-images" data-project="mochi-health">
+            <img src="images/home/mochi-health/brand-logo.png" class="project-thumb" alt="Brand logo" loading="lazy">
+            <img src="images/home/mochi-health/landing-page.png" class="project-thumb" alt="Landing page" loading="lazy">
+            <img src="images/home/mochi-health/first-time-user-experience-setup.png" class="project-thumb" alt="First time user experience setup" loading="lazy">
+            <img src="images/home/mochi-health/remaining-years-under-contract.png" class="project-thumb" alt="Remaining years under contract" loading="lazy">
+            <img src="images/home/mochi-health/weight-chart.png" class="project-thumb" alt="Weight chart" loading="lazy">
+            <img src="images/home/mochi-health/weekly-report.png" class="project-thumb" alt="Weekly report" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SnowLabs -->
+    <div class="project-row">
+      <hr class="project-divider">
+      <div class="project-inner">
+        <h2 class="project-name">SnowLabs</h2>
+        <div class="project-info">
+          <div class="project-meta">
+            <p class="project-desc">SnowLabs is an experimental desktop experience that helps new snowboarders plan trips with confidence. Instead of static maps and forecasts, it lets riders play a resort experience of previewing trails, conditions, and difficulty before ever stepping on the mountain.</p>
+            <p class="project-disciplines">Video Game Design / UX / Product / Web / Prototyping / Unity / C#</p>
+            <p class="project-year">2022 – 2023</p>
+          </div>
+          <div class="project-images" data-project="snowlabs">
+            <img src="images/home/snowlabs/presentation-slide.png" class="project-thumb" alt="Presentation slide" loading="lazy">
+            <img src="images/home/snowlabs/journey-mapping(JTBD).png" class="project-thumb" alt="Journey mapping JTBD" loading="lazy">
+            <img src="images/home/snowlabs/home-page(1).png" class="project-thumb" alt="Home page 1" loading="lazy">
+            <img src="images/home/snowlabs/home-page(2).png" class="project-thumb" alt="Home page 2" loading="lazy">
+            <img src="images/home/snowlabs/select-ski-resorts-and-filtering.png" class="project-thumb" alt="Select ski resorts and filtering" loading="lazy">
+            <img src="images/home/snowlabs/selecting-ski-trails.png" class="project-thumb" alt="Selecting ski trails" loading="lazy">
+            <img src="images/home/snowlabs/final-designs-ingame.jpg" class="project-thumb" alt="Final designs in-game" loading="lazy">
+            <img src="images/home/snowlabs/research.png" class="project-thumb" alt="Research" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  </div><!-- /#page-home -->
+
+  <!-- ══ PAGE: CASE STUDIES ══ -->
+  <div id="page-case-studies" class="page-section hidden">
+
+    <section class="about-page case-studies-page">
+      <div class="about-inner">
+        <header class="about-header">
+          <h1 class="about-heading">Case Studies</h1>
+          <i class="bi bi-arrow-down-right about-header-icon" aria-hidden="true"></i>
+        </header>
+
+        <div class="cs-grid">
+
+          <div class="cs-column">
+            <a href="/rivian" class="cs-item" id="cs-rivian-link">
+              <div class="cs-media cs-media--rivian cs-placeholder cs-placeholder--landscape">
+                <div class="cs-card-media-inner cs-card-media-inner--rivian">
+                  <div class="cs-media__frame">
+                    <video autoplay loop muted playsinline preload="auto" aria-label="Rivian collision warning UI animation">
+                      <source src="images/case-studies/rivian-collision-ani.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+                <div class="cs-card-hover" aria-hidden="true">
+                  <div class="cs-card-hover-main">
+                    <p class="cs-card-hover-eyebrow">RIVIAN</p>
+                    <div class="cs-card-hover-headline-row">
+                      <p class="cs-card-hover-headline">Reducing Incidents on the Road Through Intelligent Dashboard Design</p>
+                      <i class="bi bi-arrow-right-short cs-card-hover-arrow"></i>
+                    </div>
+                  </div>
+                  <p class="cs-card-hover-category">Infotainment and Navigation</p>
+                </div>
+              </div>
+              <p class="cs-title p1-label">Rivian</p>
+              <p class="cs-subtitle p2">Infotainment and Navigation</p>
+            </a>
+          </div>
+
+          <div class="cs-column">
+            <a href="/sleeper" class="cs-item" id="cs-sleeper-link">
+              <div class="cs-media cs-media--sleeper cs-placeholder cs-placeholder--square">
+                <div class="cs-card-media-inner cs-card-media-inner--sleeper">
+                  <div class="cs-sleeper-frame">
+                    <img src="images/case-studies/sleeper-strength-of-schedule.gif" alt="Sleeper strength of schedule feature">
+                  </div>
+                </div>
+                <div class="cs-card-hover" aria-hidden="true">
+                  <div class="cs-card-hover-main">
+                    <p class="cs-card-hover-eyebrow">SLEEPER</p>
+                    <div class="cs-card-hover-headline-row">
+                      <p class="cs-card-hover-headline">Surfacing Critical Contract Data in Sleeper's Dynasty Workflow</p>
+                      <i class="bi bi-arrow-right-short cs-card-hover-arrow"></i>
+                    </div>
+                  </div>
+                  <p class="cs-card-hover-category">Fantasy Sports</p>
+                </div>
+              </div>
+              <p class="cs-title p1-label">Sleeper</p>
+              <p class="cs-subtitle p2">Fantasy Sports</p>
+            </a>
+          </div>
+
+          <div class="cs-column">
+            <a href="/snowlabs" class="cs-item" id="cs-snowlabs-link">
+              <div class="cs-media cs-media--snowlabs cs-placeholder cs-placeholder--landscape">
+                <div class="cs-card-media-inner">
+                  <img src="images/case-studies/snowlabs-banner.jpg" alt="SnowLabs trip planning and snowboarding project">
+                </div>
+                <div class="cs-card-hover" aria-hidden="true">
+                  <div class="cs-card-hover-main">
+                    <p class="cs-card-hover-eyebrow">SNOWLABS</p>
+                    <div class="cs-card-hover-headline-row">
+                      <p class="cs-card-hover-headline">Planning Snowboard Trips Through Playable Resort Previews</p>
+                      <i class="bi bi-arrow-right-short cs-card-hover-arrow"></i>
+                    </div>
+                  </div>
+                  <p class="cs-card-hover-category">Trip Planning and Snowboarding</p>
+                </div>
+              </div>
+              <p class="cs-title p1-label">SnowLabs</p>
+              <p class="cs-subtitle p2">Trip Planning and Snowboarding</p>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ══ PAGE: ABOUT ══ -->
+  <div id="page-about" class="page-section hidden">
+
+    <section class="about-page">
+      <div class="about-inner">
+
+        <header class="about-header">
+          <h1 class="about-heading">About me</h1>
+          <i class="bi bi-arrow-down-right about-header-icon" aria-hidden="true"></i>
+        </header>
+
+        <div class="about-grid">
+
+          <div class="about-visual">
+            <div class="about-photo-wrap">
+              <div class="about-photo-inner">
+                <img src="images/home/about/evan-portrait.webp" class="about-photo" alt="Portrait of Evan Tang" loading="eager">
+              </div>
+            </div>
+          </div>
+
+          <div class="about-content">
+            <div class="about-toggle-switch" id="about-toggle-switch" role="tablist" aria-label="About sections">
+              <div class="about-toggle-indicator" id="about-toggle-indicator"></div>
+              <button type="button" class="about-tab p2 is-active" role="tab" aria-selected="true" aria-controls="about-panel-who" id="about-tab-who" data-panel="who">So who am I?</button>
+              <button type="button" class="about-tab p2" role="tab" aria-selected="false" aria-controls="about-panel-hiring" id="about-tab-hiring" data-panel="hiring">If you're hiring</button>
+              <button type="button" class="about-tab p2" role="tab" aria-selected="false" aria-controls="about-panel-team" id="about-tab-team" data-panel="team">Me in a team</button>
+              <div class="about-toggle-line" aria-hidden="true"></div>
+            </div>
+
+            <div class="about-panel is-active" id="about-panel-who" role="tabpanel" aria-labelledby="about-tab-who">
+              <p class="about-bio">I'm Evan, a <span class="about-highlight">product designer</span> who bridges <span class="about-highlight">user needs</span> and <span class="about-highlight">business goals.</span> With a background in interaction design and product thinking, I help companies reduce friction, boost engagement, and ship products that solve real user needs.</p>
+              <p class="about-bio">Ever since I was a kid, I've had a creative side that needed to be expressed (building public Minecraft server maps and resource packs). That enthusiasm for learning, creating, and problem-solving still drives me today. I thrive on turning complex challenges into intuitive, engaging experiences.</p>
+              <p class="about-bio">Let's connect if you need a designer who thinks strategically, communicates clearly, and delivers practical, buildable solutions.</p>
+            </div>
+
+            <div class="about-panel" id="about-panel-hiring" role="tabpanel" aria-labelledby="about-tab-hiring" hidden>
+              <p class="about-bio">I work best in messy, unclear problem spaces where there isn't an obvious solution yet. I use UX research techniques to understand what actually matters instead of relying on assumptions or opinions, and I translate that into clear product direction.</p>
+              <p class="about-bio">I care about both structure and detail, including how information is organized, how interfaces feel to use, and how small decisions like spacing, hierarchy, and typography affect final designs. I also focus on execution, making sure designs are practical to build and hold up in real use cases.</p>
+              <p class="about-bio">On the collaboration side, I adapt quickly to new workplace design processes and tools. I focus on ensuring my design decisions are easy to understand, feasible to build, and aligned with meaningful business goals.</p>
+            </div>
+
+            <div class="about-panel" id="about-panel-team" role="tabpanel" aria-labelledby="about-tab-team" hidden>
+              <p class="about-bio">I work closely with PMs, engineers, and other designers to keep work clear and moving. I share ideas early, even when they're rough, so feedback happens throughout the process instead of only at the end. I keep people aligned on what I'm working on, what decisions are being made, and what might be blocked or at risk.</p>
+              <p class="about-bio">I also put effort into making design files easy to understand, with clear structure, annotations, and context, so handoffs don't turn into back-and-forth confusion. A big part of my process is thinking through problems and technical constraints early, so the team can move with fewer surprises and less rework.</p>
+            </div>
+
+            <img src="images/home/about/signature-white.avif" class="about-signature" alt="Evan Tang signature" loading="lazy">
+          </div>
+
+        </div>
+
+        <div class="about-scroll">
+          <div class="scroll-indicator" aria-hidden="true">
+            <div class="scroll-chevron"></div>
+            <div class="scroll-chevron"></div>
+            <div class="scroll-chevron"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  </div><!-- /#pages -->
+
+  <!-- ── Lightbox ── -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-overlay" id="lightbox-overlay"></div>
+    <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <button class="lightbox-next" id="lightbox-next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+  </div>
+
+  <script>
+    window.addEventListener('pageshow', function() { var f = document.getElementById('transition-flash'); f.style.transition = 'none'; f.style.opacity = '1'; setTimeout(function() { f.style.transition = 'opacity 0.5s ease-out'; f.style.opacity = '0'; }, 50); });
+  </script>
+
+  <!-- ── Pill nav indicator ── -->
+  <script>
+    (function () {
+      const pill = document.getElementById('nav-pill');
+      const indicator = document.getElementById('pill-indicator');
+      const tabs = pill.querySelectorAll('.nav-tab');
+
+      function moveIndicator(tab) {
+        const pillRect = pill.getBoundingClientRect();
+        const tabRect = tab.getBoundingClientRect();
+        indicator.style.left = (tabRect.left - pillRect.left) + 'px';
+        indicator.style.width = tabRect.width + 'px';
+      }
+
+      const activeTab = pill.querySelector('.nav-tab.active');
+      if (activeTab) {
+        indicator.style.transition = 'none';
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            moveIndicator(activeTab);
+            indicator.style.transition = 'left 0.3s cubic-bezier(0.25,1,0.5,1), width 0.3s cubic-bezier(0.25,1,0.5,1)';
+          });
+        });
+      }
+
+      const pages = {
+        home:  document.getElementById('page-home'),
+        'case-studies': document.getElementById('page-case-studies'),
+        about: document.getElementById('page-about')
+      };
+
+      function normalizeTab(tab) {
+        return tab === 'work' ? 'case-studies' : tab;
+      }
+
+      var PAGE_FADE_MS = 300;
+      var isTransitioning = false;
+
+      function getCurrentTab() {
+        return Object.keys(pages).find(function (key) {
+          return !pages[key].classList.contains('hidden');
+        });
+      }
+
+      function showPage(tabName) {
+        Object.keys(pages).forEach(function (key) {
+          if (key === tabName) {
+            pages[key].classList.remove('hidden');
+          } else {
+            pages[key].classList.add('hidden');
+          }
+        });
+      }
+
+      function navigateTo(tabName, pushState, animate) {
+        tabName = normalizeTab(tabName);
+        if (pushState === undefined) pushState = true;
+        if (animate === undefined) animate = true;
+
+        var currentTab = getCurrentTab();
+        if (currentTab === tabName || isTransitioning) return;
+
+        tabs.forEach(function (t) { t.classList.remove('active'); });
+        var activeTabEl = pill.querySelector('[data-tab="' + tabName + '"]');
+        if (activeTabEl) {
+          activeTabEl.classList.add('active');
+          moveIndicator(activeTabEl);
+        }
+
+        if (!animate) {
+          showPage(tabName);
+          window.scrollTo(0, 0);
+          if (pushState) {
+            history.pushState({ tab: tabName }, '', tabName === 'home' ? '/' : '/' + tabName);
+          }
+          return;
+        }
+
+        isTransitioning = true;
+        var outgoing = pages[currentTab];
+        var incoming = pages[tabName];
+
+        outgoing.style.opacity = '0';
+
+        setTimeout(function () {
+          outgoing.classList.add('hidden');
+          outgoing.style.opacity = '';
+
+          incoming.classList.remove('hidden');
+          incoming.style.opacity = '0';
+          window.scrollTo(0, 0);
+
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              incoming.style.opacity = '1';
+              setTimeout(function () {
+                incoming.style.opacity = '';
+                isTransitioning = false;
+              }, PAGE_FADE_MS);
+            });
+          });
+
+          if (pushState) {
+            history.pushState({ tab: tabName }, '', tabName === 'home' ? '/' : '/' + tabName);
+          }
+        }, PAGE_FADE_MS);
+      }
+
+      // Init from URL on load
+      var validTabs = ['home', 'case-studies', 'about'];
+      var path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+      var tabParam = new URLSearchParams(window.location.search).get('tab');
+
+      if (/^(portfolio|index)\.html$/i.test(path) || path === '') {
+        path = tabParam && validTabs.indexOf(normalizeTab(tabParam)) !== -1
+          ? normalizeTab(tabParam)
+          : 'home';
+      } else {
+        path = normalizeTab(path);
+      }
+
+      var initTab = validTabs.indexOf(path) !== -1 ? path : 'home';
+      navigateTo(initTab, false, false);
+
+      // Tab + footer page links
+      document.querySelectorAll('a[data-tab]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          navigateTo(link.dataset.tab);
+        });
+      });
+
+      // Browser back/forward
+      window.addEventListener('popstate', function (e) {
+        if (e.state && e.state.tab) {
+          navigateTo(normalizeTab(e.state.tab), false, true);
+        }
+      });
+    })();
+  </script>
+
+  <!-- ── About tab switcher ── -->
+  <script>
+    (function () {
+      var switchEl = document.getElementById('about-toggle-switch');
+      var indicator = document.getElementById('about-toggle-indicator');
+      if (!switchEl || !indicator) return;
+
+      var tabs = switchEl.querySelectorAll('.about-tab');
+      var panels = document.querySelectorAll('.about-panel');
+
+      function repositionIndicator() {
+        var page = document.getElementById('page-about');
+        if (page && page.classList.contains('hidden')) return;
+
+        var active = switchEl.querySelector('.about-tab.is-active');
+        if (!active) return;
+
+        var switchRect = switchEl.getBoundingClientRect();
+        var tabRect = active.getBoundingClientRect();
+        if (!tabRect.width) return;
+
+        indicator.style.left = (tabRect.left - switchRect.left) + 'px';
+        indicator.style.width = tabRect.width + 'px';
+      }
+
+      function activateTab(tab) {
+        var panelName = tab.dataset.panel;
+
+        tabs.forEach(function (t) {
+          var isActive = t === tab;
+          t.classList.toggle('is-active', isActive);
+          t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        panels.forEach(function (panel) {
+          var isActive = panel.id === 'about-panel-' + panelName;
+          panel.classList.toggle('is-active', isActive);
+          panel.hidden = !isActive;
+        });
+
+        repositionIndicator();
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          activateTab(tab);
+        });
+      });
+
+      indicator.style.transition = 'none';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          repositionIndicator();
+          indicator.style.transition = 'left 0.3s cubic-bezier(0.25,1,0.5,1), width 0.3s cubic-bezier(0.25,1,0.5,1)';
+        });
+      });
+
+      window.addEventListener('resize', repositionIndicator);
+
+      document.querySelectorAll('[data-tab="about"]').forEach(function (link) {
+        link.addEventListener('click', function () {
+          setTimeout(repositionIndicator, 350);
+        });
+      });
+    })();
+  </script>
+
+  <!-- ── Border orbit animation on pill hover ── -->
+  <script>
+    (function () {
+      const pill = document.getElementById('nav-pill');
+      const indicator = document.getElementById('pill-indicator');
+      let angle = 45;
+      let rafId = null;
+      let hovering = false;
+
+      function step() {
+        angle = (angle + 2) % 360;
+        indicator.style.setProperty('--border-angle', angle + 'deg');
+        if (hovering) {
+          rafId = requestAnimationFrame(step);
+        } else {
+          rafId = null;
+        }
+      }
+
+      var tabs = pill.querySelectorAll('.nav-tab');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('mouseenter', function () {
+          if (tab.classList.contains('active')) {
+            hovering = true;
+            if (!rafId) rafId = requestAnimationFrame(step);
+          }
+        });
+        tab.addEventListener('mouseleave', function () {
+          hovering = false;
+        });
+      });
+    })();
+  </script>
+
+  <!-- ── Profile card toggle + confetti + avatar cycle ── -->
+  <script>
+    (function () {
+      const btn = document.getElementById('pill-avatar-btn');
+      const avatarStack = document.getElementById('pill-avatar-stack');
+      const card = document.getElementById('profile-card');
+      const confettiLayer = document.getElementById('nav-confetti-layer');
+      const colors = ['#f5a623', '#4ade80', '#60a5fa', '#f472b6', '#facc15', '#a78bfa', '#fb7185', '#34d399'];
+
+      const PFP_PATH = 'images/home/profile-pics/';
+      const PFP_IMAGES = [
+        'evan-pfp.avif',
+        'robin-manga-pfp.png',
+        'chopper-pfp.jpg',
+        'piplup-pfp.jpg',
+        'jeff-dolphin-pfp.jpg'
+      ];
+      const PFP_FADE_MS = 120;
+
+      let pfpIndex = 0;
+      let pfpTransitioning = false;
+
+      function launchConfetti() {
+        for (let i = 0; i < 28; i++) {
+          const p = document.createElement('div');
+          p.className = 'confetti-particle';
+          const size = 5 + Math.random() * 4;
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 20 + Math.random() * 35;
+          p.style.width = size + 'px';
+          p.style.height = (size * (Math.random() < 0.5 ? 1 : 0.55)) + 'px';
+          p.style.borderRadius = Math.random() < 0.4 ? '50%' : '2px';
+          p.style.setProperty('--cx', Math.cos(angle) * dist + 'px');
+          p.style.setProperty('--cy', Math.sin(angle) * dist + 'px');
+          p.style.setProperty('--cr', (Math.random() * 540 - 270) + 'deg');
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+          p.style.left = '0';
+          p.style.top = '0';
+          p.style.animationDuration = (0.65 + Math.random() * 0.45) + 's';
+          confettiLayer.appendChild(p);
+          p.addEventListener('animationend', function () { p.remove(); });
+        }
+      }
+
+      function crossfadeStack(stack, nextSrc) {
+        const layers = stack.querySelectorAll('.avatar-stack-img');
+        const top = stack.querySelector('.avatar-stack-img.is-top');
+        const bottom = top === layers[0] ? layers[1] : layers[0];
+        bottom.src = nextSrc;
+        bottom.alt = top.alt;
+        void bottom.offsetWidth;
+        top.classList.remove('is-top');
+        bottom.classList.add('is-top');
+      }
+
+      function cycleProfilePic() {
+        if (pfpTransitioning) return;
+        pfpTransitioning = true;
+
+        pfpIndex = (pfpIndex + 1) % PFP_IMAGES.length;
+        const nextSrc = PFP_PATH + PFP_IMAGES[pfpIndex];
+        if (avatarStack) crossfadeStack(avatarStack, nextSrc);
+
+        setTimeout(function () {
+          pfpTransitioning = false;
+        }, PFP_FADE_MS);
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        launchConfetti();
+        const wasOpen = card.classList.contains('visible');
+        card.classList.toggle('visible');
+        if (wasOpen) cycleProfilePic();
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!card.contains(e.target) && !btn.contains(e.target)) {
+          card.classList.remove('visible');
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') card.classList.remove('visible');
+      });
+    })();
+  </script>
+
+  <!-- ── Star field ── -->
   <script>
     (function () {
       const root = document.documentElement;
       const styles = getComputedStyle(root);
       const container = document.getElementById('stars');
       const count = parseInt(styles.getPropertyValue('--star-count'), 10) || 180;
-      const driftMax = parseFloat(styles.getPropertyValue('--drift-distance')) || 7;
-      const durMin = parseFloat(styles.getPropertyValue('--drift-duration-min')) || 28;
-      const durMax = parseFloat(styles.getPropertyValue('--drift-duration-max')) || 56;
+      const driftMax = parseFloat(styles.getPropertyValue('--drift-distance')) || 30;
+      const durMin = parseFloat(styles.getPropertyValue('--drift-duration-min')) || 12;
+      const durMax = parseFloat(styles.getPropertyValue('--drift-duration-max')) || 24;
 
       const rnd = (min, max) => min + Math.random() * (max - min);
-
       const fragment = document.createDocumentFragment();
 
       for (let i = 0; i < count; i++) {
         const star = document.createElement('span');
         star.className = 'star';
 
-        const size = Math.random() * 3 + 1.2
+        const size = Math.random() * 3 + 1.2;
         const opacity = Math.random() * 0.35 + 0.15;
 
         star.style.left = `${Math.random() * 100}%`;
@@ -278,84 +2015,9 @@
 
       container.appendChild(fragment);
     })();
-
-    (function () {
-      const bursts = document.getElementById('bursts');
-      const SPREAD_SCALE = 2;
-      const PARTICLE_COUNT = 36;
-
-      /* Tune burst feel here */
-      const TIMING = {
-        BURST_MS: 1300,
-        MOVE_MS: 1300,
-        FADE_DELAY_MAX: 200,
-        FADE_DURATION_MIN: 850,
-        FADE_DURATION_MAX: 1350,
-      };
-      const CLEANUP_MS = Math.max(
-        TIMING.BURST_MS,
-        TIMING.FADE_DELAY_MAX + TIMING.FADE_DURATION_MAX
-      );
-
-      const PALETTE = [
-        { color: 'rgba(255,255,255,0.95)', glow: '0 0 6px rgba(255,255,255,0.9), 0 0 18px rgba(255,255,255,0.35)' },
-        { color: 'rgba(80,170,255,0.95)', glow: '0 0 6px rgba(80,170,255,0.8), 0 0 20px rgba(80,170,255,0.35)' },
-        { color: 'rgba(170,90,255,0.9)', glow: '0 0 6px rgba(170,90,255,0.75), 0 0 20px rgba(170,90,255,0.35)' },
-        { color: 'rgba(90,255,180,0.9)', glow: '0 0 6px rgba(90,255,180,0.75), 0 0 18px rgba(90,255,180,0.3)' },
-      ];
-
-      const rnd = (min, max) => min + Math.random() * (max - min);
-      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-      function emitFirework(burst) {
-        const distMin = 10 * SPREAD_SCALE;
-        const distMax = 40 * SPREAD_SCALE;
-        const travelRange = distMax - distMin;
-
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const travel = rnd(distMin, distMax);
-          const reach = (travel - distMin) / travelRange;
-          const tone = pick(PALETTE);
-
-          const p = document.createElement('span');
-          p.className = 'burst-particle';
-          p.style.setProperty('--size', `${rnd(6, 12)}px`);
-          p.style.setProperty('--color', tone.color);
-          p.style.setProperty('--glow', tone.glow);
-          p.style.setProperty('--tx', `${Math.cos(angle) * travel}px`);
-          p.style.setProperty('--ty', `${Math.sin(angle) * travel}px`);
-          const fadeDelay = Math.round(rnd(0, TIMING.FADE_DELAY_MAX));
-          const fadeDuration = Math.round(rnd(TIMING.FADE_DURATION_MIN, TIMING.FADE_DURATION_MAX));
-
-          p.style.setProperty('--move-duration', `${fadeDuration}ms`);
-          p.style.setProperty('--fade-duration', `${fadeDuration}ms`);
-          p.style.setProperty('--fade-delay', `${fadeDelay}ms`);
-          p.style.setProperty('--overshoot', rnd(1.1, 1.18).toFixed(3));
-          p.style.setProperty('--peak-opacity', 1 - reach * 0.22);
-          p.style.setProperty('--scale-end', 0.28 + reach * 0.08);
-          burst.appendChild(p);
-        }
-      }
-
-      document.addEventListener('click', (e) => {
-        const burst = document.createElement('div');
-        burst.className = 'burst';
-        burst.style.setProperty('--x', `${e.clientX}px`);
-        burst.style.setProperty('--y', `${e.clientY}px`);
-        burst.style.setProperty('--burst-duration', `${TIMING.BURST_MS}ms`);
-
-        const wave = document.createElement('div');
-        wave.className = 'burst-shockwave';
-        burst.appendChild(wave);
-
-        bursts.appendChild(burst);
-        emitFirework(burst);
-
-        setTimeout(() => burst.remove(), CLEANUP_MS);
-      });
-    })();
   </script>
+
+  <!-- ── Comets ── -->
   <script>
     (function () {
       const MOVE_MS = 1800;
@@ -390,15 +2052,15 @@
         }
         @keyframes comet-move {
           from { transform: rotate(-35deg) translate(0, 0); }
-          to { transform: rotate(-35deg) translate(-160vw, 0); }
+          to   { transform: rotate(-35deg) translate(-160vw, 0); }
         }
         @keyframes comet-fade-in {
           from { opacity: 0; }
-          to { opacity: 1; }
+          to   { opacity: 1; }
         }
         @keyframes comet-fade-out {
           from { opacity: 1; }
-          to { opacity: 0; }
+          to   { opacity: 0; }
         }
       `;
       document.head.appendChild(style);
@@ -439,6 +2101,7 @@
       scheduleNext();
     })();
   </script>
+
   <script>
     (function () {
       const SIZE_DEFAULT = '15px';
@@ -454,9 +2117,9 @@
         width: SIZE_DEFAULT,
         height: SIZE_DEFAULT,
         borderRadius: '50%',
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: BG_DEFAULT,
         pointerEvents: 'none',
-        zIndex: '9999',
+        zIndex: '99999',
         boxShadow: SHADOW_DEFAULT,
         left: '0',
         top: '0',
@@ -492,22 +2155,75 @@
       });
     })();
   </script>
+
+  <!-- ── Lightbox JS ── -->
   <script>
     (function () {
-      const clock = document.createElement('div');
-      clock.className = 'p2';
-      Object.assign(clock.style, {
-        position: 'fixed',
-        bottom: '24px',
-        right: '24px',
-        zIndex: '10',
-        color: 'rgba(255, 255, 255, 0.5)',
-        letterSpacing: '0.06em',
-        pointerEvents: 'none',
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const overlay = document.getElementById('lightbox-overlay');
+      const closeBtn = document.getElementById('lightbox-close');
+      const prevBtn = document.getElementById('lightbox-prev');
+      const nextBtn = document.getElementById('lightbox-next');
+
+      let images = [];
+      let index = 0;
+
+      function open(srcs, i) {
+        images = srcs;
+        index = i;
+        lightboxImg.src = images[index];
+        lightbox.classList.add('active');
+      }
+
+      function close() {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+      }
+
+      function showPrev() {
+        index = (index - 1 + images.length) % images.length;
+        lightboxImg.src = images[index];
+      }
+
+      function showNext() {
+        index = (index + 1) % images.length;
+        lightboxImg.src = images[index];
+      }
+
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', close);
+      prevBtn.addEventListener('click', showPrev);
+      nextBtn.addEventListener('click', showNext);
+
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
       });
+
+      document.querySelectorAll('.project-images').forEach(function (grid) {
+        const thumbs = Array.from(grid.querySelectorAll('.project-thumb'));
+        const srcs = thumbs.map(function (t) { return t.src; });
+        thumbs.forEach(function (thumb, i) {
+          thumb.addEventListener('click', function () { open(srcs, i); });
+        });
+      });
+    })();
+  </script>
+
+  <script src="js/component-footer.js"></script>
+  <script src="js/component-tagline.js"></script>
+  <script src="js/component-explore.js"></script>
+
+  <script>
+    (function () {
+      var clock = document.createElement('div');
+      clock.className = 'site-chrome site-chrome-clock p2';
       document.body.appendChild(clock);
 
-      function update() {
+      function updateClock() {
         clock.textContent = new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
@@ -516,95 +2232,57 @@
         });
       }
 
-      update();
-      setInterval(update, 1000);
+      updateClock();
+      setInterval(updateClock, 1000);
     })();
   </script>
+
   <script>
     (function () {
       if (!sessionStorage.getItem('siteStartTime')) {
         sessionStorage.setItem('siteStartTime', String(Date.now()));
       }
 
-      const startTime = Number(sessionStorage.getItem('siteStartTime'));
-      const timer = document.createElement('div');
-      timer.className = 'p2';
-      Object.assign(timer.style, {
-        position: 'fixed',
-        bottom: '52px',
-        left: '24px',
-        zIndex: '10',
-        color: 'rgba(255, 255, 255, 0.5)',
-        letterSpacing: '0.06em',
-        pointerEvents: 'none',
-      });
-      const label = document.createElement('span');
+      var startTime = Number(sessionStorage.getItem('siteStartTime'));
+      var timer = document.createElement('div');
+      timer.className = 'site-chrome site-chrome-session p2';
+
+      var label = document.createElement('span');
+      label.className = 'site-chrome-session-label';
       label.textContent = 'SESSION TIME';
-      Object.assign(label.style, {
-        letterSpacing: 'normal',
-        marginRight: '8px',
-      });
 
-      const time = document.createElement('span');
-      Object.assign(time.style, {
-        letterSpacing: '0.06em',
-      });
-
+      var time = document.createElement('span');
       timer.appendChild(label);
       timer.appendChild(time);
       document.body.appendChild(timer);
 
-      function update() {
-        const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        const hours = Math.floor(elapsed / 3600);
-        const minutes = Math.floor((elapsed % 3600) / 60);
-        const seconds = elapsed % 60;
-        time.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      function updateTimer() {
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        var hours = Math.floor(elapsed / 3600);
+        var minutes = Math.floor((elapsed % 3600) / 60);
+        var seconds = elapsed % 60;
+        time.textContent =
+          String(hours).padStart(2, '0') + ':' +
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
       }
 
-      update();
-      setInterval(update, 1000);
+      updateTimer();
+      setInterval(updateTimer, 1000);
     })();
   </script>
+
   <script>
     (function () {
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes pulse-dot {
-          0%, 100% { opacity: 1; }
-          50%      { opacity: 0.3; }
-        }
-      `;
-      document.head.appendChild(style);
+      var status = document.createElement('div');
+      status.className = 'site-chrome site-chrome-status p2';
 
-      const status = document.createElement('div');
-      status.className = 'p2';
-      Object.assign(status.style, {
-        position: 'fixed',
-        bottom: '24px',
-        left: '24px',
-        zIndex: '10',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '8px',
-        pointerEvents: 'none',
-        color: 'rgba(255, 255, 255, 0.5)',
-        letterSpacing: 'normal',
-      });
+      var dot = document.createElement('span');
+      dot.className = 'site-chrome-status-dot';
+      dot.setAttribute('aria-hidden', 'true');
 
-      const dot = document.createElement('span');
-      Object.assign(dot.style, {
-        width: '8px',
-        height: '8px',
-        borderRadius: '50%',
-        background: '#4ade80',
-        display: 'inline-block',
-        flexShrink: '0',
-        animation: 'pulse-dot 1.5s ease-in-out infinite',
-      });
-
-      const text = document.createElement('span');
-      text.textContent = 'Currently building interactive experiences in Cursor.';
+      var text = document.createElement('span');
+      text.textContent = 'Currently building interactive experiences with Cursor.';
 
       status.appendChild(dot);
       status.appendChild(text);
@@ -613,7 +2291,18 @@
   </script>
 
   <script>
-    window.addEventListener('pageshow', function() { var f = document.getElementById('transition-flash'); f.style.transition = 'none'; f.style.opacity = '0'; });
+    (function () {
+      var isLocal = location.protocol === 'file:' || /\.html$/i.test(location.pathname) || location.search.indexOf('tab=') !== -1;
+      var rivianLink = document.getElementById('cs-rivian-link');
+      if (isLocal && rivianLink) rivianLink.href = 'rivian.html';
+
+      var sleeperLink = document.getElementById('cs-sleeper-link');
+      if (isLocal && sleeperLink) sleeperLink.href = 'sleeper.html';
+
+      var snowlabsLink = document.getElementById('cs-snowlabs-link');
+      if (isLocal && snowlabsLink) snowlabsLink.href = 'snowlabs.html';
+    })();
   </script>
+
 </body>
 </html>

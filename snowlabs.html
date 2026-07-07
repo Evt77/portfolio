@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowLabs — Case Study · Evan Tang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/case-studies.css">
+  <link rel="stylesheet" href="css/component-explore.css">
+  <link rel="stylesheet" href="css/component-footer.css">
+  <link rel="stylesheet" href="css/component-tagline.css">
+  <style>
+    body {
+      background: #f5f0eb;
+      color: #1a1d21;
+    }
+
+    .cs-page {
+      width: min(1100px, 88vw);
+      margin: 0 auto;
+      padding: 0 0 6rem;
+    }
+
+    .cs-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cs-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #545454;
+      transition: color 0.2s ease;
+      line-height: 20px;
+    }
+
+    .cs-nav-link i {
+      flex-shrink: 0;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 22px;
+      width: 22px;
+    }
+
+    .cs-nav-link:hover {
+      color: #1a1d21;
+    }
+
+    .cs-banner {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Fixed bottom chrome ── */
+    .site-chrome {
+      position: fixed;
+      z-index: 350;
+      pointer-events: none;
+      color: rgba(26, 29, 33, 0.5);
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .site-chrome.site-chrome--on-dark {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .site-chrome-clock {
+      bottom: 24px;
+      right: 24px;
+    }
+
+    .site-chrome-session {
+      bottom: 52px;
+      left: 24px;
+    }
+
+    .site-chrome-session-label {
+      letter-spacing: normal;
+      margin-right: 8px;
+    }
+
+    .site-chrome-status {
+      bottom: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: normal;
+    }
+
+    .site-chrome-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: site-chrome-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes site-chrome-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    @media (max-width: 767px) {
+      .site-chrome {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="case-study-page">
+  <main class="cs-page">
+    <nav class="cs-nav" aria-label="Case study navigation">
+      <a href="/case-studies" class="cs-nav-link p2" data-local-href="index.html?tab=case-studies"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> Back to projects</a>
+      <div class="cs-project-switcher" aria-label="Case study projects">
+        <a href="/rivian" class="cs-project-dot" aria-label="Rivian" data-local-href="rivian.html">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-rivian-small.jpg" alt="">
+        </a>
+        <a href="/sleeper" class="cs-project-dot" aria-label="Sleeper" data-local-href="sleeper.html">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-sleeper-small.jpg" alt="">
+        </a>
+        <span class="cs-project-dot is-active" aria-current="page" aria-label="SnowLabs">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-snowlabs-small.jpg" alt="">
+        </span>
+      </div>
+    </nav>
+
+    <img
+      src="images/case-study-pages/snowlabs/banner.jpg"
+      class="cs-banner"
+      alt="SnowLabs trip planning and snowboarding project banner"
+      loading="eager">
+
+    <article class="cs-walkthrough" aria-label="Case study content">
+      <h1 class="cs-h1">Planning Snowboard Trips Through Playable Resort Previews</h1>
+
+      <section class="cs-block">
+        <p class="cs-p1">She has never been on a snowboard before. She books a weekend trip to Lake Tahoe, picks a resort from a Google search and a few Reddit threads, and shows up Saturday morning with rented gear and no real idea what she is walking into. The trails look steeper than the photos suggested. The weather is worse than the forecast said. Two runs in, she is frustrated, cold, and wondering if snowboarding is just not for her.</p>
+        <p class="cs-p1">It was not the mountain that failed her. It was the planning experience. She had access to maps, reviews, and weather data, but none of it prepared her for what the mountain would actually feel like under her feet.</p>
+        <p class="cs-p1">SnowLabs was built to close that gap. Not by giving beginners more data, but by letting them experience the mountain before they ever leave home.</p>
+      </section>
+
+      <div class="cs-intro-row">
+        <section class="cs-block">
+          <h3 class="cs-h3">THE PROBLEM</h3>
+          <p class="cs-p1">Existing trip planning tools give beginners data. Maps. Reviews. Weather forecasts. What they do not give beginners is confidence. There is a fundamental difference between knowing a trail is rated intermediate and knowing whether you personally are ready for it.</p>
+          <p class="cs-p1">That gap between information and experience is where hesitation lives. And hesitation, for a first-time snowboarder, often means abandoning the hobby before it ever starts.</p>
+          <p class="cs-p1">The question driving this project was simple: what if you could experience the mountain before you ever booked the trip?</p>
+        </section>
+
+        <aside class="cs-meta-card" aria-label="Project details">
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">PRODUCT</h3>
+            <p class="cs-p2">Browser travel planning service</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">FOCUS</h3>
+            <p class="cs-p2">Helping beginner snowboarders build confidence before their first trip</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">MY ROLE</h3>
+            <p class="cs-p2">End to end Product design, Game design, Prototyping, Development</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">TIMELINE</h3>
+            <p class="cs-p2">Two semesters, Sept 2022 - May 2023</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">NOTABLE</h3>
+            <p class="cs-p2">Taught myself Unity and C# from zero to build a playable prototype, consulted directly with a designer at Rockstar Games</p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">THE PIVOT</h3>
+        <p class="cs-p1">Five months into the project, I hit a wall. The original version of SnowLabs was a functional travel planner: enter a location, get weather forecasts, plan accordingly. It worked. It was also completely uninspired and solved nothing that existing tools did not already solve.</p>
+        <p class="cs-p1">I did not want to ship something forgettable. So I went looking for a different perspective.</p>
+        <p class="cs-p1">I reached out to game designers on LinkedIn and eventually connected with a designer at Rockstar Games. That conversation changed everything.</p>
+        <blockquote class="cs-quote">
+          <p class="cs-p1">"This project is a really cool opportunity to learn a new technical skill that makes you stand out as a UX Designer. And you love video games too so this could be a great chance to get into Game Design."</p>
+        </blockquote>
+        <p class="cs-p1">That was the spark. Instead of a predictive travel planner, SnowLabs became a playable experience, a hybrid of UX and game design that would let riders simulate what a trip might actually feel like before committing to it.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/snowlabs/old-project-idea.png"
+            alt="Early SnowLabs travel planner concept showing weather alerts on a map interface"
+            loading="lazy">
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">RESEARCH</h3>
+        <p class="cs-p1">To make sure the pivot was grounded in real needs and not just a passion project, I interviewed 30 snowboarders and skiers over four weeks. Three distinct archetypes emerged from those conversations.</p>
+        <div class="cs-card-row">
+          <div class="cs-insight-card">
+            <p class="cs-insight-card-title">The Beginner</p>
+            <p class="cs-p1">Excited but intimidated. With little snowboarding knowledge, beginners worried about accidentally choosing resorts that were too difficult. Their only current solutions involved hours of Googling or relying on friends who might not remember what beginner felt like.</p>
+          </div>
+          <div class="cs-insight-card">
+            <p class="cs-insight-card-title">The Expert</p>
+            <p class="cs-p1">Weekend regulars who knew every resort and route. They were not looking for basic information. They wanted smarter ways to optimize their trips.</p>
+          </div>
+          <div class="cs-insight-card">
+            <p class="cs-insight-card-title">The Loyalist</p>
+            <p class="cs-p1">Frequent riders who stuck to familiar resorts. They rarely ventured to new locations for fear of wasting a trip on a disappointing experience.</p>
+          </div>
+        </div>
+        <p class="cs-p1">The Beginner archetype drove the entire design direction. Their problem was not a lack of information. It was a lack of experiential preview, a way to know what a mountain would feel like before showing up unprepared.</p>
+        <p class="cs-p1">I used the Jobs to Be Done framework to map the full rider journey across all three archetypes. This clarified the product's core purpose: give riders confidence, choice, and a way to preview the experience before committing to it.</p>
+        <figure class="cs-figure-row cs-figure-row--3">
+          <img
+            src="images/case-study-pages/snowlabs/journey-map.png"
+            alt="Jobs to Be Done journey map for Tom, a beginner snowboarder"
+            loading="lazy">
+          <img
+            src="images/case-study-pages/snowlabs/journey-map2.png"
+            alt="Jobs to Be Done journey map for James, an expert snowboarder"
+            loading="lazy">
+          <img
+            src="images/case-study-pages/snowlabs/journey-map3.png"
+            alt="Jobs to Be Done journey map for Sarah, a loyalist snowboarder"
+            loading="lazy">
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">DESIGN AND DEVELOPMENT</h3>
+        <p class="cs-p1">This is the part of the project I am most proud of and the part that scared me most going in. Building a playable simulation meant learning Unity and C#, two tools I had never touched before.</p>
+        <p class="cs-p1">I documented my learning in real time, from secondary research and brainstorming in Mural to Unity terrain experiments and coding exercises. The boards and notes are not polished. That was intentional. They show how I actually think when I am learning something new: organized enough to make progress, messy enough to stay curious.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/snowlabs/mural-board.png"
+            alt="Mural board documenting Unity learning notes and SnowLabs brainstorming"
+            loading="lazy">
+        </figure>
+        <p class="cs-p1">Teaching myself a game engine while simultaneously designing a UX product was the hardest design challenge I have faced. It was also the most valuable. Understanding how Unity renders environments, how C# scripting drives dynamic conditions, and how game designers think about player experience gave me a fluency I could not have gotten any other way. I can now sit in a room with engineers and speak their language, not just describe what I want, but understand what it costs and what it takes to build.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">TESTING AND ITERATION</h3>
+        <p class="cs-p1">At the California College of the Arts 2023 Senior Showcase, I ran moderated usability tests with visitors attending the event. I guided participants without giving them answers and asked them to narrate their thought process out loud as they moved through the experience.</p>
+        <p class="cs-p1">One pattern showed up immediately and consistently. Testers were instinctively drawn to the center of the screen. Their eyes and their first interactions always landed there first, regardless of where I had placed the primary controls.</p>
+        <p class="cs-p1">The old design had the date selector centered and the difficulty filter options off to the side. Users were finding the calendar first and the filters second, which meant they were setting dates before they even knew what difficulty level they were filtering for. The workflow was backwards.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/snowlabs/navbar-old.gif"
+            alt="SnowLabs interface with date selector centered and difficulty filters off to the side"
+            loading="lazy">
+        </figure>
+        <p class="cs-p1">I repositioned the difficulty filter options to the center and moved the calendar to the right. I also simplified the menus to reduce unnecessary clicks on key interactions.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/snowlabs/navbar-new.gif"
+            alt="SnowLabs interface with difficulty filters centered and calendar moved to the right"
+            loading="lazy">
+        </figure>
+        <p class="cs-p1">The result was a more intuitive flow where users naturally filtered by difficulty first, then selected dates, which matched how they actually thought about planning a trip.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">FINAL DESIGN</h3>
+
+        <h4 class="cs-h4">Choosing a Resort</h4>
+        <p class="cs-p1">Users search by resort name or select from a curated list. Filters match resorts to skill level, and date selection directly influences the in-game conditions they will experience.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/snowlabs/choosing-a-ski-resort.gif"
+            alt="Animated SnowLabs interface showing resort search and skill-level filtering"
+            loading="lazy">
+        </figure>
+
+        <h4 class="cs-h4">Playing a Trail</h4>
+        <p class="cs-p1">After selecting a resort, users land on the trail results page. Changing the date dynamically updates in-game conditions. Selecting a date with heavy snowfall slightly impairs visibility, giving riders a realistic preview of trail difficulty before committing to the trip.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/snowlabs/playing-a-trail.gif"
+            alt="Animated SnowLabs trail results page with dynamic date and weather conditions"
+            loading="lazy">
+        </figure>
+
+        <h4 class="cs-h4">Gameplay</h4>
+        <p class="cs-p1">After choosing a trail, users enter the snowboarding simulation. The game mirrors the exact conditions of the date they selected. Dark skies, heavy snowfall, and reduced visibility are all rendered dynamically. Riders leave with a real sense of whether they are ready for that mountain on that day.</p>
+        <figure class="cs-media">
+          <video
+            class="cs-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            aria-label="SnowLabs snowboarding gameplay simulation with dynamic weather conditions">
+            <source src="images/case-study-pages/snowlabs/gameplay-preview.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">REFLECTION</h3>
+        <p class="cs-p1">SnowLabs started as a travel planner and became something I never expected to build: a playable UX product that required me to learn game development from scratch in the middle of a senior thesis.</p>
+        <p class="cs-p1">If I started over, I would begin learning Unity earlier in the process. Teaching myself a new tool while simultaneously trying to design and test meant that some of my early prototypes were limited by my technical ability rather than my design thinking. More runway with the engine would have meant more ambitious gameplay features in the final product.</p>
+        <p class="cs-p1">What this project taught me goes beyond SnowLabs specifically. Every project I take on, I want to understand the tools and constraints of the people building what I design. SnowLabs gave me that in the most direct way possible: I became the builder. I wrote the code. I rendered the terrain. I understood firsthand why certain design decisions are easy to implement and why others cost weeks of engineering time. That perspective makes me a better collaborator, a better communicator, and a better designer.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">NEXT STEPS</h3>
+        <ul class="cs-bullet-list">
+          <li class="cs-bullet-item">Expanding the resort library beyond the initial curated list to include real-time trail and weather data integration.</li>
+          <li class="cs-bullet-item">Building a mobile version of the experience for riders who plan trips on the go.</li>
+          <li class="cs-bullet-item">Adding a social layer where riders can share trail previews and trip plans with friends before committing to a resort together.</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    (function () {
+      var isLocal = location.protocol === 'file:' || /\.html$/i.test(location.pathname);
+      if (!isLocal) return;
+      document.querySelectorAll('[data-local-href]').forEach(function (el) {
+        el.href = el.getAttribute('data-local-href');
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var clock = document.createElement('div');
+      clock.className = 'site-chrome site-chrome-clock p2';
+      document.body.appendChild(clock);
+
+      function updateClock() {
+        clock.textContent = new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        });
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('siteStartTime')) {
+        sessionStorage.setItem('siteStartTime', String(Date.now()));
+      }
+
+      var startTime = Number(sessionStorage.getItem('siteStartTime'));
+      var timer = document.createElement('div');
+      timer.className = 'site-chrome site-chrome-session p2';
+
+      var label = document.createElement('span');
+      label.className = 'site-chrome-session-label';
+      label.textContent = 'SESSION TIME';
+
+      var time = document.createElement('span');
+      timer.appendChild(label);
+      timer.appendChild(time);
+      document.body.appendChild(timer);
+
+      function updateTimer() {
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        var hours = Math.floor(elapsed / 3600);
+        var minutes = Math.floor((elapsed % 3600) / 60);
+        var seconds = elapsed % 60;
+        time.textContent =
+          String(hours).padStart(2, '0') + ':' +
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var status = document.createElement('div');
+      status.className = 'site-chrome site-chrome-status p2';
+
+      var dot = document.createElement('span');
+      dot.className = 'site-chrome-status-dot';
+      dot.setAttribute('aria-hidden', 'true');
+
+      var text = document.createElement('span');
+      text.textContent = 'Currently building interactive experiences with Cursor.';
+
+      status.appendChild(dot);
+      status.appendChild(text);
+      document.body.appendChild(status);
+    })();
+  </script>
+
+  <script src="js/component-footer.js"></script>
+  <script src="js/component-tagline.js"></script>
+
+  <script>
+    (function () {
+      var CHROME_ZONE = 80;
+
+      function updateChromeTheme() {
+        var darkSections = [
+          document.getElementById('site-footer'),
+          document.getElementById('site-tagline'),
+        ];
+        var viewH = window.innerHeight;
+        var onDark = darkSections.some(function (el) {
+          if (!el) return false;
+          var rect = el.getBoundingClientRect();
+          return rect.top < viewH && rect.bottom > viewH - CHROME_ZONE;
+        });
+
+        document.querySelectorAll('.site-chrome').forEach(function (el) {
+          el.classList.toggle('site-chrome--on-dark', onDark);
+        });
+      }
+
+      window.addEventListener('scroll', updateChromeTheme, { passive: true });
+      window.addEventListener('resize', updateChromeTheme);
+      updateChromeTheme();
+    })();
+  </script>
+
+  <script src="js/component-explore.js"></script>
+</body>
+</html>

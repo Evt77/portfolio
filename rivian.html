@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rivian — Case Study · Evan Tang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/case-studies.css">
+  <link rel="stylesheet" href="css/component-explore.css">
+  <link rel="stylesheet" href="css/component-footer.css">
+  <link rel="stylesheet" href="css/component-tagline.css">
+  <style>
+    body {
+      background: #f5f0eb;
+      color: #1a1d21;
+    }
+
+    .cs-page {
+      width: min(1100px, 88vw);
+      margin: 0 auto;
+      padding: 0 0 6rem;
+    }
+
+    .cs-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cs-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #545454;
+      transition: color 0.2s ease;
+      line-height: 20px;
+    }
+
+    .cs-nav-link i {
+      flex-shrink: 0;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 22px;
+      width: 22px;
+    }
+
+    .cs-nav-link:hover {
+      color: #1a1d21;
+    }
+
+    .cs-nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .cs-banner {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Fixed bottom chrome ── */
+    .site-chrome {
+      position: fixed;
+      z-index: 350;
+      pointer-events: none;
+      color: rgba(26, 29, 33, 0.5);
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .site-chrome.site-chrome--on-dark {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .site-chrome-clock {
+      bottom: 24px;
+      right: 24px;
+    }
+
+    .site-chrome-session {
+      bottom: 52px;
+      left: 24px;
+    }
+
+    .site-chrome-session-label {
+      letter-spacing: normal;
+      margin-right: 8px;
+    }
+
+    .site-chrome-status {
+      bottom: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: normal;
+    }
+
+    .site-chrome-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: site-chrome-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes site-chrome-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    /* Webflow mobile landscape + mobile portrait (≤767px) — hide clock, session, status */
+    @media (max-width: 767px) {
+      .site-chrome {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="case-study-page">
+  <main class="cs-page">
+    <nav class="cs-nav" aria-label="Case study navigation">
+      <a href="/case-studies" class="cs-nav-link p2" data-local-href="index.html?tab=case-studies"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> Back to projects</a>
+      <div class="cs-project-switcher" aria-label="Case study projects">
+        <span class="cs-project-dot is-active" aria-current="page" aria-label="Rivian">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-rivian-small.jpg" alt="">
+        </span>
+        <a href="/sleeper" class="cs-project-dot" aria-label="Sleeper" data-local-href="sleeper.html">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-sleeper-small.jpg" alt="">
+        </a>
+        <a href="/snowlabs" class="cs-project-dot" aria-label="SnowLabs" data-local-href="snowlabs.html">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-snowlabs-small.jpg" alt="">
+        </a>
+      </div>
+    </nav>
+
+    <img
+      src="images/case-study-pages/rivian/project-banner.jpg"
+      class="cs-banner"
+      alt="Rivian infotainment and navigation project banner"
+      loading="eager">
+
+    <article class="cs-walkthrough" aria-label="Case study content">
+      <h1 class="cs-h1">Reducing Incidents on the Road Through Intelligent Dashboard Design</h1>
+
+      <div class="cs-intro-row">
+        <section class="cs-block">
+          <h3 class="cs-h3">THE PROBLEM</h3>
+          <p class="cs-p1">Every 36 seconds, someone is involved in a vehicle crash in the United States. As EVs replace traditional cars, touchscreen dashboards are becoming the primary control surface, and a significant new source of driver distraction.</p>
+          <p class="cs-p1">Rivian's dashboard is genuinely innovative (as of 2025), but its information hierarchy creates dangerous moments of divided attention. Studies show that glancing away from the road for just 2 seconds doubles the chances of getting into a crash. The current layout can demand longer than that during driving scenarios.</p>
+          <p class="cs-p1">Beyond safety, this is a business problem. Distraction-related incidents carry real consequences for an automaker: liability exposure, reputational damage, and insurance friction. A safe hands-off interface is of the utmost importance.</p>
+        </section>
+
+        <aside class="cs-meta-card" aria-label="Project details">
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">PRODUCT</h3>
+            <p class="cs-p2">Navigation and infotainment dashboard</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">FOCUS</h3>
+            <p class="cs-p2">Creating safety-first features and systems for Rivian dashboards and infotainment screens</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">MY ROLE</h3>
+            <p class="cs-p2">Product design, Infotainment design, UX research, Prototyping, Motion design</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">TIMELINE</h3>
+            <p class="cs-p2">4-5 weeks</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">NOTABLE</h3>
+            <p class="cs-p2">Received feedback directly from Rivian designers and engineers</p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">MY ROLE AND CONTEXT</h3>
+        <p class="cs-p1">This was a self-initiated redesign project. I identified the safety problem independently, conducted my own research, and designed and iterated on solutions. To pressure-test the work against real-world constraints, I reached out to four Rivian designers and developers to participate in testing sessions and provide feedback on design decisions, technical feasibility, and adherence to Rivian's established design system.</p>
+        <p class="cs-p2">Timeline: 6 weeks Tools: Figma, Spline, After Effects</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">RESEARCH</h3>
+        <p class="cs-p1">Over the first four weeks I conducted 12 user interviews with EV drivers, audited the safety interaction patterns of Tesla, Xiaomi, Android Auto, and Apple CarPlay, and held two feedback sessions with Rivian design employees to understand technical and product constraints I wouldn't have access to otherwise.</p>
+        <p class="cs-p1">Most findings confirmed what I suspected: drivers found proximity alerts too subtle, information hierarchy broke down during high-stress moments, and there was no clear visual priority system when multiple alerts competed for attention.</p>
+        <p class="cs-p1">What I did not expect was how strongly drivers felt about agency versus automation in safety moments. Most assumed they would want control. In practice, they didn't.</p>
+        <p class="cs-p1">One participant put it plainly:</p>
+        <blockquote class="cs-quote">
+          <p class="cs-p1">"This proximity alert is important, but given its life-or-death nature, it should take over the whole screen automatically. I can't judge how close that vehicle really is when I'm about to be hit."</p>
+        </blockquote>
+        <p class="cs-p1">That reframed the project. I had been designing alerts that respected the existing interface. What was actually needed was a system willing to override it.</p>
+        <figure class="cs-figure-row">
+          <img
+            src="images/case-study-pages/rivian/research-slide-06.jpg"
+            alt="Research slide showing EV dashboard safety audit findings"
+            loading="lazy">
+          <img
+            src="images/case-study-pages/rivian/research-slide-07.jpg"
+            alt="Research slide showing user interview insights on proximity alerts"
+            loading="lazy">
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">DESIGN DECISIONS</h3>
+        <div class="cs-split-row">
+          <div class="cs-split-text">
+            <p class="cs-p1">I worked through roughly 20 distinct interface directions before narrowing to three principles that held up across testing:</p>
+            <p class="cs-p1"><strong>Contextual hierarchy.</strong> Secondary functions like audio and climate controls should step back automatically during safety-critical moments. The interface should know when a driver needs less, not more.</p>
+            <p class="cs-p1"><strong>Familiar mental models.</strong> Drivers have years of muscle memory from Google Maps, Apple Maps, and Waze. Speed limit placement, exit timing, and hazard language should align with those patterns rather than reinvent them.</p>
+            <p class="cs-p1"><strong>Perspective-based threat communication.</strong> A top-down aerial view communicates spatial relationships faster than a camera feed or icon. When proximity is the issue, showing relative position is more useful than showing raw footage.</p>
+            <p class="cs-p1">Each of these came from testing failure, not initial planning. The aerial view, for example, replaced a popup camera window that tested poorly because drivers couldn't quickly interpret distance from a ground-level feed.</p>
+          </div>
+          <figure class="cs-split-media">
+            <div class="cs-carousel" data-cs-carousel>
+              <div class="cs-carousel-viewport">
+                <img
+                  class="cs-carousel-slide is-active"
+                  src="images/case-study-pages/rivian/sketches(1).avif"
+                  alt="Early interface sketch exploring dashboard hierarchy"
+                  loading="lazy">
+                <img
+                  class="cs-carousel-slide"
+                  src="images/case-study-pages/rivian/sketches(2).avif"
+                  alt="Early interface sketch exploring proximity alert layouts"
+                  loading="lazy">
+              </div>
+              <div class="cs-carousel-nav">
+                <button type="button" class="cs-carousel-btn cs-carousel-btn--prev" aria-label="Previous sketch">
+                  <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                </button>
+                <div class="cs-carousel-dots" role="tablist" aria-label="Sketch slides">
+                  <button type="button" class="cs-carousel-dot is-active" role="tab" aria-label="Show sketch 1" aria-selected="true"></button>
+                  <button type="button" class="cs-carousel-dot" role="tab" aria-label="Show sketch 2" aria-selected="false"></button>
+                </div>
+                <button type="button" class="cs-carousel-btn cs-carousel-btn--next" aria-label="Next sketch">
+                  <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">THE SOLUTION</h3>
+
+        <h4 class="cs-h4">Full-screen collision awareness</h4>
+        <p class="cs-p1">When another vehicle enters a critical proximity threshold, the dashboard transitions to a full aerial view showing the driver's vehicle relative to surrounding traffic. The transition is smooth but fast, designed to inform without startling.</p>
+        <p class="cs-p1">In testing, all 4 Rivian design employees and 7 of 10 outside testers felt the aerial view communicated spatial threat more clearly than the original proximity icon. The remaining participant raised a valid concern about the transition speed in low-light conditions, which informed a refined animation timing.</p>
+        <figure class="cs-media">
+          <video
+            class="cs-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            aria-label="Full-screen collision awareness dashboard animation">
+            <source src="images/case-study-pages/rivian/collision-detection-animation.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <h4 class="cs-h4">Adaptive dashboard during navigation</h4>
+        <p class="cs-p1">The dashboard dynamically de-emphasizes non-essential elements when active navigation is running. Speedometer and directional guidance stay prominent. Climate and media controls reduce visually until the driver initiates them.</p>
+        <p class="cs-p1">Testers consistently noted that this felt less like a feature and more like the interface was paying attention. That was the target.</p>
+        <figure class="cs-media">
+          <video
+            class="cs-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            aria-label="Adaptive dashboard map view transition animation">
+            <source src="images/case-study-pages/rivian/map-view-transition-animation.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">OUTCOMES</h3>
+        <p class="cs-p1">This was a concept project with a small test group, so I want to be precise about what the results actually represent. These are qualitative signals from 5 design-informed testers, not a controlled study.</p>
+        <p class="cs-p1">That said, the feedback was consistent: the aerial collision view was the highest-rated interaction across all sessions, and the adaptive hierarchy was described by three of five testers as something they would expect in a production-ready system.</p>
+        <p class="cs-p1">The Rivian designers and developers who participated allowed me to realize one vital technical constraint I had not accounted for: sensor latency. Ensuring infotainment collision alerts could trigger in real time, in sync with the vehicle's proximity detection systems, would require close engineering collaboration before any of this moved toward production.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">REFLECTION</h3>
+        <p class="cs-p1">If I ran this project again, I would involve the Rivian testers earlier. I brought them in during validation, but their knowledge of technical constraints would have been more useful during the direction-setting phase. Two of my major pivots could have happened in week two instead of week four.</p>
+        <p class="cs-p1">I would also push harder on the low-light and glare scenarios. I tested primarily in controlled conditions. Real driving happens in rain, at night, and into the sun. The design holds up conceptually, but it needs environmental stress testing I did not get to.</p>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    (function () {
+      var isLocal = location.protocol === 'file:' || /\.html$/i.test(location.pathname);
+      if (!isLocal) return;
+      document.querySelectorAll('[data-local-href]').forEach(function (el) {
+        el.href = el.getAttribute('data-local-href');
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      document.querySelectorAll('[data-cs-carousel]').forEach(function (carousel) {
+        var slides = carousel.querySelectorAll('.cs-carousel-slide');
+        var dots = carousel.querySelectorAll('.cs-carousel-dot');
+        var prev = carousel.querySelector('.cs-carousel-btn--prev');
+        var next = carousel.querySelector('.cs-carousel-btn--next');
+        var index = 0;
+
+        function goTo(i) {
+          index = (i + slides.length) % slides.length;
+          slides.forEach(function (slide, j) {
+            slide.classList.toggle('is-active', j === index);
+          });
+          dots.forEach(function (dot, j) {
+            var isActive = j === index;
+            dot.classList.toggle('is-active', isActive);
+            dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+        }
+
+        if (prev) {
+          prev.addEventListener('click', function () {
+            goTo(index - 1);
+          });
+        }
+
+        if (next) {
+          next.addEventListener('click', function () {
+            goTo(index + 1);
+          });
+        }
+
+        dots.forEach(function (dot, j) {
+          dot.addEventListener('click', function () {
+            goTo(j);
+          });
+        });
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var clock = document.createElement('div');
+      clock.className = 'site-chrome site-chrome-clock p2';
+      document.body.appendChild(clock);
+
+      function updateClock() {
+        clock.textContent = new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        });
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('siteStartTime')) {
+        sessionStorage.setItem('siteStartTime', String(Date.now()));
+      }
+
+      var startTime = Number(sessionStorage.getItem('siteStartTime'));
+      var timer = document.createElement('div');
+      timer.className = 'site-chrome site-chrome-session p2';
+
+      var label = document.createElement('span');
+      label.className = 'site-chrome-session-label';
+      label.textContent = 'SESSION TIME';
+
+      var time = document.createElement('span');
+      timer.appendChild(label);
+      timer.appendChild(time);
+      document.body.appendChild(timer);
+
+      function updateTimer() {
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        var hours = Math.floor(elapsed / 3600);
+        var minutes = Math.floor((elapsed % 3600) / 60);
+        var seconds = elapsed % 60;
+        time.textContent =
+          String(hours).padStart(2, '0') + ':' +
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var status = document.createElement('div');
+      status.className = 'site-chrome site-chrome-status p2';
+
+      var dot = document.createElement('span');
+      dot.className = 'site-chrome-status-dot';
+      dot.setAttribute('aria-hidden', 'true');
+
+      var text = document.createElement('span');
+      text.textContent = 'Currently building interactive experiences with Cursor.';
+
+      status.appendChild(dot);
+      status.appendChild(text);
+      document.body.appendChild(status);
+    })();
+  </script>
+
+  <script src="js/component-footer.js"></script>
+  <script src="js/component-tagline.js"></script>
+
+  <script>
+    (function () {
+      var CHROME_ZONE = 80;
+
+      function updateChromeTheme() {
+        var darkSections = [
+          document.getElementById('site-footer'),
+          document.getElementById('site-tagline'),
+        ];
+        var viewH = window.innerHeight;
+        var onDark = darkSections.some(function (el) {
+          if (!el) return false;
+          var rect = el.getBoundingClientRect();
+          return rect.top < viewH && rect.bottom > viewH - CHROME_ZONE;
+        });
+
+        document.querySelectorAll('.site-chrome').forEach(function (el) {
+          el.classList.toggle('site-chrome--on-dark', onDark);
+        });
+      }
+
+      window.addEventListener('scroll', updateChromeTheme, { passive: true });
+      window.addEventListener('resize', updateChromeTheme);
+      updateChromeTheme();
+    })();
+  </script>
+
+  <script src="js/component-explore.js"></script>
+</body>
+</html>

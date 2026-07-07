@@ -1,0 +1,61 @@
+/* ── component-tagline (shared) ── */
+
+.site-tagline {
+  position: relative;
+  z-index: 1;
+  background: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: calc(50px + 90px + 4rem);
+  overflow: hidden;
+}
+
+.site-tagline-text {
+  font-family: var(--font-main);
+  font-size: 8.6vw;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-dark);
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.site-tagline-char-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
+}
+
+.site-tagline-char {
+  display: inline-block;
+  transform: translateY(110%);
+}
+
+.site-tagline.is-visible .site-tagline-char {
+  animation: tagline-char-rise 0.55s var(--ease-out-quart) forwards;
+  animation-delay: calc(var(--i) * 0.05s);
+}
+
+@keyframes tagline-char-rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-tagline-char {
+    transform: none;
+    animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-tagline-text {
+    font-size: 11vw;
+  }
+}

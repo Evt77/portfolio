@@ -6,6 +6,3 @@ desktop.ini
 # Editor folders
 .vscode/
 .idea/
-
-# Webflow legacy CSS (not needed for deployment)
-css/evanmtang.webflow.shared.114991b20.css

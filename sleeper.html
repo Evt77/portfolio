@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sleeper — Case Study · Evan Tang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/case-studies.css">
+  <link rel="stylesheet" href="css/component-explore.css">
+  <link rel="stylesheet" href="css/component-footer.css">
+  <link rel="stylesheet" href="css/component-tagline.css">
+  <style>
+    body {
+      background: #f5f0eb;
+      color: #1a1d21;
+    }
+
+    .cs-page {
+      width: min(1100px, 88vw);
+      margin: 0 auto;
+      padding: 0 0 6rem;
+    }
+
+    .cs-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cs-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #545454;
+      transition: color 0.2s ease;
+      line-height: 20px;
+    }
+
+    .cs-nav-link i {
+      flex-shrink: 0;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 22px;
+      width: 22px;
+    }
+
+    .cs-nav-link:hover {
+      color: #1a1d21;
+    }
+
+    .cs-nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .cs-banner {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Fixed bottom chrome ── */
+    .site-chrome {
+      position: fixed;
+      z-index: 350;
+      pointer-events: none;
+      color: rgba(26, 29, 33, 0.5);
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .site-chrome.site-chrome--on-dark {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .site-chrome-clock {
+      bottom: 24px;
+      right: 24px;
+    }
+
+    .site-chrome-session {
+      bottom: 52px;
+      left: 24px;
+    }
+
+    .site-chrome-session-label {
+      letter-spacing: normal;
+      margin-right: 8px;
+    }
+
+    .site-chrome-status {
+      bottom: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: normal;
+    }
+
+    .site-chrome-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: site-chrome-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes site-chrome-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    @media (max-width: 767px) {
+      .site-chrome {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="case-study-page">
+  <main class="cs-page">
+    <nav class="cs-nav" aria-label="Case study navigation">
+      <a href="/case-studies" class="cs-nav-link p2" data-local-href="index.html?tab=case-studies"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> Back to projects</a>
+      <div class="cs-project-switcher" aria-label="Case study projects">
+        <a href="/rivian" class="cs-project-dot" aria-label="Rivian" data-local-href="rivian.html">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-rivian-small.jpg" alt="">
+        </a>
+        <span class="cs-project-dot is-active" aria-current="page" aria-label="Sleeper">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-sleeper-small.jpg" alt="">
+        </span>
+        <a href="/snowlabs" class="cs-project-dot" aria-label="SnowLabs" data-local-href="snowlabs.html">
+          <img class="cs-project-dot-logo" src="images/case-study-pages/icon-snowlabs-small.jpg" alt="">
+        </a>
+      </div>
+    </nav>
+
+    <img
+      src="images/case-study-pages/sleeper/banner.avif"
+      class="cs-banner"
+      alt="Sleeper fantasy sports iOS project banner"
+      loading="eager">
+
+    <article class="cs-walkthrough" aria-label="Case study content">
+      <h1 class="cs-h1">Helping fantasy football managers make faster, more confident trade decisions</h1>
+
+      <div class="cs-intro-row">
+        <section class="cs-block">
+          <h3 class="cs-h3">CONTEXT</h3>
+          <p class="cs-p1">It’s early Thursday afternoon. Kenneth opens the app Sleeper and pulls up the trade block, desperate to find a running back before his roster locks. He knows what he wants: a player in a contract year, hungry to perform, who will win him the championship. But when he tries to learn more about his options, the app gives him nothing. No way to check contract details. Just a name and stats that do not tell the whole story. He searches. He clicks around. He does not find much. So he closes the app, adds some waiver wire picks, and walks away from sending out possible trade offers.</p>
+          <p class="cs-p1">Kenneth is not alone. Across thousands of dynasty leagues every week, competitive managers are making their most important roster decisions half-blind. Not because the information does not exist, but because Sleeper was not built to surface it at the moment it matters most.</p>
+        </section>
+
+        <aside class="cs-meta-card" aria-label="Project details">
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">PRODUCT</h3>
+            <p class="cs-p2">Sleeper iOS</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">FOCUS</h3>
+            <p class="cs-p2">Dynasty Mode trading features, contract visibility, updated information architecture</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">MY ROLE</h3>
+            <p class="cs-p2">Product design, Information architecture revising, Mobile iOS design, Prototyping</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">TIMELINE</h3>
+            <p class="cs-p2">4 weeks</p>
+          </div>
+          <div class="cs-meta-item">
+            <h3 class="cs-h3">NOTABLE</h3>
+            <p class="cs-p2">Received feedback directly from Sleeper designers and engineers</p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="cs-block">
+        <div class="cs-role-main">
+          <h3 class="cs-h3">THE PROBLEM</h3>
+          <p class="cs-p1">Dynasty managers are constantly in high-stakes situations. Every draft, every trade, every player in your lineup carries real consequences for their season. But in Sleeper's Dynasty Mode, those consequences are permanent and long-standing. You are building a roster for years, not just one season. So when users were leaving the app mid-flow, abandoning trades, and walking away without finishing what they started, something fundamental was broken.</p>
+          <p class="cs-p1">Three questions drove this entire project:</p>
+          <div class="cs-hmw-stack" data-cs-hmw-stack aria-label="How might we questions">
+            <button type="button" class="cs-hmw-card" data-hmw-index="0">
+              <span class="cs-hmw-number" aria-hidden="true">1</span>
+              <span class="cs-hmw-eyebrow">How might we</span>
+              <p class="cs-hmw-text">give the information dynasty managers need, without disrupting the pages and screens users are already comfortable with?</p>
+            </button>
+            <button type="button" class="cs-hmw-card" data-hmw-index="1">
+              <span class="cs-hmw-number" aria-hidden="true">2</span>
+              <span class="cs-hmw-eyebrow">How might we</span>
+              <p class="cs-hmw-text">structure new features so they feel like a natural extension of Sleeper, not an out-of-place addition to it?</p>
+            </button>
+            <button type="button" class="cs-hmw-card" data-hmw-index="2">
+              <span class="cs-hmw-number" aria-hidden="true">3</span>
+              <span class="cs-hmw-eyebrow">How might we</span>
+              <p class="cs-hmw-text">present complex dynasty data in a way that is intuitive for every type of player, from the casual to the expert?</p>
+            </button>
+          </div>
+          <p class="cs-p1">Three design principles was considered in every decision I made:</p>
+          
+        <div class="cs-card-row cs-card-row--thick">
+          <div class="cs-insight-card">
+            <p class="cs-p1"><strong>Extend the experience, never interrupt it.</strong> Every screen, feature, and interaction had to feel like it was always part of Sleeper. If a new addition felt jarring or out of place, it was not ready.</p>
+          </div>
+          <div class="cs-insight-card">
+            <p class="cs-p1"><strong>Every addition has to earn its place.</strong> Expert dynasty managers use third-party sites. The bar for including something in the app was not "would this be useful" but "is the feature important for all users?"</p>
+          </div>
+          <div class="cs-insight-card">
+            <p class="cs-p1"><strong>Design for the competitive manager without losing the casual one.</strong> The expert researching user and the casual Thursday, Sunday, Monday player both live in the same app. The solution had to serve both without overwhelming either.</p>
+          </div>
+        </div>
+
+        </div>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">RESEARCH</h3>
+        <p class="cs-p1">I started the project with one question in mind: why are dynasty managers leaving their workflows mid-decision?</p>
+        <p class="cs-p1">To find out, I interviewed 30 dynasty league users, ranging from casual weekend players to obsessive, spreadsheet-driven managers who breathe fantasy football. I also ran a competitive analysis of ESPN and Yahoo to understand what the competitive landscape was already giving users that Sleeper wasn't.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/sleeper/research.avif"
+            alt="Sleeper dynasty workflow research synthesis"
+            loading="lazy">
+        </figure>
+        <p class="cs-p1">I expected to hear a wishlist of missing features. What I actually heard was something more specific and more damaging: users didn't trust their own decisions inside the app. They were hesitating on trades, second-guessing themselves, and leaving mid-flow to find answers somewhere else.</p>
+        <p class="cs-p1">Three patterns showed up consistently across every interview:</p>
+        <div class="cs-card-row cs-card-row--critical">
+          <div class="cs-insight-card">
+            <p class="cs-insight-card-title">Contract details are nonexistent</p>
+            <p class="cs-p1">Contract details were not accessible at any page in the Sleeper app</p>
+          </div>
+          <div class="cs-insight-card">
+            <p class="cs-insight-card-title">Confusing Information Architecture</p>
+            <p class="cs-p1">Navigation and trying to find the page for your specific needs was unpredictable</p>
+          </div>
+          <div class="cs-insight-card">
+            <p class="cs-insight-card-title">Players stopped their workflows during the experience</p>
+            <p class="cs-p1">Users abandoned trades when uncertainty exceeded their confidence</p>
+          </div>
+        </div>
+        <p class="cs-p1">One participant said it better than any data point could:</p>
+        <blockquote class="cs-quote">
+          <p class="cs-p1">"I want to see how many years are left on a player's contract without digging through the app or third-party sites. I would like to know if a running back is playing in a contract year. That would make him more valuable in my eyes, and would lead to me sending out trade offers for him."</p>
+          <p class="cs-p1">— Fantasy football user, 10-team league, 2 years experience</p>
+        </blockquote>
+        <p class="cs-p1">This quote reframed everything. The problem was never missing features. The problem was that users couldn't make confident decisions inside a product they were already using and enjoying. Every design decision I made from this point forward was filtered through one question: does this reduce decision uncertainty, or does it just add noise?</p>
+        <p class="cs-p1">That shift, from "what is missing" to "where does confidence break," became the foundation of everything that followed.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">INSIGHT 1</h3>
+        <p class="cs-p1">After gathering all of the insights I heard across 30 interviews, one conclusion became impossible to ignore. The problem was that the app was generating confusion for the users and did not generate confidence.</p>
+        <p class="cs-p1">Missing contract details forced users out of the app. Unpredictable navigation made returning feel pointless. Uncertainty compounded until users simply quit.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/sleeper/sleeper-app-clutter-audit.jpg"
+            alt="Audit of cluttered areas across the Sleeper app interface"
+            loading="lazy">
+        </figure>
+        <p class="cs-p1">This told me something critical about the design direction. Adding an entirely new contracts page to an already cluttered, confusing experience would not solve anything. It would just give users one more thing to get lost in. Before I could design anything tangible, I needed to understand what was already failing inside the app.</p>
+        <p class="cs-p1">So I went straight to the source. I contacted my design connections at Sleeper for a follow up critique session, and in that conversation I asked which parts of the app get the least amount of traction. What I learned changed everything.</p>
+        <p class="cs-p1">The history tab, one of the existing tabs on every player profile page, was the least engaged section in the entire player view. The only meaningful information it contained was a log of the player asset changing managers within a league. Useful occasionally, but not vital enough to drive confident decision making or increase trading activity.</p>
+        <p class="cs-p1">That was the insightful nugget I needed. Instead of adding a contracts tab on top of an already crowded interface, I replaced the history tab entirely. The new tab would surface contract years remaining and guaranteed money still on the deal, giving dynasty managers exactly what they needed to evaluate real world trade value without ever leaving the app.</p>
+        <p class="cs-p1">This became the principle I applied across every decision that followed. Every addition had to replace something, improve something, or reduce the number of steps between a user and their decision. Nothing got added just because it was useful. It had to earn its place by making something else better or by removing something that was not pulling its weight.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">INSIGHT 2</h3>
+        <p class="cs-p1">I needed to understand how users were actually using the app. I mapped Sleeper's full information architecture, tracing every path, every tap, and every destination users could land on. What I found was more alarming than I expected.</p>
+        <p class="cs-p1">Buried deep inside the app was a section called Sleeper Zone. It had its own visual language, its own layout, and its own feel. It was so disconnected from the rest of the Sleeper app’s experience that when I stumbled across it during my IA audit, I genuinely did not know how I had gotten there or how to get back out. It did not feel like Sleeper. It felt like a different app entirely.</p>
+        <p class="cs-p1">If a designer mapping the app could get lost and disoriented, a user in the middle of a high stakes trade decision would be even more lost. Every unexpected screen was another moment where user confidence lowered.</p>
+        <p class="cs-p1">This reframed my second insight: users did not need more features. They needed to trust that the app would take them where they expected to go.</p>
+        <p class="cs-p1">That clarity shaped my hypothesis for where contract information should live. Player specific information belongs on the player profile page. That is where users would instinctively look first because that is where their mental model already told them it should be. I did not need to invent a new section of the app. I needed to meet users where they already were.</p>
+        <p class="cs-p1">To validate my hypothesis, I ran usability testing. 90 percent of participants found the new contract tab without any guidance from me. When I asked them to narrate their thinking out loud, the reason became clear immediately. They knew that anything unique to a player had to live on that player's profile page. The mental model was already there. I just had to design to meet it.</p>
+        <p class="cs-p1">I then rebuilt the information architecture diagram with new channels that route users into practical, predictable workflows, eliminating the dead ends and disconnected screens that were breaking confidence at every turn.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/sleeper/information-architecture.avif"
+            alt="Rebuilt Sleeper information architecture diagram showing predictable user workflows"
+            loading="lazy">
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">DECISION 1</h3>
+        <p class="cs-p1">Player specific information belongs on the player profile page, and my usability testing had already validated that hypothesis with a 90 percent findability rate. But knowing where to put the contract information was only half the decision. The harder question was how to display it.
+        </p>
+        <p class="cs-p1">I had three directions I was weighing. <span class="cs-highlight">(please hover the images below!)</span></p>
+        <figure class="cs-figure-row cs-figure-row--3 cs-figure-row--hover-reveal">
+          <div class="cs-wireframe-item cs-wireframe-item--annotated cs-wireframe-item--old">
+            <img
+              src="images/case-study-pages/sleeper/wireframe-old.png"
+              alt="Wireframe showing the original player profile layout"
+              loading="lazy">
+            <div class="cs-figma-comments" aria-hidden="true">
+              <div class="cs-figma-comment cs-figma-comment--1">
+                <span class="cs-figma-pin">1</span>
+                <p class="cs-figma-bubble">The first direction used a traditional table format pulling in real NFL contract data including cap salary numbers and financial terminology.</p>
+              </div>
+              <div class="cs-figma-comment cs-figma-comment--2">
+                <span class="cs-figma-pin">2</span>
+                <p class="cs-figma-bubble">Every single participant rejected it. The language was confusing and the numbers meant nothing in a fantasy context.</p>
+              </div>
+            </div>
+          </div>
+          <div class="cs-wireframe-item cs-wireframe-item--annotated cs-wireframe-item--text">
+            <img
+              src="images/case-study-pages/sleeper/wireframe-text.png"
+              alt="Wireframe showing contract information as text on the player profile"
+              loading="lazy">
+            <div class="cs-figma-comments" aria-hidden="true">
+              <div class="cs-figma-comment cs-figma-comment--1">
+                <span class="cs-figma-pin">1</span>
+                <p class="cs-figma-bubble">The second direction replaced the table with a text based format using rectangular fields and bullet points covering the player's current contract, extension estimates, dynasty implications, and contract history.</p>
+              </div>
+              <div class="cs-figma-comment cs-figma-comment--2">
+                <span class="cs-figma-pin">2</span>
+                <p class="cs-figma-bubble">Test feedback says it is more readable, but too slow to scan. There was lots of information that was confusing to novice fantasy football testers.</p>
+              </div>
+            </div>
+          </div>
+          <div class="cs-wireframe-item cs-wireframe-item--annotated cs-wireframe-item--grid">
+            <img
+              src="images/case-study-pages/sleeper/wireframe-sleeper-grid-style.png"
+              alt="Wireframe showing contract information in Sleeper's grid style on the player profile"
+              loading="lazy">
+            <div class="cs-figma-comments" aria-hidden="true">
+              <div class="cs-figma-comment cs-figma-comment--1">
+                <span class="cs-figma-pin">1</span>
+                <p class="cs-figma-bubble">The third direction was the one that had huge praise from 26/30 testers.</p>
+              </div>
+              <div class="cs-figma-comment cs-figma-comment--2">
+                <span class="cs-figma-pin">2</span>
+                <p class="cs-figma-bubble">A clean table built to match Sleeper's existing visual language, showing only what mattered for fantasy decisions: years, team, age, contract status, UFA year, and a motivation indicator showing whether a player was playing for a new contract or already secured.</p>
+              </div>
+              <div class="cs-figma-comment cs-figma-comment--3">
+                <span class="cs-figma-pin">3</span>
+                <p class="cs-figma-bubble">Users understood it instantly, trusted it, and believed they can make smart trades with this information.</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <p class="cs-p1">Alongside the usability feedback on UI format, I also researched which components of a real NFL contract actually matter for fantasy football specifically. The answer was simpler than I expected. Beyond the basics of years, team, and age, what truly drove trade decisions was contract status, UFA year, and motivation level. Everything else, void years, cap space, signing bonuses, incentive clauses, was real life front office detail with no impact on fantasy value. With only six fields that actually mattered, the table could stay clean instead of growing into something cluttered and intimidating.</p>
+        <p class="cs-p1">With only six fields that actually mattered, the display could stay clean instead of growing into something cluttered and intimidating.</p>
+        <p class="cs-p1">The final contract tab showed years, team, age, status, UFA year, and motivation in a clean table format that felt native to Sleeper and gave dynasty managers exactly what they needed to evaluate a player's real world trade value in seconds.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">DECISION 2</h3>
+        <p class="cs-p1">A finished wireframe or mockup can look complete and still fall apart the moment someone has to build it. Before considering two of my features done, I mapped out the full user journey for both: viewing player contract details and viewing previous weeks of an opponent's lineup. I mapped every tap, screen, and possible outcome. These flows needed to be instantly readable by someone who had never seen the designs before. A flow that only made sense to me would not be helpful.</p>
+        <p class="cs-p1">Along the way, I made sure to account for scenarios a single static mockup would never reveal. A player whose contract had expired without a new deal, for example, would show as a free agent with blank fields and dash marks rather than broken or misleading data.</p>
+        <p class="cs-p1">Once the flows were built, I went back to my Sleeper design contacts and walked them through both flows step by step. Their thoughts confirmed that the diagrams held up and that the features felt realistic within Sleeper's existing systems. That conversation gave me confidence that the designs were not just usable, they were buildable.</p>
+        <figure class="cs-media">
+          <div class="cs-carousel" data-cs-carousel>
+            <div class="cs-carousel-viewport">
+              <img
+                class="cs-carousel-slide is-active"
+                src="images/case-study-pages/sleeper/task-flow(1).avif"
+                alt="Task flow diagram for viewing player contract details"
+                loading="lazy">
+              <img
+                class="cs-carousel-slide"
+                src="images/case-study-pages/sleeper/task-flow(2).avif"
+                alt="Task flow diagram for viewing an opponent's previous lineup history"
+                loading="lazy">
+            </div>
+            <div class="cs-carousel-nav">
+              <button type="button" class="cs-carousel-btn cs-carousel-btn--prev" aria-label="Previous task flow">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </button>
+              <div class="cs-carousel-dots" role="tablist" aria-label="Task flow slides">
+                <button type="button" class="cs-carousel-dot is-active" role="tab" aria-label="Show task flow 1" aria-selected="true"></button>
+                <button type="button" class="cs-carousel-dot" role="tab" aria-label="Show task flow 2" aria-selected="false"></button>
+              </div>
+              <button type="button" class="cs-carousel-btn cs-carousel-btn--next" aria-label="Next task flow">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </figure>
+      </section>
+      
+      <section class="cs-block">
+        <h3 class="cs-h3">DECISION 3</h3>
+        <p class="cs-p1">Dynasty managers who wanted deeper stats could already find them. ESPN, Yahoo, and a handful of third party tools existed for exactly that purpose. So the real question was not whether to add more data. It was whether Sleeper should be the place that data lived, and if so, how to do it without alienating the casual manager who just wanted to check their lineup on a Sunday.</p>
+        <p class="cs-p1">The answer came down to one principle: give users control over how much they see, rather than deciding for them.</p>
+        <h4 class="cs-h4">Opponent lineup history</h4>
+        <p class="cs-p1">When viewing an opponent's past lineups, users could see exactly which players were started in previous weeks and how many points they scored. But not every manager wants that level of detail every time. I added a simple eye icon toggle that let users hide points scored entirely, condensing the view and making it easier to scan player names and positions without the added noise. This was not about removing information, it was about letting users decide how much of it they needed in the moment. In testing, 90 percent of participants said hiding the metrics made the experience feel cleaner without losing anything essential.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/sleeper/opponent-past-lineups.jpg"
+            alt="Sleeper interface showing opponent past lineups with an eye icon toggle to hide points scored"
+            loading="lazy">
+        </figure>
+        <h4 class="cs-h4">Full game stats</h4>
+        <p class="cs-p1">This feature did not exist in Sleeper at all before this project. While researching how users engaged with game data, I found something telling: Sleeper's existing stats pages were difficult to reach, and once a week passed, users had effectively no reason to ever revisit them. The data became invisible the moment it became historical.</p>
+        <p class="cs-p1">I split this into two distinct workflows instead of one confusing one. Full Game Stats covers the current or upcoming game, built for managers making real time decisions. Past Performances covers everything before that, giving managers a way to look back across a player's full season history. Two buttons, two clear intentions, no guessing which one to tap.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/sleeper/full-game-stats-button.jpg"
+            alt="Sleeper player profile showing separate Full Game Stats and Past Performances buttons"
+            loading="lazy">
+        </figure>
+        <h4 class="cs-h4">Strength of Schedule</h4>
+        <p class="cs-p1">The original schedule button told a similar story to the stats pages: it existed, but barely anyone used it. Across testing, it was tapped in only 12 of 103 test runs. Rather than removing it, I replaced it with a star rating system that let users instantly gauge how favorable a player's upcoming matchups looked, without having to interpret raw data themselves. Five stars meant a strong stretch ahead. One star meant a difficult one. The feature also moved to a location in the navigation that testing confirmed users could find quickly and intuitively.</p>
+        <figure class="cs-media">
+          <img
+            src="images/case-study-pages/sleeper/strength-of-schedule.jpg"
+            alt="Sleeper interface showing the strength of schedule star rating on a player profile"
+            loading="lazy">
+        </figure>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">FINAL DESIGN DIRECTION</h3>
+
+        <div class="cs-final-design-row">
+          <figure class="cs-final-design-item">
+            <img
+              src="images/case-study-pages/sleeper/contracts-page-hi-fi.png"
+              alt="High fidelity Sleeper player profile contract tab"
+              loading="lazy">
+            <figcaption class="cs-final-design-caption">
+              <h4 class="cs-h4">Contract tab</h4>
+              <p class="cs-p1">A dedicated home for contract status, years remaining, and trade motivation, right where dynasty managers already look.</p>
+            </figcaption>
+          </figure>
+          <figure class="cs-final-design-item">
+            <img
+              src="images/case-study-pages/sleeper/opponent-past-lineups.gif"
+              alt="Animated Sleeper interface showing opponent past lineups with a toggle to hide points"
+              loading="lazy">
+            <figcaption class="cs-final-design-caption">
+              <h4 class="cs-h4">Opponent lineup history</h4>
+              <p class="cs-p1">Past lineups at a glance, with a simple toggle to hide point totals when you just need the bigger picture.</p>
+            </figcaption>
+          </figure>
+          <figure class="cs-final-design-item">
+            <img
+              src="images/case-study-pages/sleeper/strength-of-schedule.gif"
+              alt="Animated Sleeper interface showing strength of schedule star ratings"
+              loading="lazy">
+            <figcaption class="cs-final-design-caption">
+              <h4 class="cs-h4">Strength of schedule</h4>
+              <p class="cs-p1">A five-star system that turns a buried, rarely used button into an instant read on a player's upcoming matchups.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">RESULTS</h3>
+        <p class="cs-p1">26 of 30 dynasty managers said they could make trade decisions faster and with more confidence using features from the redesigned experience. Navigation also became dramatically simpler and what used to take users 6 screens of guessing and backtracking dropped to 2 to 3 direct steps. Users knew where they were going.</p>
+        <p class="cs-p1">One participant put it simply:</p>
+        <blockquote class="cs-quote">
+          <p class="cs-p1">"I had a feeling the contract info for a player would be on the player profile screen. I also like how the table of data is easy to read. Also it's fun that the language used in the motivation tab is fun and personable."</p>
+        </blockquote>
+        <p class="cs-p1">That comment captured everything the project was built around. Users trusted their instincts about where to look and found what they needed without friction, even noticing the small personality choices along the way.</p>
+        <p class="cs-p1">Kenneth's Thursday night doesn't end the same way anymore. He opens Sleeper, taps into the player he's eyeing, and the contract tab is exactly where he expected it to be. Years remaining. Status. Motivation, worded plainly enough to tell him this player is playing for a new deal. He sends the trade offer. No searching. No tapping around. No walking away.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">REFLECTION</h3>
+        <p class="cs-p1">If I started this project again, I'd want more time embedded directly inside Sleeper's actual design system, building within their real components and styles instead of recreating everything from scratch. Since this was a self-directed, volunteer project, I only had two rounds of calls with my contacts at Sleeper, so every question, critique, and piece of feedback had to be efficient and high-value. More time there would have meant more confidence in how closely my designs matched their real production constraints.</p>
+        <p class="cs-p1">Going in, I assumed the fix was mostly additive: build the missing features, replace the ones that weren't working. What I didn't fully appreciate until deeper into research was how much user trust had already eroded, not just from missing data, but from a broader pattern of confusing updates and the gambling integrations rolled out across the platform. That context didn't change what I designed, but it changed how I thought about the stakes. Users weren't just missing information. They were already primed to distrust the app before they even opened a player's profile.</p>
+        <p class="cs-p1">This project taught me that making a product "better" on paper doesn't matter if users feel lost or disrupted in practice. A well-reasoned feature is worthless if it breaks the trust someone already has in how an app works. Going forward, I want to stay close to that lesson: keep listening to the people actually using what I build, and make sure every change earns its place by genuinely benefiting users across the full range of how they use a product, not just the ones who think like I do.</p>
+      </section>
+
+      <section class="cs-block">
+        <h3 class="cs-h3">NEXT STEPS</h3>
+        <ul class="cs-bullet-list">
+          <li class="cs-bullet-item">Validating with a larger and more diverse user group</li>
+          <li class="cs-bullet-item">Introducing visual hierarchy signals for contract states</li>
+          <li class="cs-bullet-item">Collaborating with engineering to integrate live data constraints</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    (function () {
+      var isLocal = location.protocol === 'file:' || /\.html$/i.test(location.pathname);
+      if (!isLocal) return;
+      document.querySelectorAll('[data-local-href]').forEach(function (el) {
+        el.href = el.getAttribute('data-local-href');
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      document.querySelectorAll('[data-cs-hmw-stack]').forEach(function (stack) {
+        var cards = stack.querySelectorAll('.cs-hmw-card');
+        var active = 0;
+
+        function layout() {
+          cards.forEach(function (card, i) {
+            var rel = (i - active + cards.length) % cards.length;
+            card.classList.remove('is-front', 'is-left', 'is-right');
+            if (rel === 0) {
+              card.classList.add('is-front');
+              card.setAttribute('aria-current', 'true');
+            } else {
+              card.removeAttribute('aria-current');
+              card.classList.add(rel === 1 ? 'is-right' : 'is-left');
+            }
+          });
+        }
+
+        cards.forEach(function (card, i) {
+          card.addEventListener('click', function () {
+            if (i === active) return;
+            active = i;
+            layout();
+          });
+        });
+
+        layout();
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      document.querySelectorAll('[data-cs-carousel]').forEach(function (carousel) {
+        var slides = carousel.querySelectorAll('.cs-carousel-slide');
+        var dots = carousel.querySelectorAll('.cs-carousel-dot');
+        var prev = carousel.querySelector('.cs-carousel-btn--prev');
+        var next = carousel.querySelector('.cs-carousel-btn--next');
+        var index = 0;
+
+        function goTo(i) {
+          index = (i + slides.length) % slides.length;
+          slides.forEach(function (slide, j) {
+            slide.classList.toggle('is-active', j === index);
+          });
+          dots.forEach(function (dot, j) {
+            var isActive = j === index;
+            dot.classList.toggle('is-active', isActive);
+            dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+        }
+
+        if (prev) {
+          prev.addEventListener('click', function () {
+            goTo(index - 1);
+          });
+        }
+
+        if (next) {
+          next.addEventListener('click', function () {
+            goTo(index + 1);
+          });
+        }
+
+        dots.forEach(function (dot, j) {
+          dot.addEventListener('click', function () {
+            goTo(j);
+          });
+        });
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var clock = document.createElement('div');
+      clock.className = 'site-chrome site-chrome-clock p2';
+      document.body.appendChild(clock);
+
+      function updateClock() {
+        clock.textContent = new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        });
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('siteStartTime')) {
+        sessionStorage.setItem('siteStartTime', String(Date.now()));
+      }
+
+      var startTime = Number(sessionStorage.getItem('siteStartTime'));
+      var timer = document.createElement('div');
+      timer.className = 'site-chrome site-chrome-session p2';
+
+      var label = document.createElement('span');
+      label.className = 'site-chrome-session-label';
+      label.textContent = 'SESSION TIME';
+
+      var time = document.createElement('span');
+      timer.appendChild(label);
+      timer.appendChild(time);
+      document.body.appendChild(timer);
+
+      function updateTimer() {
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        var hours = Math.floor(elapsed / 3600);
+        var minutes = Math.floor((elapsed % 3600) / 60);
+        var seconds = elapsed % 60;
+        time.textContent =
+          String(hours).padStart(2, '0') + ':' +
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var status = document.createElement('div');
+      status.className = 'site-chrome site-chrome-status p2';
+
+      var dot = document.createElement('span');
+      dot.className = 'site-chrome-status-dot';
+      dot.setAttribute('aria-hidden', 'true');
+
+      var text = document.createElement('span');
+      text.textContent = 'Currently building interactive experiences with Cursor.';
+
+      status.appendChild(dot);
+      status.appendChild(text);
+      document.body.appendChild(status);
+    })();
+  </script>
+
+  <script src="js/component-footer.js"></script>
+  <script src="js/component-tagline.js"></script>
+
+  <script>
+    (function () {
+      var CHROME_ZONE = 80;
+
+      function updateChromeTheme() {
+        var darkSections = [
+          document.getElementById('site-footer'),
+          document.getElementById('site-tagline'),
+        ];
+        var viewH = window.innerHeight;
+        var onDark = darkSections.some(function (el) {
+          if (!el) return false;
+          var rect = el.getBoundingClientRect();
+          return rect.top < viewH && rect.bottom > viewH - CHROME_ZONE;
+        });
+
+        document.querySelectorAll('.site-chrome').forEach(function (el) {
+          el.classList.toggle('site-chrome--on-dark', onDark);
+        });
+      }
+
+      window.addEventListener('scroll', updateChromeTheme, { passive: true });
+      window.addEventListener('resize', updateChromeTheme);
+      updateChromeTheme();
+    })();
+  </script>
+
+  <script src="js/component-explore.js"></script>
+</body>
+</html>
