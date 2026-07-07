@@ -1899,10 +1899,22 @@
         'piplup-pfp.jpg',
         'jeff-dolphin-pfp.jpg'
       ];
-      const PFP_FADE_MS = 120;
 
       let pfpIndex = 0;
       let pfpTransitioning = false;
+
+      function preloadPfp(src) {
+        return new Promise(function (resolve, reject) {
+          const img = new Image();
+          img.onload = function () { resolve(); };
+          img.onerror = reject;
+          img.src = src;
+        });
+      }
+
+      PFP_IMAGES.forEach(function (name) {
+        preloadPfp(PFP_PATH + name).catch(function () {});
+      });
 
       function launchConfetti() {
         for (let i = 0; i < 28; i++) {
@@ -1926,15 +1938,19 @@
         }
       }
 
-      function crossfadeStack(stack, nextSrc) {
-        const layers = stack.querySelectorAll('.avatar-stack-img');
-        const top = stack.querySelector('.avatar-stack-img.is-top');
-        const bottom = top === layers[0] ? layers[1] : layers[0];
-        bottom.src = nextSrc;
-        bottom.alt = top.alt;
-        void bottom.offsetWidth;
-        top.classList.remove('is-top');
-        bottom.classList.add('is-top');
+      function crossfadeStack(stack, nextSrc, done) {
+        preloadPfp(nextSrc).then(function () {
+          const layers = stack.querySelectorAll('.avatar-stack-img');
+          const top = stack.querySelector('.avatar-stack-img.is-top');
+          const bottom = top === layers[0] ? layers[1] : layers[0];
+          bottom.src = nextSrc;
+          bottom.alt = top.alt;
+          top.classList.remove('is-top');
+          bottom.classList.add('is-top');
+          if (done) done();
+        }).catch(function () {
+          if (done) done();
+        });
       }
 
       function cycleProfilePic() {
@@ -1943,11 +1959,13 @@
 
         pfpIndex = (pfpIndex + 1) % PFP_IMAGES.length;
         const nextSrc = PFP_PATH + PFP_IMAGES[pfpIndex];
-        if (avatarStack) crossfadeStack(avatarStack, nextSrc);
-
-        setTimeout(function () {
+        if (!avatarStack) {
           pfpTransitioning = false;
-        }, PFP_FADE_MS);
+          return;
+        }
+        crossfadeStack(avatarStack, nextSrc, function () {
+          pfpTransitioning = false;
+        });
       }
 
       btn.addEventListener('click', function (e) {
