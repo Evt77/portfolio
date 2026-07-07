@@ -1487,8 +1487,8 @@
               <div class="cs-media cs-media--rivian cs-placeholder cs-placeholder--landscape">
                 <div class="cs-card-media-inner cs-card-media-inner--rivian">
                   <div class="cs-media__frame">
-                    <video autoplay loop muted playsinline preload="auto" aria-label="Rivian collision warning UI animation">
-                      <source src="images/case-studies/rivian-collision-ani.mp4" type="video/mp4">
+                    <video loop muted playsinline preload="none" aria-label="Rivian collision warning UI animation">
+                      <source data-src="images/case-studies/rivian-collision-ani.mp4" type="video/mp4">
                     </video>
                   </div>
                 </div>
@@ -1513,7 +1513,7 @@
               <div class="cs-media cs-media--sleeper cs-placeholder cs-placeholder--square">
                 <div class="cs-card-media-inner cs-card-media-inner--sleeper">
                   <div class="cs-sleeper-frame">
-                    <img src="images/case-studies/sleeper-strength-of-schedule.gif" alt="Sleeper strength of schedule feature">
+                    <img data-src="images/case-studies/sleeper-strength-of-schedule.gif" alt="Sleeper strength of schedule feature" loading="lazy">
                   </div>
                 </div>
                 <div class="cs-card-hover" aria-hidden="true">
@@ -1536,7 +1536,7 @@
             <a href="/snowlabs" class="cs-item" id="cs-snowlabs-link">
               <div class="cs-media cs-media--snowlabs cs-placeholder cs-placeholder--landscape">
                 <div class="cs-card-media-inner">
-                  <img src="images/case-studies/snowlabs-banner.jpg" alt="SnowLabs trip planning and snowboarding project">
+                  <img data-src="images/case-studies/snowlabs-banner.jpg" alt="SnowLabs trip planning and snowboarding project" loading="lazy">
                 </div>
                 <div class="cs-card-hover" aria-hidden="true">
                   <div class="cs-card-hover-main">
@@ -1576,7 +1576,7 @@
           <div class="about-visual">
             <div class="about-photo-wrap">
               <div class="about-photo-inner">
-                <img src="images/home/about/evan-portrait.webp" class="about-photo" alt="Portrait of Evan Tang" loading="eager">
+                <img src="images/home/about/evan-portrait.webp" class="about-photo" alt="Portrait of Evan Tang" loading="lazy">
               </div>
             </div>
           </div>
@@ -1671,6 +1671,26 @@
         about: document.getElementById('page-about')
       };
 
+      function loadCaseStudiesMedia() {
+        var page = pages['case-studies'];
+        if (!page || page.dataset.mediaLoaded === 'true') return;
+        page.dataset.mediaLoaded = 'true';
+
+        var video = page.querySelector('video');
+        if (video) {
+          var source = video.querySelector('source[data-src]');
+          if (source) {
+            source.src = source.dataset.src;
+            video.load();
+            video.play().catch(function () {});
+          }
+        }
+
+        page.querySelectorAll('img[data-src]').forEach(function (img) {
+          img.src = img.dataset.src;
+        });
+      }
+
       function normalizeTab(tab) {
         return tab === 'work' ? 'case-studies' : tab;
       }
@@ -1712,6 +1732,7 @@
         if (!animate) {
           showPage(tabName);
           window.scrollTo(0, 0);
+          if (tabName === 'case-studies') loadCaseStudiesMedia();
           if (pushState) {
             history.pushState({ tab: tabName }, '', tabName === 'home' ? '/' : '/' + tabName);
           }
@@ -1735,6 +1756,7 @@
           requestAnimationFrame(function () {
             requestAnimationFrame(function () {
               incoming.style.opacity = '1';
+              if (tabName === 'case-studies') loadCaseStudiesMedia();
               setTimeout(function () {
                 incoming.style.opacity = '';
                 isTransitioning = false;
