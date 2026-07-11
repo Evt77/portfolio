@@ -1,0 +1,58 @@
+/* ── component-passport-widget (shared) ── */
+
+.passport-widget {
+  position: fixed;
+  top: 112px;
+  right: 0;
+  z-index: 440;
+  width: min(200px, 38vw);
+  transform: translateX(calc(100% - 28px));
+  transition: transform 0.42s cubic-bezier(0.25, 1, 0.5, 1);
+  filter: drop-shadow(-4px 8px 24px rgba(0, 0, 0, 0.35));
+}
+
+.passport-widget.is-open {
+  transform: translateX(-24px);
+}
+
+.passport-widget-toggle {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+}
+
+.passport-widget-toggle:focus-visible {
+  outline: 2px solid rgba(100, 160, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.passport-widget-peek {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px 0 0 8px;
+  object-fit: cover;
+  aspect-ratio: 1024 / 1432;
+  pointer-events: none;
+}
+
+.passport-widget.is-open .passport-widget-peek {
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .passport-widget {
+    top: 96px;
+    width: min(160px, 44vw);
+    transform: translateX(calc(100% - 22px));
+  }
+
+  .passport-widget.is-open {
+    transform: translateX(-16px);
+  }
+}

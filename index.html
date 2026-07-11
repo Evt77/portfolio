@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/component-explore.css">
+  <link rel="stylesheet" href="css/component-passport-widget.css">
   <link rel="stylesheet" href="css/component-footer.css">
   <link rel="stylesheet" href="css/component-tagline.css">
   <style>
@@ -797,15 +798,15 @@
     }
 
     .cs-media--rivian .cs-card-hover {
-      background: #F1EEEA;
+      background: #FFB100;
     }
 
     .cs-media--sleeper .cs-card-hover {
-      background: #1A1A2E;
+      background: #131B38;
     }
 
     .cs-media--snowlabs .cs-card-hover {
-      background: #151519;
+      background: #363e49;
     }
 
     .cs-media--sleeper .cs-card-hover-eyebrow,
@@ -1075,10 +1076,11 @@
 
     .profile-card-contacts {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      column-gap: 10px;
+      grid-template-columns: repeat(3, auto);
+      column-gap: 30px;
       row-gap: 18px;
       align-items: flex-start;
+      justify-content: center;
       justify-items: center;
       width: 100%;
     }
@@ -1332,7 +1334,7 @@
     <div class="hero-inner">
       <p class="hero-available p2">AVAILABLE FOR WORK</p>
       <h1 class="hero-name">Evan Tang</h1>
-      <p class="hero-bio">I design interactive products that align user needs with business goals and expectations. My process turns user insights into clear, buildable solutions that improve engagement and efficiency.</p>
+      <p class="hero-bio">I design interactive products that align user needs with business goals. My process turns user insights into clear, buildable solutions that improve engagement and efficiency.</p>
       <div class="scroll-indicator" aria-hidden="true">
         <div class="scroll-chevron"></div>
         <div class="scroll-chevron"></div>
@@ -1351,7 +1353,7 @@
         <h2 class="project-name">Kope House</h2>
         <div class="project-info">
           <div class="project-meta">
-            <p class="project-desc">Kope House is a San Francisco based coffee company. I designed and built a robust, scalable design system in Figma, focusing on components, typography, color, and interaction patterns. I then applied the system to app prototypes to explore a cohesive product experience across key user flows.</p>
+            <p class="project-desc">Kope House is a San Francisco based coffee company. I designed and built a robust, scalable design system in Figma that focused on components, typography, color, and interaction patterns. I then applied the design system to app prototypes to explore a cohesive product experience across key user flows.</p>
             <p class="project-disciplines">Design Systems / Product Design / UI Design / UX Design / Figma</p>
             <p class="project-year">2026</p>
           </div>
@@ -1376,9 +1378,9 @@
         <h2 class="project-name">Rivian</h2>
         <div class="project-info">
           <div class="project-meta">
-            <p class="project-desc">Rivian is rethinking what vehicle dashboards should do when drivers need focus most. I worked on a self-directed project with design team members to redesign the navigation and infotainment experience. I sought out to reduce distraction, prioritizing safety, and helping drivers respond faster in critical moments.</p>
-            <p class="project-disciplines">Infotainment / UX / Interaction Design / Motion Design / Prototyping / Research / Micro Animation</p>
-            <p class="project-year">2024 – 2025</p>
+            <p class="project-desc">I worked on a self-directed project with critique and feedback sessions from Rivian designers. My aim was to redesign the navigation and infotainment experience with a strong focus on safety. I sought to reduce distractions so that drivers can respond faster in critical moments.</p>
+            <p class="project-disciplines">Product Design / Interaction Design / Motion Design / Prototyping / UX Research / Micro Animations</p>
+            <p class="project-year">2025</p>
           </div>
           <div class="project-images" data-project="rivian">
             <img src="images/home/rivian/brand(1).png" class="project-thumb" alt="Rivian brand 1" loading="lazy">
@@ -1400,9 +1402,9 @@
         <h2 class="project-name">Sleeper</h2>
         <div class="project-info">
           <div class="project-meta">
-            <p class="project-desc">Sleeper is a fantasy sports platform where Dynasty players make high-stakes decisions every week. I explored how the iOS app could better support trades and roster management by surfacing critical contract and player data without disrupting the fast, familiar workflows users are accustomed to.</p>
-            <p class="project-disciplines">UX / Product / iOS / Research / Prototyping / Task Flows</p>
-            <p class="project-year">2024 – 2025</p>
+            <p class="project-desc">Sleeper is a fantasy sports platform where Dynasty players make high-stakes decisions every week. I explored how the iOS app could better support users who want to trade manage their rosters.</p>
+            <p class="project-disciplines">UX Design / UX Research / Prototyping / i0S / Systems Mapping </p>
+            <p class="project-year">2025</p>
           </div>
           <div class="project-images" data-project="sleeper">
             <img src="images/home/sleeper/brand-logo.png" class="project-thumb" alt="Brand logo" loading="lazy">
@@ -1425,8 +1427,8 @@
         <h2 class="project-name">Mochi Health</h2>
         <div class="project-info">
           <div class="project-meta">
-            <p class="project-desc">Mochi Health is a wellness platform focused on long-term behavior change. As part of a take-home design challenge, I explored how a weight tracker could help users stay motivated through clear progress visualization, lightweight logging, and engagement mechanics like streaks and milestones. This sprint was conducted within a three-day timeframe.</p>
-            <p class="project-disciplines">UX / Product / Web / Healthcare Design / Dashboard Design</p>
+            <p class="project-desc">Mochi Health is a wellness platform focused on long-term behavioral change in users. As part of a take-home design challenge, I explored how a weight tracker could help users stay motivated through clear progress visualization, lightweight logging, and engagement mechanics like streaks and milestones. This sprint was conducted within a three-day timeframe.</p>
+            <p class="project-disciplines">Healthcare Design, UX Design / Product Design / Web Dashboard Design</p>
             <p class="project-year">2025</p>
           </div>
           <div class="project-images" data-project="mochi-health">
@@ -1448,8 +1450,8 @@
         <h2 class="project-name">SnowLabs</h2>
         <div class="project-info">
           <div class="project-meta">
-            <p class="project-desc">SnowLabs is an experimental desktop experience that helps new snowboarders plan trips with confidence. Instead of static maps and forecasts, it lets riders play a resort experience of previewing trails, conditions, and difficulty before ever stepping on the mountain.</p>
-            <p class="project-disciplines">Video Game Design / UX / Product / Web / Prototyping / Unity / C#</p>
+            <p class="project-desc">SnowLabs is an experimental desktop experience that helps new snowboarders plan trips with confidence. This trip planning experience lets new ski/snowboarders experience upcoming weather conditions, trail difficulties, and how icey or powdery the snow is before their visit.</p>
+            <p class="project-disciplines">Video Game Design / UX Design / Product Design / Web & Desktop / Prototyping / Unity / C#</p>
             <p class="project-year">2022 – 2023</p>
           </div>
           <div class="project-images" data-project="snowlabs">
@@ -1586,28 +1588,29 @@
               <div class="about-toggle-indicator" id="about-toggle-indicator"></div>
               <button type="button" class="about-tab p2 is-active" role="tab" aria-selected="true" aria-controls="about-panel-who" id="about-tab-who" data-panel="who">So who am I?</button>
               <button type="button" class="about-tab p2" role="tab" aria-selected="false" aria-controls="about-panel-hiring" id="about-tab-hiring" data-panel="hiring">If you're hiring</button>
-              <button type="button" class="about-tab p2" role="tab" aria-selected="false" aria-controls="about-panel-team" id="about-tab-team" data-panel="team">Me in a team</button>
+              <button type="button" class="about-tab p2" role="tab" aria-selected="false" aria-controls="about-panel-team" id="about-tab-team" data-panel="team">How it’s like working with me</button>
               <div class="about-toggle-line" aria-hidden="true"></div>
             </div>
 
             <div class="about-panel is-active" id="about-panel-who" role="tabpanel" aria-labelledby="about-tab-who">
-              <p class="about-bio">I'm Evan, a <span class="about-highlight">product designer</span> who bridges <span class="about-highlight">user needs</span> and <span class="about-highlight">business goals.</span> With a background in interaction design and product thinking, I help companies reduce friction, boost engagement, and ship products that solve real user needs.</p>
-              <p class="about-bio">Ever since I was a kid, I've had a creative side that needed to be expressed (building public Minecraft server maps and resource packs). That enthusiasm for learning, creating, and problem-solving still drives me today. I thrive on turning complex challenges into intuitive, engaging experiences.</p>
-              <p class="about-bio">Let's connect if you need a designer who thinks strategically, communicates clearly, and delivers practical, buildable solutions.</p>
+              <p class="about-bio">I'm Evan, a <span class="about-highlight">product designer</span> who aligns <span class="about-highlight">user needs</span> and <span class="about-highlight">business goals.</span> With experience in interaction design, I help companies reduce friction, boost engagement, and ship products that solve real problems.</p>
+              <p class="about-bio">Ever since I was young, I’ve loved creating things. I built public Minecraft server maps and resource packs. That same creative drive led me to product design, where I create intuitive experiences for users. My passion for learning, creating, and solving problems still drives me today. I excel at turning complex challenges into simple, engaging experiences.</p>
+              <p class="about-bio">Let's connect if you need a designer who thinks strategically, communicates clearly, and delivers practical solutions.</p>
             </div>
 
             <div class="about-panel" id="about-panel-hiring" role="tabpanel" aria-labelledby="about-tab-hiring" hidden>
-              <p class="about-bio">I work best in messy, unclear problem spaces where there isn't an obvious solution yet. I use UX research techniques to understand what actually matters instead of relying on assumptions or opinions, and I translate that into clear product direction.</p>
-              <p class="about-bio">I care about both structure and detail, including how information is organized, how interfaces feel to use, and how small decisions like spacing, hierarchy, and typography affect final designs. I also focus on execution, making sure designs are practical to build and hold up in real use cases.</p>
-              <p class="about-bio">On the collaboration side, I adapt quickly to new workplace design processes and tools. I focus on ensuring my design decisions are easy to understand, feasible to build, and aligned with meaningful business goals.</p>
+              <p class="about-bio">I work best in messy, unclear problems where the solution isn’t obvious yet. I use UX research to discover what truly matters instead of relying on assumptions. Then I turn those insights into clear product direction.</p>
+              <p class="about-bio">I care about both structure and detail. I focus on how information is organized, how interfaces feel, and how small choices like spacing, hierarchy, and typography shape the final design. I also focus on execution, making sure my designs are practical to build and work well in real use cases.</p>
+              <p class="about-bio">When collaborating, I adapt quickly to new team processes and tools. I make design decisions that are clear, easy to build, and aligned with real business goals.</p>
             </div>
 
             <div class="about-panel" id="about-panel-team" role="tabpanel" aria-labelledby="about-tab-team" hidden>
-              <p class="about-bio">I work closely with PMs, engineers, and other designers to keep work clear and moving. I share ideas early, even when they're rough, so feedback happens throughout the process instead of only at the end. I keep people aligned on what I'm working on, what decisions are being made, and what might be blocked or at risk.</p>
-              <p class="about-bio">I also put effort into making design files easy to understand, with clear structure, annotations, and context, so handoffs don't turn into back-and-forth confusion. A big part of my process is thinking through problems and technical constraints early, so the team can move with fewer surprises and less rework.</p>
-            </div>
+              <p class="about-bio">I communicate clearly and proactively with PMs, engineers, and other designers. I share ideas early, even when they are rough. This leads to better feedback and alignment throughout the process instead of only at the end. I keep the team informed on progress, key decisions, and any risks or problems.</p>
+              <p class="about-bio">I make design files easy to understand. I use clear structure, annotations, and follow design systems strictly with variables and variants. This creates easier implementation for my engineers who need to adjust typography, colors, and components.</p>
+              <p class="about-bio">A core part of my process is thinking through problems and technical constraints early. I also maintain clear communication with engineers when they implement my designs. This helps the team move faster with fewer surprises and less rework.</p>
+              </div>
 
-            <img src="images/home/about/signature-white.avif" class="about-signature" alt="Evan Tang signature" loading="lazy">
+            <img src="images/home/about/signature-white.png" class="about-signature" alt="Evan Tang signature" loading="lazy">
           </div>
 
         </div>
@@ -2257,7 +2260,9 @@
 
   <script src="js/component-footer.js"></script>
   <script src="js/component-tagline.js"></script>
+  <script src="js/passport-session.js"></script>
   <script src="js/component-explore.js"></script>
+  <script src="js/component-passport-widget.js"></script>
 
   <script>
     (function () {

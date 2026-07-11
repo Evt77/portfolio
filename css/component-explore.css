@@ -331,6 +331,35 @@
   50% { background-position: 100% 50%; }
 }
 
+.explore-action--passport-created {
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  animation: none;
+  pointer-events: none;
+  cursor: default;
+  opacity: 1;
+}
+
+.explore-action--passport-created:hover {
+  background: rgba(34, 197, 94, 0.16);
+  animation: none;
+}
+
+.explore-action--passport-created .explore-action-icon {
+  background: rgba(34, 197, 94, 0.28);
+  color: #86efac;
+}
+
+.explore-action--passport-created .explore-action-title {
+  background: none;
+  -webkit-text-fill-color: #bbf7d0;
+  color: #bbf7d0;
+}
+
+.explore-action--passport-created .explore-action-desc {
+  color: rgba(134, 239, 172, 0.75);
+}
+
 .component-explore .visually-hidden {
   position: absolute;
   width: 1px;

@@ -126,9 +126,9 @@
       </div>
     </div>
 
-    <button type="button" class="btn-primary-colored" onclick="window.location.href='index.html';">ENTER <i class="bi bi-arrow-right-short enter-btn-icon"></i></button>
+    <button type="button" class="btn-primary-colored" id="btn-enter">ENTER <i class="bi bi-arrow-right-short enter-btn-icon"></i></button>
 
-    <p class="p2" style="color: rgba(0, 0, 0, 0.35); text-align: center; max-width: 38ch; margin-top: 32px;">Created passports are added to a onsite gallery. No personal data is collected or stored externally.</p>
+    <p class="p2" style="color: rgba(0, 0, 0, 0.35); text-align: center; max-width: 38ch; margin-top: 32px;">Created passports are saved to your local session. No created passports and personal data is collected or stored externally.</p>
   </main>
 
   <script>
@@ -231,6 +231,15 @@
     window.addEventListener('pageshow', function() { var f = document.getElementById('transition-flash'); f.style.transition = 'none'; f.style.opacity = '1'; setTimeout(function() { f.style.transition = 'opacity 0.5s ease-out'; f.style.opacity = '0'; }, 50); });
   </script>
 
+  <script src="js/passport-session.js"></script>
+  <script>
+    (function () {
+      if (window.PassportSession && PassportSession.hasPassport()) {
+        var dest = location.protocol === 'file:' ? 'index.html' : '/';
+        window.location.replace(dest);
+      }
+    })();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     (async function () {
@@ -624,6 +633,53 @@
       render();
       updatePassportName();
       document.getElementById('visitor-name').addEventListener('input', updatePassportName);
+
+      function canvasToJpegDataUrl(canvas, maxWidth) {
+        const scale = Math.min(1, maxWidth / canvas.width);
+        const w = Math.round(canvas.width * scale);
+        const h = Math.round(canvas.height * scale);
+        const out = document.createElement('canvas');
+        out.width = w;
+        out.height = h;
+        out.getContext('2d').drawImage(canvas, 0, 0, w, h);
+        return out.toDataURL('image/jpeg', 0.82);
+      }
+
+      window.exportPassportSnapshot = function () {
+        updatePassportName();
+
+        const composite = document.createElement('canvas');
+        composite.width = coverCanvas.width;
+        composite.height = coverCanvas.height;
+        const cctx = composite.getContext('2d');
+        cctx.drawImage(coverCanvas, 0, 0);
+        cctx.drawImage(signatureCanvas, 0, 0);
+
+        const name = document.getElementById('visitor-name').value.trim() || 'Visitor';
+
+        return {
+          created: true,
+          name: name,
+          theme: currentTheme,
+          passportNo: passportNo,
+          dateIssued: dateStr,
+          coverDataUrl: canvasToJpegDataUrl(composite, 640),
+          interiorDataUrl: canvasToJpegDataUrl(interiorCanvas, 640),
+        };
+      };
+
+      const enterBtn = document.getElementById('btn-enter');
+      if (enterBtn) {
+        enterBtn.addEventListener('click', function () {
+          if (typeof window.exportPassportSnapshot !== 'function') return;
+          const data = window.exportPassportSnapshot();
+          if (!window.PassportSession || !PassportSession.savePassport(data)) {
+            alert('Could not save your passport for this session. Try a shorter signature or clear site data.');
+            return;
+          }
+          window.location.href = location.protocol === 'file:' ? 'index.html' : '/';
+        });
+      }
     })();
   </script>
 </body>

@@ -32,11 +32,11 @@
           '<div class="explore-actions">' +
             '<div class="explore-section">' +
               '<p class="explore-section-label p2">PINNED</p>' +
-              '<a href="passport.html" class="explore-action explore-action--passport">' +
+              '<a href="/onboarding" class="explore-action explore-action--passport" id="explore-passport-link">' +
                 '<span class="explore-action-icon" aria-hidden="true"><i class="bi bi-passport"></i></span>' +
                 '<span class="explore-action-text">' +
-                  '<p class="explore-action-title p1-label">Create a passport</p>' +
-                  '<p class="explore-action-desc p2">Design your own visitor passport for the site</p>' +
+                  '<p class="explore-action-title p1-label">Minigame: Create a passport</p>' +
+                  '<p class="explore-action-desc p2">Design your own unique visitor passport during your stay!</p>' +
                 '</span>' +
               '</a>' +
               '<button type="button" class="explore-action" data-tab="case-studies">' +
@@ -53,13 +53,6 @@
                   '<p class="explore-action-desc p2">Background, personal, hobbies, and more</p>' +
                 '</span>' +
               '</button>' +
-              '<a href="/visitor-gallery" class="explore-action" id="explore-gallery-link">' +
-                '<span class="explore-action-icon" aria-hidden="true"><i class="bi bi-images"></i></span>' +
-                '<span class="explore-action-text">' +
-                  '<p class="explore-action-title p1-label">Visitor passport gallery</p>' +
-                  '<p class="explore-action-desc p2">Browse passports created by other visitors</p>' +
-                '</span>' +
-              '</a>' +
             '</div>' +
             '<div class="explore-section">' +
               '<p class="explore-section-label p2">SOCIALS</p>' +
@@ -150,9 +143,6 @@
   function applyLocalLinks() {
     if (!isLocalPreview()) return;
 
-    var galleryLink = document.getElementById('explore-gallery-link');
-    if (galleryLink) galleryLink.href = 'visitor-gallery.html';
-
     var rivianLink = document.getElementById('explore-rivian-link');
     if (rivianLink) rivianLink.href = 'rivian.html';
 
@@ -161,9 +151,34 @@
 
     var snowlabsLink = document.getElementById('explore-snowlabs-link');
     if (snowlabsLink) snowlabsLink.href = 'snowlabs.html';
+
+    var passportLink = document.getElementById('explore-passport-link');
+    if (passportLink) passportLink.href = 'passport.html';
+  }
+
+  function applyPassportExploreState() {
+    if (!window.PassportSession || !PassportSession.hasPassport()) return;
+
+    var link = document.getElementById('explore-passport-link');
+    if (!link) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'explore-action explore-action--passport explore-action--passport-created';
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+    btn.innerHTML =
+      '<span class="explore-action-icon" aria-hidden="true"><i class="bi bi-passport"></i></span>' +
+      '<span class="explore-action-text">' +
+        '<p class="explore-action-title p1-label">Passport already created</p>' +
+        '<p class="explore-action-desc p2">Viewable on all pages. Press the right-hand side to view.</p>' +
+      '</span>';
+
+    link.parentNode.replaceChild(btn, link);
   }
 
   applyLocalLinks();
+  applyPassportExploreState();
 
   var openBtn = document.getElementById('portfolio-builder-open');
   var modal = document.getElementById('portfolio-builder-modal');
