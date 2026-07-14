@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/case-studies.css">
+  <link rel="stylesheet" href="css/case-study-lightbox.css">
   <link rel="stylesheet" href="css/component-explore.css">
   <link rel="stylesheet" href="css/component-passport-widget.css">
   <link rel="stylesheet" href="css/component-footer.css">
@@ -206,10 +207,14 @@
         <p class="cs-p1">That reframed the project. I had been designing alerts that respected the existing interface. What was actually needed was a system willing to override it.</p>
         <figure class="cs-figure-row">
           <img
+            class="cs-lightbox-trigger"
+            data-cs-lightbox-group="research-slides"
             src="images/case-study-pages/rivian/research-slide-06.jpg"
             alt="Research slide showing EV dashboard safety audit findings"
             loading="lazy">
           <img
+            class="cs-lightbox-trigger"
+            data-cs-lightbox-group="research-slides"
             src="images/case-study-pages/rivian/research-slide-07.jpg"
             alt="Research slide showing user interview insights on proximity alerts"
             loading="lazy">
@@ -230,12 +235,14 @@
             <div class="cs-carousel" data-cs-carousel>
               <div class="cs-carousel-viewport">
                 <img
-                  class="cs-carousel-slide is-active"
+                  class="cs-carousel-slide is-active cs-lightbox-trigger"
+                  data-cs-lightbox-group="sketches"
                   src="images/case-study-pages/rivian/sketches(1).avif"
                   alt="Early interface sketch exploring dashboard hierarchy"
                   loading="lazy">
                 <img
-                  class="cs-carousel-slide"
+                  class="cs-carousel-slide cs-lightbox-trigger"
+                  data-cs-lightbox-group="sketches"
                   src="images/case-study-pages/rivian/sketches(2).avif"
                   alt="Early interface sketch exploring proximity alert layouts"
                   loading="lazy">
@@ -461,6 +468,7 @@
     })();
   </script>
 
+  <script src="js/case-study-lightbox.js"></script>
   <script src="js/passport-session.js"></script>
   <script src="js/component-explore.js"></script>
   <script src="js/component-passport-widget.js"></script>

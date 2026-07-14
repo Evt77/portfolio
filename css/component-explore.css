@@ -231,7 +231,7 @@
 .explore-action {
   width: 100%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 12px;
   padding: 12px;
   margin: 0;

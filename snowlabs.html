@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/case-studies.css">
+  <link rel="stylesheet" href="css/case-study-lightbox.css">
   <link rel="stylesheet" href="css/component-explore.css">
   <link rel="stylesheet" href="css/component-passport-widget.css">
   <link rel="stylesheet" href="css/component-footer.css">
@@ -151,9 +152,9 @@
       <h1 class="cs-h1">Planning Snowboard Trips Through Playable Resort Previews</h1>
 
       <section class="cs-block">
-        <p class="cs-p1">She has never been on a snowboard before. She books a weekend trip to Lake Tahoe, picks a resort from a Google search and a few Reddit threads, and shows up Saturday morning with rented gear and no real idea what she is walking into. The trails look steeper than the photos suggested. The weather is worse than the forecast said. Two runs in, she is frustrated, cold, and wondering if snowboarding is just not for her.</p>
-        <p class="cs-p1">It was not the mountain that failed her. It was the planning experience. She had access to maps, reviews, and weather data, but none of it prepared her for what the mountain would actually feel like under her feet.</p>
-        <p class="cs-p1">SnowLabs was built to close that gap. Not by giving beginners more data, but by letting them experience the mountain before they ever leave home.</p>
+        <p class="cs-p1">Learning to snowboard for the first time is overwhelming. Before stepping onto the mountain, beginners have to choose a resort that matches their ability, find gear that fits both their budget and skill level, and understand the weather and snow conditions that can dramatically change the experience. Most people rely on Google searches, trail maps, reviews, and scattered forum posts, but these resources rarely communicate what the mountain will actually feel like.</p>
+        <p class="cs-p1">As a result, many first-time riders arrive unprepared, spend more time overcoming unexpected challenges than learning, and leave wondering if snowboarding simply is not for them.</p>
+        <p class="cs-p1">SnowLabs was designed to bridge that gap by allowing beginners to make a gameplan before they ever leave home.</p>
       </section>
 
       <div class="cs-intro-row">
@@ -199,6 +200,7 @@
         <p class="cs-p1">That was the spark. Instead of a predictive travel planner, SnowLabs became a playable experience, a hybrid of UX and game design that would let riders simulate what a trip might actually feel like before committing to it.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/snowlabs/old-project-idea.png"
             alt="Early SnowLabs travel planner concept showing weather alerts on a map interface"
             loading="lazy">
@@ -226,14 +228,20 @@
         <p class="cs-p1">I used the Jobs to Be Done framework to map the full rider journey across all three archetypes. This clarified the product's core purpose: give riders confidence, choice, and a way to preview the experience before committing to it.</p>
         <figure class="cs-figure-row cs-figure-row--3">
           <img
+            class="cs-lightbox-trigger"
+            data-cs-lightbox-group="journey-maps"
             src="images/case-study-pages/snowlabs/journey-map.png"
             alt="Jobs to Be Done journey map for Tom, a beginner snowboarder"
             loading="lazy">
           <img
+            class="cs-lightbox-trigger"
+            data-cs-lightbox-group="journey-maps"
             src="images/case-study-pages/snowlabs/journey-map2.png"
             alt="Jobs to Be Done journey map for James, an expert snowboarder"
             loading="lazy">
           <img
+            class="cs-lightbox-trigger"
+            data-cs-lightbox-group="journey-maps"
             src="images/case-study-pages/snowlabs/journey-map3.png"
             alt="Jobs to Be Done journey map for Sarah, a loyalist snowboarder"
             loading="lazy">
@@ -246,6 +254,7 @@
         <p class="cs-p1">I documented my learning in real time, from secondary research and brainstorming in Mural to Unity terrain experiments and coding exercises. The boards and notes are not polished. That was intentional. They show how I actually think when I am learning something new: organized enough to make progress, messy enough to stay curious.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/snowlabs/mural-board.png"
             alt="Mural board documenting Unity learning notes and SnowLabs brainstorming"
             loading="lazy">
@@ -441,6 +450,7 @@
     })();
   </script>
 
+  <script src="js/case-study-lightbox.js"></script>
   <script src="js/passport-session.js"></script>
   <script src="js/component-explore.js"></script>
   <script src="js/component-passport-widget.js"></script>

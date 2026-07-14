@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/case-studies.css">
+  <link rel="stylesheet" href="css/case-study-lightbox.css">
   <link rel="stylesheet" href="css/component-explore.css">
   <link rel="stylesheet" href="css/component-passport-widget.css">
   <link rel="stylesheet" href="css/component-footer.css">
@@ -231,6 +232,7 @@
         <p class="cs-p1">To find out, I interviewed 30 dynasty league users, ranging from casual weekend players to obsessive, spreadsheet-driven managers who breathe fantasy football. I also ran a competitive analysis of ESPN and Yahoo to understand what the competitive landscape was already giving users that Sleeper wasn't.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/sleeper/research.avif"
             alt="Sleeper dynasty workflow research synthesis"
             loading="lazy">
@@ -266,6 +268,7 @@
         <p class="cs-p1">Missing contract details forced users out of the app. Unpredictable navigation made returning feel pointless. Uncertainty compounded until users simply quit.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/sleeper/sleeper-app-clutter-audit.jpg"
             alt="Audit of cluttered areas across the Sleeper app interface"
             loading="lazy">
@@ -288,6 +291,7 @@
         <p class="cs-p1">I then rebuilt the information architecture diagram with new channels that route users into practical, predictable workflows, eliminating the dead ends and disconnected screens that were breaking confidence at every turn.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/sleeper/information-architecture.avif"
             alt="Rebuilt Sleeper information architecture diagram showing predictable user workflows"
             loading="lazy">
@@ -367,12 +371,14 @@
           <div class="cs-carousel" data-cs-carousel>
             <div class="cs-carousel-viewport">
               <img
-                class="cs-carousel-slide is-active"
+                class="cs-carousel-slide is-active cs-lightbox-trigger"
+                data-cs-lightbox-group="task-flows"
                 src="images/case-study-pages/sleeper/task-flow(1).avif"
                 alt="Task flow diagram for viewing player contract details"
                 loading="lazy">
               <img
-                class="cs-carousel-slide"
+                class="cs-carousel-slide cs-lightbox-trigger"
+                data-cs-lightbox-group="task-flows"
                 src="images/case-study-pages/sleeper/task-flow(2).avif"
                 alt="Task flow diagram for viewing an opponent's previous lineup history"
                 loading="lazy">
@@ -401,6 +407,7 @@
         <p class="cs-p1">When viewing an opponent's past lineups, users could see exactly which players were started in previous weeks and how many points they scored. But not every manager wants that level of detail every time. I added a simple eye icon toggle that let users hide points scored entirely, condensing the view and making it easier to scan player names and positions without the added noise. This was not about removing information, it was about letting users decide how much of it they needed in the moment. In testing, 90 percent of participants said hiding the metrics made the experience feel cleaner without losing anything essential.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/sleeper/opponent-past-lineups.jpg"
             alt="Sleeper interface showing opponent past lineups with an eye icon toggle to hide points scored"
             loading="lazy">
@@ -410,6 +417,7 @@
         <p class="cs-p1">I split this into two distinct workflows instead of one confusing one. Full Game Stats covers the current or upcoming game, built for managers making real time decisions. Past Performances covers everything before that, giving managers a way to look back across a player's full season history. Two buttons, two clear intentions, no guessing which one to tap.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/sleeper/full-game-stats-button.jpg"
             alt="Sleeper player profile showing separate Full Game Stats and Past Performances buttons"
             loading="lazy">
@@ -418,6 +426,7 @@
         <p class="cs-p1">The original schedule button told a similar story to the stats pages: it existed, but barely anyone used it. Across testing, it was tapped in only 12 of 103 test runs. Rather than removing it, I replaced it with a star rating system that let users instantly gauge how favorable a player's upcoming matchups looked, without having to interpret raw data themselves. Five stars meant a strong stretch ahead. One star meant a difficult one. The feature also moved to a location in the navigation that testing confirmed users could find quickly and intuitively.</p>
         <figure class="cs-media">
           <img
+            class="cs-lightbox-trigger"
             src="images/case-study-pages/sleeper/strength-of-schedule.jpg"
             alt="Sleeper interface showing the strength of schedule star rating on a player profile"
             loading="lazy">
@@ -678,6 +687,7 @@
     })();
   </script>
 
+  <script src="js/case-study-lightbox.js"></script>
   <script src="js/passport-session.js"></script>
   <script src="js/component-explore.js"></script>
   <script src="js/component-passport-widget.js"></script>

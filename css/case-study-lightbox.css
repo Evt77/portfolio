@@ -1,0 +1,115 @@
+/* ── case-study-lightbox (shared) ── */
+
+.case-study-page .cs-lightbox-trigger {
+  cursor: zoom-in;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.case-study-page .cs-lightbox-trigger:hover {
+  opacity: 0.92;
+}
+
+.cs-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.cs-lightbox.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.cs-lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.cs-lightbox-img {
+  position: relative;
+  z-index: 1;
+  max-width: 92vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+.cs-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 2;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 26px;
+  line-height: 1;
+  padding: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cs-lightbox-close:hover {
+  color: #fff;
+}
+
+.cs-lightbox-prev,
+.cs-lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cs-lightbox-prev {
+  left: 24px;
+}
+
+.cs-lightbox-next {
+  right: 24px;
+}
+
+.cs-lightbox-prev:hover,
+.cs-lightbox-next:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.cs-lightbox-prev.is-hidden,
+.cs-lightbox-next.is-hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .cs-lightbox-img {
+    max-width: 96vw;
+    max-height: 82vh;
+  }
+
+  .cs-lightbox-prev {
+    left: 12px;
+  }
+
+  .cs-lightbox-next {
+    right: 12px;
+  }
+}

@@ -13,11 +13,11 @@
      3. Wrap all walkthrough content in <article class="cs-walkthrough">
 
    Typography classes (use inside .cs-walkthrough only):
-     .cs-h1  — Karla 600 48px / 58px
-     .cs-p1  — Karla 400 22px / 28px
-     .cs-p2  — Karla 400 18px / 21px
-     .cs-h3  — Karla 700 16px / 14px
-     .cs-h4  — Karla 600 22px / 28px (subsection titles)
+     .cs-h1  — Karla 600 48px / 58px (30px / 1.2 on mobile)
+     .cs-p1  — Karla 400 20px / 28px (17px / 1.45 on mobile)
+     .cs-p2  — Karla 400 18px / 21px (16px / 1.4 on mobile)
+     .cs-h3  — Karla 700 16px / 14px (15px / 1.3 on mobile)
+     .cs-h4  — Karla 600 22px / 28px (19px / 1.35 on mobile)
      .cs-section-label — same as .cs-h3 + uppercase (section eyebrows)
      .cs-block — spacing wrapper for a section
      .cs-quote — blockquote for pull quotes
@@ -466,6 +466,14 @@
   box-sizing: border-box;
 }
 
+.case-study-page .cs-walkthrough .cs-split-media .cs-carousel-slide {
+  display: none;
+}
+
+.case-study-page .cs-walkthrough .cs-split-media .cs-carousel-slide.is-active {
+  display: block;
+}
+
 .case-study-page .cs-walkthrough .cs-feature-badge {
   display: inline-block;
   margin: 0 0 0.75rem;
@@ -828,6 +836,65 @@
 }
 
 @media (max-width: 768px) {
+  /* ── Mobile typography ── */
+  .case-study-page .cs-walkthrough .cs-h1 {
+    font-size: 30px;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-p1 {
+    font-size: 17px;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-p2 {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .case-study-page .cs-walkthrough .cs-h3 {
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .case-study-page .cs-walkthrough .cs-section-label {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .case-study-page .cs-walkthrough .cs-h4 {
+    font-size: 19px;
+    line-height: 1.35;
+    margin-top: 2rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-insight-card-title {
+    font-size: 17px;
+    line-height: 1.3;
+  }
+
+  .case-study-page .cs-walkthrough .cs-bullet-item {
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .case-study-page .cs-walkthrough .cs-ownership-item {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .case-study-page .cs-walkthrough .cs-ownership-item::before {
+    font-size: 16px;
+  }
+
+  .case-study-page .cs-walkthrough .cs-final-design-caption .cs-p1 {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
   .case-study-page .cs-walkthrough .cs-intro-row {
     grid-template-columns: 1fr;
   }
@@ -841,6 +908,14 @@
     width: 100%;
     margin-inline: 0;
     gap: 1.25rem;
+  }
+
+  .case-study-page .cs-walkthrough .cs-figure-row--hover-reveal .cs-wireframe-item {
+    overflow: hidden;
+  }
+
+  .case-study-page .cs-walkthrough .cs-figma-comments {
+    display: none;
   }
 
   .case-study-page .cs-walkthrough .cs-figma-bubble {
@@ -862,6 +937,7 @@
   .case-study-page .cs-walkthrough .cs-hmw-stack {
     min-height: 320px;
     padding-top: 1rem;
+    overflow: hidden;
   }
 
   .case-study-page .cs-walkthrough .cs-hmw-card {
@@ -871,11 +947,11 @@
   }
 
   .case-study-page .cs-walkthrough .cs-hmw-card.is-left {
-    transform: translateX(calc(-50% - 28px)) rotate(-5deg) scale(0.95);
+    transform: translateX(-50%) rotate(-3deg) scale(0.95);
   }
 
   .case-study-page .cs-walkthrough .cs-hmw-card.is-right {
-    transform: translateX(calc(-50% + 28px)) rotate(5deg) scale(0.95);
+    transform: translateX(-50%) rotate(3deg) scale(0.95);
   }
 
   .case-study-page .cs-walkthrough .cs-hmw-text {
@@ -908,5 +984,9 @@
 
   .case-study-page .cs-walkthrough .cs-ownership-card {
     width: 100%;
+  }
+
+  .case-study-page {
+    overflow-x: clip;
   }
 }
