@@ -27,6 +27,8 @@
   <link rel="stylesheet" href="css/component-passport-widget.css">
   <link rel="stylesheet" href="css/component-footer.css">
   <link rel="stylesheet" href="css/component-tagline.css">
+  <link rel="stylesheet" href="css/component-space-artifact.css">
+  <link rel="stylesheet" href="css/component-photo-gallery.css">
   <style>
     :root {
       --star-count: 180;
@@ -1306,6 +1308,241 @@
     </div>
   </div>
 
+  <!-- ── Now playing modal ── -->
+  <div class="now-playing-modal" id="now-playing-modal" role="dialog" aria-modal="true" aria-labelledby="now-playing-title" hidden>
+    <div class="now-playing-overlay" id="now-playing-overlay"></div>
+    <div class="now-playing-panel">
+      <button type="button" class="now-playing-close" id="now-playing-close" aria-label="Close">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+      <h2 class="now-playing-title" id="now-playing-title">
+        <i class="bi bi-boombox-fill" aria-hidden="true"></i>
+        <span>What I'm listening to</span>
+      </h2>
+      <div class="now-playing-stage">
+        <div class="now-playing-deck">
+          <div class="now-playing-turntable-wrap">
+            <div class="now-playing-turntable" id="now-playing-turntable" aria-label="Turntable drop zone"></div>
+            <div class="now-playing-stylus" id="now-playing-stylus" aria-hidden="true">
+              <div class="now-playing-stylus-pivot"></div>
+              <div class="now-playing-stylus-arm">
+                <div class="now-playing-stylus-head"></div>
+              </div>
+            </div>
+          </div>
+          <div class="now-playing-side-controls">
+            <button type="button" class="now-playing-playpause" id="now-playing-playpause" aria-label="Play" aria-pressed="true" disabled>
+              <i class="bi bi-play-fill" aria-hidden="true"></i>
+            </button>
+            <label class="now-playing-volume" aria-label="Volume">
+              <input
+                type="range"
+                class="now-playing-volume-slider"
+                id="now-playing-volume"
+                min="0"
+                max="100"
+                value="15"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="15"
+                aria-label="Volume"
+                disabled>
+            </label>
+          </div>
+        </div>
+        <div class="now-playing-playback" id="now-playing-playback">
+          <p class="now-playing-empty-hint">Drag vinyl into the turntable to listen</p>
+          <div class="now-playing-playback-active">
+            <div class="now-playing-meta-trackinfo">
+              <p class="now-playing-track" id="now-playing-track"></p>
+              <p class="now-playing-artist" id="now-playing-artist"></p>
+            </div>
+            <div class="now-playing-progress" aria-label="Track progress">
+              <div
+                class="now-playing-progress-track"
+                id="now-playing-progress-track"
+                role="slider"
+                tabindex="0"
+                aria-label="Seek"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0">
+                <div class="now-playing-progress-fill" id="now-playing-progress-fill" style="width: 0%"></div>
+              </div>
+              <div class="now-playing-times">
+                <span id="now-playing-time-current">0:00</span>
+                <span id="now-playing-time-total">0:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="now-playing-covers" role="list" aria-label="Album covers">
+          <div
+            class="now-playing-album"
+            role="listitem"
+            data-track="Let Me Let You Go"
+            data-artist="ONE OK ROCK"
+            data-audio="music/ONE-OK-ROCK-Let-Me-Let-You-Go-(Japanese-ver).mp3">
+            <div class="now-playing-album-slot">
+              <div class="now-playing-vinyl" tabindex="-1" aria-label="Drag Luxury Disease vinyl to turntable">
+                <div class="now-playing-vinyl-disc">
+                  <img class="now-playing-vinyl-label" src="images/home/minigame-music-player/Luxury-Disease.jpg" alt="" draggable="false">
+                </div>
+              </div>
+              <div class="now-playing-cover">
+                <img src="images/home/minigame-music-player/Luxury-Disease.jpg" alt="Luxury Disease album cover" loading="lazy" draggable="false">
+              </div>
+            </div>
+          </div>
+          <div
+            class="now-playing-album"
+            role="listitem"
+            data-track="Mona Lisa"
+            data-artist="Porter Robinson"
+            data-audio="music/Porter-Robinson-Mona%20Lisa.mp3">
+            <div class="now-playing-album-slot">
+              <div class="now-playing-vinyl" tabindex="-1" aria-label="Drag SMILE! vinyl to turntable">
+                <div class="now-playing-vinyl-disc">
+                  <img class="now-playing-vinyl-label" src="images/home/minigame-music-player/SMILE!.jpg" alt="" draggable="false">
+                </div>
+              </div>
+              <div class="now-playing-cover">
+                <img src="images/home/minigame-music-player/SMILE!.jpg" alt="SMILE! album cover" loading="lazy" draggable="false">
+              </div>
+            </div>
+          </div>
+          <div
+            class="now-playing-album"
+            role="listitem"
+            data-track="GALA"
+            data-artist="XG"
+            data-audio="music/XG-GALA.mp3">
+            <div class="now-playing-album-slot">
+              <div class="now-playing-vinyl" tabindex="-1" aria-label="Drag The Core vinyl to turntable">
+                <div class="now-playing-vinyl-disc">
+                  <img class="now-playing-vinyl-label" src="images/home/minigame-music-player/The-Core.jpg" alt="" draggable="false">
+                </div>
+              </div>
+              <div class="now-playing-cover">
+                <img src="images/home/minigame-music-player/The-Core.jpg" alt="The Core album cover" loading="lazy" draggable="false">
+              </div>
+            </div>
+          </div>
+          <div
+            class="now-playing-album"
+            role="listitem"
+            data-track="iPod Touch"
+            data-artist="Ninajirachi"
+            data-audio="music/Ninajirachi-iPod-Touch.mp3">
+            <div class="now-playing-album-slot">
+              <div class="now-playing-vinyl" tabindex="-1" aria-label="Drag I Love My Computer vinyl to turntable">
+                <div class="now-playing-vinyl-disc">
+                  <img class="now-playing-vinyl-label" src="images/home/minigame-music-player/I-Love-My-Computer.jpg" alt="" draggable="false">
+                </div>
+              </div>
+              <div class="now-playing-cover">
+                <img src="images/home/minigame-music-player/I-Love-My-Computer.jpg" alt="I Love My Computer album cover" loading="lazy" draggable="false">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Photo gallery modal ── -->
+  <div
+    class="photo-gallery-modal"
+    id="photo-gallery-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="photo-gallery-title"
+    hidden>
+    <div class="photo-gallery-overlay" id="photo-gallery-overlay"></div>
+    <div class="photo-gallery-panel">
+      <header class="photo-gallery-topbar">
+        <div class="photo-gallery-topbar-left">
+          <div class="photo-gallery-view-toggles" role="group" aria-label="Gallery view">
+            <button
+              type="button"
+              class="photo-gallery-view-btn"
+              id="photo-gallery-view-grid"
+              aria-label="Grid view"
+              aria-pressed="false"
+              title="Grid view">
+              <i class="bi bi-grid-3x3-gap-fill" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="photo-gallery-view-btn is-active"
+              id="photo-gallery-view-detail"
+              aria-label="Detail view"
+              aria-pressed="true"
+              title="Detail view">
+              <i class="bi bi-square-fill" aria-hidden="true"></i>
+            </button>
+          </div>
+          <span class="photo-gallery-total-count" id="photo-gallery-total-count" aria-label="Total photos">0</span>
+        </div>
+        <h2 class="photo-gallery-title" id="photo-gallery-title">Photo</h2>
+        <button type="button" class="photo-gallery-close" id="photo-gallery-close" aria-label="Close photo gallery">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </header>
+
+      <aside class="photo-gallery-albums" aria-label="Albums">
+        <p class="photo-gallery-albums-heading">Albums</p>
+        <nav class="photo-gallery-albums-nav" id="photo-gallery-albums" role="list"></nav>
+      </aside>
+
+      <figure class="photo-gallery-stage">
+        <img
+          class="photo-gallery-main"
+          id="photo-gallery-main"
+          src=""
+          alt=""
+          draggable="false">
+      </figure>
+
+      <aside class="photo-gallery-meta" aria-label="Photo details">
+        <dl class="photo-gallery-meta-list">
+          <div class="photo-gallery-meta-row">
+            <dt>Title</dt>
+            <dd id="photo-gallery-meta-title">—</dd>
+          </div>
+          <div class="photo-gallery-meta-row">
+            <dt>Date</dt>
+            <dd id="photo-gallery-meta-date">—</dd>
+          </div>
+          <div class="photo-gallery-meta-row">
+            <dt>Category</dt>
+            <dd id="photo-gallery-meta-category">—</dd>
+          </div>
+          <div class="photo-gallery-meta-row">
+            <dt>Camera</dt>
+            <dd id="photo-gallery-meta-camera">—</dd>
+          </div>
+          <div class="photo-gallery-meta-row">
+            <dt>Location</dt>
+            <dd id="photo-gallery-meta-location">—</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div
+        class="photo-gallery-grid"
+        id="photo-gallery-grid"
+        hidden
+        aria-label="Photo grid"></div>
+
+      <div
+        class="photo-gallery-filmstrip"
+        id="photo-gallery-filmstrip"
+        role="listbox"
+        aria-label="Photos in album"></div>
+    </div>
+  </div>
+
   <!-- ── Floating pill nav ── -->
   <div class="nav-pill" id="nav-pill" role="navigation" aria-label="Main navigation">
     <div class="nav-pill-indicator" id="pill-indicator"></div>
@@ -1331,6 +1568,41 @@
 
   <!-- ── Hero ── -->
   <section class="hero">
+    <button
+      type="button"
+      class="hero-space-artifact hero-space-artifact--vinyl"
+      id="hero-vinyl-trigger"
+      aria-label="Open what I'm listening to"
+      aria-controls="now-playing-modal"
+      aria-expanded="false">
+      <span class="hero-space-artifact-tilt" aria-hidden="true">
+        <span class="hero-space-artifact-orbit" aria-hidden="true"></span>
+        <span class="hero-space-artifact-disc" aria-hidden="true"></span>
+        <span class="hero-space-artifact-sparkles" aria-hidden="true">
+          <span class="hero-space-artifact-sparkle"></span>
+          <span class="hero-space-artifact-sparkle"></span>
+        </span>
+      </span>
+    </button>
+    <button
+      type="button"
+      class="hero-space-artifact hero-space-artifact--camera"
+      id="hero-camera-trigger"
+      aria-label="Open photo gallery"
+      aria-controls="photo-gallery-modal"
+      aria-expanded="false">
+      <span class="hero-space-artifact-tilt" aria-hidden="true">
+        <span class="hero-space-artifact-camera" aria-hidden="true">
+          <span class="hero-space-artifact-camera-body"></span>
+          <span class="hero-space-artifact-camera-lens"></span>
+          <span class="hero-space-artifact-camera-shutter"></span>
+        </span>
+        <span class="hero-space-artifact-sparkles" aria-hidden="true">
+          <span class="hero-space-artifact-sparkle"></span>
+          <span class="hero-space-artifact-sparkle"></span>
+        </span>
+      </span>
+    </button>
     <div class="hero-inner">
       <p class="hero-available p2">AVAILABLE FOR WORK</p>
       <h1 class="hero-name">Evan Tang</h1>
@@ -1578,7 +1850,7 @@
           <div class="about-visual">
             <div class="about-photo-wrap">
               <div class="about-photo-inner">
-                <img src="images/home/about/evan-portrait.webp" class="about-photo" alt="Portrait of Evan Tang" loading="lazy">
+                <img src="images/about/evan-portrait.webp" class="about-photo" alt="Portrait of Evan Tang" loading="lazy">
               </div>
             </div>
           </div>
@@ -1610,7 +1882,7 @@
               <p class="about-bio">A core part of my process is thinking through problems and technical constraints early. I also maintain clear communication with engineers when they implement my designs. This helps the team move faster with fewer surprises and less rework.</p>
               </div>
 
-            <img src="images/home/about/signature-white.png" class="about-signature" alt="Evan Tang signature" loading="lazy">
+            <img src="images/about/signature-white.png" class="about-signature" alt="Evan Tang signature" loading="lazy">
           </div>
 
         </div>
@@ -2188,13 +2460,15 @@
         cursor.style.boxShadow = active ? SHADOW_HOVER : SHADOW_DEFAULT;
       }
 
-      document.addEventListener('mousemove', (e) => {
+      // pointermove (not mousemove): vinyl drag uses pointer capture + preventDefault,
+      // which suppresses compatibility mouse events and would freeze a mousemove cursor.
+      document.addEventListener('pointermove', (e) => {
         cursor.style.left = `${e.clientX}px`;
         cursor.style.top = `${e.clientY}px`;
         cursor.style.transform = 'translate(-50%, -50%)';
       });
 
-      document.addEventListener('mouseover', (e) => {
+      document.addEventListener('pointerover', (e) => {
         const interactive = e.target.closest('button, a, [role="button"]') || hasPointerCursor(e.target);
         setCursorHover(!!interactive);
       });
@@ -2258,6 +2532,8 @@
     })();
   </script>
 
+  <script src="js/component-space-artifact.js"></script>
+  <script src="js/component-photo-gallery.js"></script>
   <script src="js/component-footer.js"></script>
   <script src="js/component-tagline.js"></script>
   <script src="js/passport-session.js"></script>
