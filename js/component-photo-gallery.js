@@ -372,11 +372,11 @@
 
   var albums = [
     { id: 'all', label: 'All photos' },
-    { id: 'curacao-2025', label: 'Curacao 2025', color: '#2DD4BF' },
     { id: 'fun', label: 'Fun', color: '#F97316' },
+    { id: 'curacao-2025', label: 'Curacao 2025', color: '#2DD4BF' },
+    { id: 'japan-2023', label: 'Japan 2023', color: '#FB7185' },
     { id: 'greece-2023', label: 'Greece 2023', color: '#38BDF8' },
-    { id: 'italy-summer-2022', label: 'Italy 2022', color: '#4ADE80' },
-    { id: 'japan-2023', label: 'Japan 2023', color: '#FB7185' }
+    { id: 'italy-summer-2022', label: 'Italy 2022', color: '#4ADE80' }
   ];
 
   var closeBtn = document.getElementById('photo-gallery-close');
