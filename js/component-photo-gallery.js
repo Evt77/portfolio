@@ -23,7 +23,7 @@
     {
       id: 'cw-3867',
       src: BASE + 'Curacao-2025/IMG_3867.jpg',
-      title: 'Curacao alley architecture',
+      title: 'Curacao Alley Architecture',
       date: 'June 7, 2025',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -33,7 +33,7 @@
     {
       id: 'cw-5323',
       src: BASE + 'Curacao-2025/IMG_5323.jpg',
-      title: 'Ocean views',
+      title: 'Ocean Views',
       date: 'June 5, 2025',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -43,7 +43,7 @@
     {
       id: 'cw-5371',
       src: BASE + 'Curacao-2025/IMG_5371.jpg',
-      title: 'Cat spotting in alley',
+      title: 'Cat Spotting in Alley',
       date: 'June 7, 2025',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -83,28 +83,8 @@
       albumId: 'fun'
     },
     {
-      id: 'fun-5965',
-      src: BASE + 'Fun/IMG_5965.jpg',
-      title: 'Australia vs Paraguay',
-      date: 'June 25, 2026',
-      category: 'Sports',
-      camera: 'iPhone 13',
-      location: "Levi's Stadium, Santa Clara, California",
-      albumId: 'fun'
-    },
-    {
       id: 'fun-5973',
       src: BASE + 'Fun/IMG_5973.jpg',
-      title: 'Australia vs Paraguay',
-      date: 'June 25, 2026',
-      category: 'Sports',
-      camera: 'iPhone 13',
-      location: "Levi's Stadium, Santa Clara, California",
-      albumId: 'fun'
-    },
-    {
-      id: 'fun-5976',
-      src: BASE + 'Fun/IMG_5976.jpg',
       title: 'Australia vs Paraguay',
       date: 'June 25, 2026',
       category: 'Sports',
@@ -147,7 +127,7 @@
     {
       id: 'gr-2633',
       src: BASE + 'Greece-2023/IMG_2633.jpg',
-      title: 'Cat spotting at donut shop',
+      title: 'Cat Spotting at Donut Shop',
       date: 'July 8, 2023',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -167,7 +147,7 @@
     {
       id: 'gr-2742',
       src: BASE + 'Greece-2023/IMG_2742.jpg',
-      title: 'Mykonos architecture',
+      title: 'Mykonos Architecture',
       date: 'July 10, 2023',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -197,7 +177,7 @@
     {
       id: 'gr-3025',
       src: BASE + 'Greece-2023/IMG_3025.jpg',
-      title: 'Santorini view',
+      title: 'Santorini View',
       date: 'July 13, 2023',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -291,7 +271,7 @@
     {
       id: 'jp-4129',
       src: BASE + 'Japan-2023/IMG_4129.jpg',
-      title: 'Bamboo Forest',
+      title: 'Arashiyama Bamboo Grove',
       date: 'December 12, 2023',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -301,7 +281,7 @@
     {
       id: 'jp-4211',
       src: BASE + 'Japan-2023/IMG_4211.jpg',
-      title: 'Monkey Forest',
+      title: 'Arashiyama Monkey Park',
       date: 'December 12, 2023',
       category: 'Travel',
       camera: 'iPhone 13',
@@ -311,7 +291,7 @@
     {
       id: 'jp-4222',
       src: BASE + 'Japan-2023/IMG_4222.jpg',
-      title: 'Katsu Dinner',
+      title: 'Katsukura Tonkatsu Sanjo Dinner',
       date: 'December 12, 2023',
       category: 'Travel',
       camera: 'iPhone 13',
