@@ -8,7 +8,6 @@
   "rewrites": [
     { "source": "/case-studies", "destination": "/index.html" },
     { "source": "/about", "destination": "/index.html" },
-    { "source": "/onboarding", "destination": "/passport.html" },
     { "source": "/rivian", "destination": "/rivian.html" },
     { "source": "/sleeper", "destination": "/sleeper.html" },
     { "source": "/snowlabs", "destination": "/snowlabs.html" }

@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="css/case-studies.css">
   <link rel="stylesheet" href="css/case-study-lightbox.css">
   <link rel="stylesheet" href="css/component-explore.css">
-  <link rel="stylesheet" href="css/component-passport-widget.css">
   <link rel="stylesheet" href="css/component-footer.css">
   <link rel="stylesheet" href="css/component-tagline.css">
   <style>
@@ -86,36 +85,13 @@
     }
 
     .site-chrome-session {
-      bottom: 52px;
+      bottom: 24px;
       left: 24px;
     }
 
     .site-chrome-session-label {
       letter-spacing: normal;
       margin-right: 8px;
-    }
-
-    .site-chrome-status {
-      bottom: 24px;
-      left: 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: normal;
-    }
-
-    .site-chrome-status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #4ade80;
-      flex-shrink: 0;
-      animation: site-chrome-pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes site-chrome-pulse {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.3; }
     }
 
     @media (max-width: 767px) {
@@ -402,24 +378,6 @@
     })();
   </script>
 
-  <script>
-    (function () {
-      var status = document.createElement('div');
-      status.className = 'site-chrome site-chrome-status p2';
-
-      var dot = document.createElement('span');
-      dot.className = 'site-chrome-status-dot';
-      dot.setAttribute('aria-hidden', 'true');
-
-      var text = document.createElement('span');
-      text.textContent = 'Currently building interactive experiences with Cursor.';
-
-      status.appendChild(dot);
-      status.appendChild(text);
-      document.body.appendChild(status);
-    })();
-  </script>
-
   <script src="js/component-footer.js"></script>
   <script src="js/component-tagline.js"></script>
 
@@ -451,8 +409,6 @@
   </script>
 
   <script src="js/case-study-lightbox.js"></script>
-  <script src="js/passport-session.js"></script>
   <script src="js/component-explore.js"></script>
-  <script src="js/component-passport-widget.js"></script>
 </body>
 </html>
